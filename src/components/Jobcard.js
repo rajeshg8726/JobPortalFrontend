@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './Stylesheet.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -6,37 +6,23 @@ import ReactPaginate from 'react-paginate';
 
 const PER_PAGE = 8; // 3 rows per page with 3 columns each
 
-function Jobcard() {
-    const [jobPost, setJobPost] = useState([]);
+function Jobcard({jobfilter}) {
+    
     const [currentPage, setCurrentPage] = useState(0);
 
-    useEffect(() => {
-        const getJobs = async () => {
-            try {
-                const res = await axios.get('/api/getAllJobs');
-                const result = res.data.allJobs;
-                console.log(result);
-                setJobPost(result);
-            } catch (error) {
-                console.log(error);
-            }
-        };
-
-        getJobs();
-    }, []);
-
+  
     const handlePageClick = ({ selected }) => {
         setCurrentPage(selected);
     };
 
     const offset = currentPage * PER_PAGE;
-    const currentPageData = jobPost.slice(offset, offset + PER_PAGE);
-    const pageCount = Math.ceil(jobPost.length / PER_PAGE);
+     const currentPageJob = jobfilter.slice(offset, offset + PER_PAGE);
+    const pageCount = Math.ceil(jobfilter.length / PER_PAGE);
 
     return (
         <div>
             <div className='containerJob'>
-                {currentPageData.map((post) => (
+                {currentPageJob.map((post) => (
                     <Link key={post._id} className='jobLink' to={`/job/${post._id}`}>
                         <div className="card">
                             <img src={`${process.env.PUBLIC_URL}/uploads/${post.image}`} className="card-img-top" alt="..." />

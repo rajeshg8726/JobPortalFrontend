@@ -17,13 +17,33 @@ import AdminJobAdd from './components/AdminJobAdd';
 import Tables from './components/Tables';
 import Login from './components/Login';
 import Register from './components/Register';
-
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 function App() {
+  const [filteredData, setFilteredData] = useState([]);
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        axios.get('/api/getAllJobs')
+            .then(res => {
+                setData(res.data.allJobs);
+                setFilteredData(res.data.allJobs); // Initialize filteredData with all jobs
+            })
+            .catch(error => console.log(error));
+    }, []);
+
+    const handleSearch = (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        setFilteredData(
+            data.filter(job => job.title.toLowerCase().includes(searchTerm))
+        );
+    };
+
   return (
     <Router>
       <Routes>
-        <Route path="/*" element={<UserLayout />}>
-          <Route index element={<><Slider /><Jobcard /></>} />
+        <Route path="/*"  element={<UserLayout handleSearch = {handleSearch} />}  >
+          <Route index element={<><Slider /><Jobcard jobfilter = {filteredData} /></>} />
           <Route path="about" element={<About />} />
           <Route path="updates" element={<Updates />} />
           <Route path="contact" element={<Contact />} />

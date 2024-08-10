@@ -95,8 +95,8 @@ function Footer() {
   
     <!-- Copyright --> */}
       <div className="text-center p-3 copyright" >
-        © 2024 Copyright:
-        <Link className="text-body btn btn-sm" to="https://www.linkedin.com/in/rajesh-gupta-37b8621b2/" target='_blank'>RAJESH GUPTA</Link>
+      Copyright © 2024 RGJobs | All rights reserved
+        <Link className="text-body btn btn-sm " to="https://www.linkedin.com/in/rajesh-gupta-37b8621b2/" target='_blank'>RAJESH GUPTA</Link>
       </div>
       {/* <!-- Copyright --> */}
     </footer>

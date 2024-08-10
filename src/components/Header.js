@@ -1,11 +1,16 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-function Header() {
+import axios from 'axios';
+
+function Header({handleSearch}) {
+   
     return (
         <div>
             <nav className="navbar navbar-expand-lg bg-body-tertiary">
                 <div className="container-fluid">
-                    <Link className="navbar-brand" to="/"> <img src="/rglogo.png" alt="RGLOGO"  style={{width: "2rem"}} /> </Link>
+                    <Link className="navbar-brand" to="/"> 
+                        <img src="/rglogo.png" alt="RGLOGO" style={{ width: "2rem" }} />
+                    </Link>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
@@ -23,17 +28,30 @@ function Header() {
                             <li className="nav-item">
                                 <Link className="nav-link" to="/updates">Updates</Link>
                             </li>
-                            
                         </ul>
-                        <form className="d-flex" role="search">
-                            <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                                <button className="btn btn-outline-success" type="submit">Search</button>
-                        </form>
+                        <div className="d-flex" role="search">
+                            <input
+                                className="form-control me-2"
+                                type="search"
+                                placeholder="Search"
+                                aria-label="Search"
+                                onChange={handleSearch}
+                            />
+                        </div>
                     </div>
                 </div>
             </nav>
+            {/* Display the filtered results */}
+            {/* <div>
+                {filteredData.map((job, index) => (
+                    <div key={index}>
+                        <h4>{job.title}</h4>
+                        <p>{job.description}</p>
+                    </div>
+                ))}
+            </div> */}
         </div>
-    )
+    );
 }
 
-export default Header
+export default Header;
