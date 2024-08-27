@@ -7,11 +7,12 @@ const JobDetail = () => {
   const [jobData, setJobData] = useState([]); // Initialize jobData as an empty array
   const [error, setError] = useState(null);
   const {id} = useParams();
+  const backendURL = process.env.REACT_APP_API_URL;
   useEffect(() => {
     const getDataFromApi = async () => {
       try {
         
-        const responce = await axios.get(`/api/jobById/${id}`);
+        const responce = await axios.get(`${backendURL}/api/jobById/${id}`);
         const rt = responce.data.result; // Accessing allJobs array from the API response
         console.log(rt); // Check the structure of result here
         setJobData(rt);
@@ -38,7 +39,7 @@ const JobDetail = () => {
      
         <div key={jobData._id} className="jobDetail"> {/* Use job._id or another unique key */}
           <div className="imgcard">
-            <img src={`${process.env.PUBLIC_URL}/uploads/${jobData.image}`} className="card-img-top" alt="..." />
+            <img src={`${process.env.REACT_APP_API_URL}/uploads/${jobData.image}`} className="card-img-top" alt="..." />
           </div>
           <div className="container">
             <h3><strong>{jobData.title}</strong></h3>

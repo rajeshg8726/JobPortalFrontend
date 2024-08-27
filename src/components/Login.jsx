@@ -13,7 +13,7 @@ const Login = () => {
 
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
-
+  const backendURL = process.env.REACT_APP_API_URL;
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -41,7 +41,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/api/login', formData);
+      const response = await axios.post( `${backendURL}/api/login`, formData);
       const { token } = response.data;
       localStorage.setItem('token', token); // Store token in localStorage
   
@@ -101,7 +101,7 @@ const Login = () => {
 
         {/* Register buttons */}
         <div className="text-center">
-          <p>Not a member? <Link to="/admin/register">Register</Link></p>
+          <p hidden>Not a member? <Link to="/admin/register">Register</Link></p>
           <p>or sign up with:</p>
           <button type="button" className="btn btn-link btn-floating mx-1">
             <FontAwesomeIcon icon={faFacebook} />

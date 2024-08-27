@@ -10,12 +10,12 @@ const Tables = () => {
 const [jobPost, setJobPost] = useState([]);
 const [currentPage, setCurrentPage] = useState(0);
 const navigate = useNavigate();
-
+const backendURL =  process.env.REACT_APP_API_URL;
 
 useEffect(() => {
     const getJobs = async () => {
       try {
-        const res = await axios.get('/api/getAllJobs');
+        const res = await axios.get( `${backendURL}/api/getAllJobs`);
         const result = res.data.allJobs;
         console.log(result);
         setJobPost(result);

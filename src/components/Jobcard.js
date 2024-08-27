@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import './Stylesheet.css';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import ReactPaginate from 'react-paginate';
 
 const PER_PAGE = 8; // 3 rows per page with 3 columns each
@@ -25,7 +24,7 @@ function Jobcard({jobfilter}) {
                 {currentPageJob.map((post) => (
                     <Link key={post._id} className='jobLink' to={`/job/${post._id}`}>
                         <div className="card">
-                            <img src={`${process.env.PUBLIC_URL}/uploads/${post.image}`} className="card-img-top" alt="..." />
+                            <img src={`${process.env.REACT_APP_API_URL}/uploads/${post.image}`} className="card-img-top" alt="..." />
                             <div className="card-body">
                                 <h5 className="card-title">{post.title}</h5>
                                 <p className="card-text">Batch: {post.batches}</p>

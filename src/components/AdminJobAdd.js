@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import './Stylesheet.css';
 import axios from 'axios';
@@ -5,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 const AdminJobAdd = () => {
 
+  const backendURL = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
   
   useEffect(() => {
@@ -55,7 +57,7 @@ const AdminJobAdd = () => {
     }
 
     try {
-      const response = await axios.post('/api/admin/addJob', data, {
+      const response = await axios.post(`${backendURL}/api/admin/addJob`, data, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

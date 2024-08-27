@@ -9,7 +9,7 @@ const Contact = () => {
   const[message, setMessage] = useState('');
   const Navigate = useNavigate();
   
-
+  const backendURL = process.env.REACT_APP_API_URL;
 
   const handleChange = (e) => {
     const {name, value} = e.target;
@@ -19,13 +19,13 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response =  await axios.post('/api/contactus', formData);
+      const response =  await axios.post( `${backendURL}/api/contactus`, formData);
       console.log(response.data);
       setMessage("Your Query Submitted Successfully!");
       Navigate('/contact');
     } catch (error) {
-      console.error('Error during registration:', error);
-      setMessage('Error during registration. Please try again.');
+      console.error('Error during submission:', error);
+      setMessage('Error during submission. Please try again.');
     }
   }
   return (

@@ -23,8 +23,10 @@ function App() {
   const [filteredData, setFilteredData] = useState([]);
     const [data, setData] = useState([]);
 
+const backendURL = process.env.REACT_APP_API_URL;
+
     useEffect(() => {
-        axios.get('/api/getAllJobs')
+        axios.get(`${backendURL}/api/getAllJobs`)
             .then(res => {
                 setData(res.data.allJobs);
                 setFilteredData(res.data.allJobs); // Initialize filteredData with all jobs

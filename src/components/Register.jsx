@@ -12,7 +12,7 @@ const Register = () => {
 
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
-
+  const backendURL = process.env.REACT_APP_API_URL;
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -25,7 +25,7 @@ const Register = () => {
     e.preventDefault(); // Prevent the default form submission
 
     try {
-      const response = await axios.post('/api/register', formData);
+      const response = await axios.post( `${backendURL}/api/register`, formData);
       console.log(response.data);
 
       // Handle successful registration (e.g., navigate to another page or show a success message)
