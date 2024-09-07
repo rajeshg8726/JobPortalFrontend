@@ -57,7 +57,7 @@ const AdminJobAdd = () => {
     }
 
     try {
-      const response = await axios.post(`${backendURL}/api/admin/addJob`, data, {
+      const response = await axios.post(`${backendURL}/api/job`, data, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

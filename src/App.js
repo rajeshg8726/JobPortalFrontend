@@ -19,6 +19,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import EditJobData from './components/EditJobData';
 function App() {
   const [filteredData, setFilteredData] = useState([]);
     const [data, setData] = useState([]);
@@ -28,8 +29,8 @@ const backendURL = process.env.REACT_APP_API_URL;
     useEffect(() => {
         axios.get(`${backendURL}/api/getAllJobs`)
             .then(res => {
-                setData(res.data.allJobs);
-                setFilteredData(res.data.allJobs); // Initialize filteredData with all jobs
+                setData(res.data.JobsData);
+                setFilteredData(res.data.JobsData); // Initialize filteredData with all jobs
             })
             .catch(error => console.log(error));
     }, []);
@@ -54,6 +55,8 @@ const backendURL = process.env.REACT_APP_API_URL;
         <Route path="/admin/*" element={<AdminLayout />}>
           <Route path="add-new-job" element={<AdminJobAdd />} />
           <Route path="job-list" element={<Tables />} />
+          <Route path="edit-job/:id" element={< EditJobData />} />
+
         </Route>
         <Route path="/admin/login" element={< Login />} >
         </Route>

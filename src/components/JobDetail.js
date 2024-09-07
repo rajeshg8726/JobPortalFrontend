@@ -12,8 +12,8 @@ const JobDetail = () => {
     const getDataFromApi = async () => {
       try {
         
-        const responce = await axios.get(`${backendURL}/api/jobById/${id}`);
-        const rt = responce.data.result; // Accessing allJobs array from the API response
+        const responce = await axios.get(`${backendURL}/api/job/${id}`);
+        const rt = responce.data.job; // Accessing allJobs array from the API response
         console.log(rt); // Check the structure of result here
         setJobData(rt);
       } catch (error) {
@@ -37,9 +37,9 @@ const JobDetail = () => {
   return (
     <div className='jobcontain'>
      
-        <div key={jobData._id} className="jobDetail"> {/* Use job._id or another unique key */}
+        <div key={jobData.id} className="jobDetail"> {/* Use job._id or another unique key */}
           <div className="imgcard">
-            <img src={`${process.env.REACT_APP_API_URL}/uploads/${jobData.image}`} className="card-img-top" alt="..." />
+            <img src={`${process.env.REACT_APP_API_URL}/${jobData.image}`} className="card-img-top" alt="..." />
           </div>
           <div className="container">
             <h3><strong>{jobData.title}</strong></h3>

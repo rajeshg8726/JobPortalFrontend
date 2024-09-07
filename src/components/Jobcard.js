@@ -3,7 +3,7 @@ import './Stylesheet.css';
 import { Link } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 
-const PER_PAGE = 8; // 3 rows per page with 3 columns each
+const PER_PAGE = 9; // 3 rows per page with 3 columns each
 
 function Jobcard({jobfilter}) {
     
@@ -22,9 +22,9 @@ function Jobcard({jobfilter}) {
         <div>
             <div className='containerJob'>
                 {currentPageJob.map((post) => (
-                    <Link key={post._id} className='jobLink' to={`/job/${post._id}`}>
+                    <Link key={post.id} className='jobLink' to={`/job/${post.id}`}>
                         <div className="card">
-                            <img src={`${process.env.REACT_APP_API_URL}/uploads/${post.image}`} className="card-img-top" alt="..." />
+                            <img src={`${process.env.REACT_APP_API_URL}/${post.image}`} className="card-img-top img" alt="..." />
                             <div className="card-body">
                                 <h5 className="card-title">{post.title}</h5>
                                 <p className="card-text">Batch: {post.batches}</p>
