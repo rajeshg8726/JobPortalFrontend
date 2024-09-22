@@ -32,9 +32,9 @@ const Sidebar = () => {
           </Link>
         </li>
         <li>
-          <Link to="#" className="nav-link text-white">
+          <Link to="/admin/user-feedback-list" className="nav-link text-white">
             {/* <svg className="bi me-2" width="16" height="16"><use xlink:to="#table"></use></svg> */}
-            USERS
+            USERS FEEDBACK
           </Link>
         </li>
         <li>

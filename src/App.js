@@ -20,6 +20,9 @@ import Register from './components/Register';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import EditJobData from './components/EditJobData';
+import FeedbackTable from './components/FeedbackTable';
+import PrivacyPolicy from './components/PrivacyPolicy';
+import TermsAndConditions from './components/TermsAndConditions';
 function App() {
   const [filteredData, setFilteredData] = useState([]);
     const [data, setData] = useState([]);
@@ -50,12 +53,18 @@ const backendURL = process.env.REACT_APP_API_URL;
           <Route path="about" element={<About />} />
           <Route path="updates" element={<Updates />} />
           <Route path="contact" element={<Contact />} />
-          <Route path="job/:id" element={<JobDetail />} />
+          <Route path="job/:id/:slug" element={<JobDetail />} />
+          <Route path="privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="terms-and-conditions" element={<TermsAndConditions />} />
+
+
         </Route>
         <Route path="/admin/*" element={<AdminLayout />}>
           <Route path="add-new-job" element={<AdminJobAdd />} />
           <Route path="job-list" element={<Tables />} />
+          <Route path="user-feedback-list" element={<FeedbackTable />} />
           <Route path="edit-job/:id" element={< EditJobData />} />
+          
 
         </Route>
         <Route path="/admin/login" element={< Login />} >

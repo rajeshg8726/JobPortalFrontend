@@ -2,37 +2,39 @@ import React, { useState } from 'react';
 import './Stylesheet.css';
 import { Link } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMapMarkerAlt, faWallet, faBriefcase } from '@fortawesome/free-solid-svg-icons';
+import slugify from 'react-slugify';
 
-const PER_PAGE = 9; // 3 rows per page with 3 columns each
 
-function Jobcard({jobfilter}) {
-    
+const PER_PAGE = 9;
+
+function Jobcard({ jobfilter }) {
     const [currentPage, setCurrentPage] = useState(0);
 
-  
     const handlePageClick = ({ selected }) => {
         setCurrentPage(selected);
     };
 
     const offset = currentPage * PER_PAGE;
-     const currentPageJob = jobfilter.slice(offset, offset + PER_PAGE);
+    const currentPageJob = jobfilter.slice(offset, offset + PER_PAGE);
     const pageCount = Math.ceil(jobfilter.length / PER_PAGE);
 
     return (
         <div>
             <div className='containerJob'>
                 {currentPageJob.map((post) => (
-                    <Link key={post.id} className='jobLink' to={`/job/${post.id}`}>
+                    <Link key={post.id} className='jobLink' to={`/job/${post.id}/${slugify(post.title)}`}>
                         <div className="card">
-                            <img src={`${process.env.REACT_APP_API_URL}/${post.image}`} className="card-img-top img" alt="..." />
+                            <img src={`${process.env.REACT_APP_API_URL}/${post.image}`} className="card-img-top img" alt={post.title} />
                             <div className="card-body">
-                                <h5 className="card-title">{post.title}</h5>
-                                <p className="card-text">Batch: {post.batches}</p>
+                                <h6 className="card-title text-center">{post.role}</h6>
+                                <div className="jobdetail">
+                                    <p><FontAwesomeIcon icon={faBriefcase} /><span className='ms-2'>{post.batches}</span></p>
+                                    <p><FontAwesomeIcon icon={faMapMarkerAlt} /><span className='ms-2'>{post.location}</span></p>
+                                    <p><FontAwesomeIcon icon={faWallet} /> <span className='ms-2'>{post.pay}</span></p>
+                                </div>
                             </div>
-                            <ul className="list-group list-group-flush">
-                                <li className="list-group-item">Locations: {post.location}</li>
-                                <li className="list-group-item">Type: {post.jobtype}</li>
-                            </ul>
                         </div>
                     </Link>
                 ))}
@@ -49,7 +51,6 @@ function Jobcard({jobfilter}) {
                 activeClassName={"pagination__link--active"}
             />
         </div>
-    
     );
 }
 

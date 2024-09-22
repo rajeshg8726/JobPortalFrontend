@@ -10,11 +10,13 @@ import {
   faGithub,
   faYoutube,
 } from '@fortawesome/free-brands-svg-icons';
+
 function Footer() {
   return (
     <footer className="bg-body-tertiary text-center" style={{ marginTop: "10rem" }} >
       {/* <!-- Grid container --> */}
       <div className="container p-4 pb-0">
+       <p className="follow" > Follow Us: </p>
         {/* <!-- Section: Social media --> */}
         <section className="mb-4">
           {/* <!-- Facebook --> */}
@@ -22,7 +24,7 @@ function Footer() {
             data-mdb-ripple-init
             className="btn text-white btn-floating m-1 facebk"
             target="_blank"
-            to="https://www.facebook.com/"
+            to="https://www.facebook.com/profile.php?id=61566032126186"
             role="button"
           >
             <FontAwesomeIcon icon={faFacebook} />
@@ -39,12 +41,12 @@ function Footer() {
             <FontAwesomeIcon icon={faTwitter} />
           </Link>
 
-          {/* <!-- Google --> */}
+          {/* <!-- YouTube --> */}
           <Link
             data-mdb-ripple-init
             className="btn text-white btn-floating m-1 google"
             target="_blank"
-            to="https://www.youtube.com/"
+            to="https://www.youtube.com/@RajeshGupta-e5d/videos"
             role="button"
           >
             <FontAwesomeIcon icon={faYoutube} />
@@ -55,27 +57,23 @@ function Footer() {
             data-mdb-ripple-init
             className="btn text-white btn-floating m-1 insta"
             target="_blank"
-            to="https://www.instagram.com/"
+            to="https://www.instagram.com/rgjobs_updates/"
             role="button"
-
           >
             <FontAwesomeIcon icon={faInstagram} />
-            
           </Link>
 
-          {/* <!-- Linkedin --> */}
+          {/* <!-- LinkedIn --> */}
           <Link
             data-mdb-ripple-init
             className="btn text-white btn-floating m-1 lkd"
             target="_blank"
-            to="https://www.linkedin.com/feed/"
+            to="https://www.linkedin.com/company/rgjobs/?viewAsMember=true"
             role="button"
           >
-
             <FontAwesomeIcon icon={faLinkedin} />
-
-
           </Link>
+
           {/* <!-- Github --> */}
           <Link
             data-mdb-ripple-init
@@ -85,22 +83,23 @@ function Footer() {
             role="button"
           >
             <FontAwesomeIcon icon={faGithub} />
-
-
           </Link>
         </section>
         {/* <!-- Section: Social media --> */}
       </div>
       {/* <!-- Grid container -->
-  
     <!-- Copyright --> */}
+  {/*  Privay Policy and T&C */}
+  <div className="policy">
+    <Link className="ptc"  role='button' to="/privacy-policy"> Privacy Policy</Link> | 
+    <Link className="ptc" role='button' to="/terms-and-conditions"> Terms & Conditions</Link>
+  </div>
       <div className="text-center p-3 copyright" >
-      Copyright © 2024 RGJobs | All rights reserved
-        {/* <Link className="text-body btn btn-sm " to="https://www.linkedin.com/in/rajesh-gupta-37b8621b2/" target='_blank'>RAJESH GUPTA</Link> */}
+        Copyright © 2024 RGJobs | All rights reserved
       </div>
       {/* <!-- Copyright --> */}
     </footer>
   )
 }
 
-export default Footer
+export default Footer;
