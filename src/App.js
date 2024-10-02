@@ -23,11 +23,37 @@ import EditJobData from './components/EditJobData';
 import FeedbackTable from './components/FeedbackTable';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsAndConditions from './components/TermsAndConditions';
+import { getToken } from "firebase/messaging";
+import { messaging } from './firebase-config';
+
+
+
 function App() {
   const [filteredData, setFilteredData] = useState([]);
     const [data, setData] = useState([]);
 
 const backendURL = process.env.REACT_APP_API_URL;
+
+async function requestNotification() {
+  const permission = await Notification.requestPermission();
+
+  if(permission === 'granted'){
+    // generate the token for each user to identify
+   const token = await getToken(messaging, {vapidKey: "BNQPegwqYz-5qIG4rS1EczDK8blMyzeuqcyj-m3jiH-7JtLu77AkV5-OjhQD8yJTniNkeIFTm7K-AEYy7oxJIrs"});
+   console.log('Token Generated is' , token);
+  }
+  else if(permission === 'denied'){
+    alert('You will be missed the latest job updates');
+  }
+}
+
+/// call requestNotify function when page loads
+
+useEffect(() => {
+
+  requestNotification();
+
+}, []);
 
     useEffect(() => {
         axios.get(`${backendURL}/api/getAllJobs`)

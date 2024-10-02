@@ -2,6 +2,22 @@ body {
   font-family: "Poppins", Times, serif;
 }
 
+/* toggle for dark-light button */
+/* Light Mode */
+body.light-mode .nav .footer{
+  background-color: #ffffff;
+  color: #000000;
+}
+
+/* Dark mode */
+body.dark-mode {
+  background-color: #3b373e;
+  color: #ffffff;
+}
+
+
+
+
 .facebk {
   background-color: #3b5998;
 }
@@ -51,7 +67,7 @@ body {
 
 .page-container {
   padding: 2em;
-  background-color: white;
+  /* background-color: white; */
   margin: 2em auto;
   max-width: 800px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -77,9 +93,9 @@ body {
 
 .contact-form button {
   padding: 1em;
-  border: none;
-  background-color: #333;
-  color: white;
+  border: 10px;
+  /* background-color: #333; */
+  color: rgb(179, 53, 53);
   border-radius: 4px;
   cursor: pointer;
 }
@@ -114,16 +130,16 @@ body {
   box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
     rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
   overflow: hidden;
-  background-color: white;
+  /* background-color:white; */
   margin-bottom: -1rem;
   width: 100%;
 }
 
 .card-img-top {
-  width: 90%;
+  width: 70%;
   object-fit: cover;
-  height: 30%;
-  margin: 0 auto;
+  height: 25%;
+  margin: 1rem auto;
 }
 
 .card-body {
@@ -151,7 +167,7 @@ body {
   align-items: center;
   list-style: none;
   padding: 0;
-  margin-top: 20px;
+  margin-top: 5rem;
 }
 
 /* Individual page numbers */
@@ -190,6 +206,7 @@ body {
   background-color: #007bff;
   color: white;
 }
+
 
 /* Login Page Css */
 .loginCard {
@@ -232,6 +249,16 @@ body {
   display: container;
   flex-direction: column;
 }
+.listjob{
+  text-decoration: none;
+  
+}
+
+.col-sm-2{
+  width: 25%;
+  height: 5%;
+}
+
 
 /* For small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
@@ -245,8 +272,9 @@ body {
   }
 
   .pagination {
-    width: 100%;
+    width: 107%;
     margin: 2rem auto;
+    margin-top: 5rem;
   }
   .jobcontain {
     width: 80%;
@@ -254,6 +282,7 @@ body {
   }
   .imgcard {
     margin-top: 2rem;
+    display: flex;
   }
   .jobLink {
     text-decoration: none;
@@ -267,16 +296,51 @@ body {
     flex-direction: column;
     margin-left: 1rem;
     margin-top: 1rem;
-    margin-bottom: -2rem;
     font-size: 14px;
   }
 
   .card-title {
     margin-top: 1rem;
   }
-  .pagination__link--active {
-    width: 5%;
+  .dark-mode-toggle{
+    margin-bottom: 1rem;
+   }
+   .pagination li {
+    margin: 0 1px; /* Space between numbers, prev and next */
   }
+  .lsimg {
+    
+  }
+  .col-sm-2 {
+    width: 70%;
+    height: 5%;
+    display: flex;
+    margin: 1rem auto;
+}
+  .jobdetailList{
+    display: flex;
+    flex-direction: column;
+    margin-left: 1rem;
+    margin-top: 1rem;
+    font-size: 14px;
+    
+  }
+  .lsrole{
+   margin-left: 1rem;
+  font-size: 14px;
+  }
+  .pagination__link {
+    display: flex;
+    width: 70%;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    color: #007bff;
+    cursor: pointer;
+    margin: 1px 3px;
+    padding: 1px 2px;
+    text-decoration: none;
+    transition: background-color .3s ease, color .3s ease;
+}
 }
 
 /* For medium devices (tablets, 600px to 768px) */
@@ -298,14 +362,41 @@ body {
   }
   .imgcard {
     width: 80%;
+    display: flex;
   }
   .jobdetail {
     display: flex;
     flex-direction: column;
     margin-left: 1rem;
     margin-top: 1rem;
-    margin-bottom: -3rem;
     font-size: 14px;
+  }
+  .dark-mode-toggle{
+    margin-bottom: 1rem;
+   }
+   .pagination li {
+    margin: 0 10px; /* Space between numbers, prev and next */
+  }
+  .lsimg {
+    margin-top: 80%;
+    margin-left: 10%;
+    height: 13%;
+  }
+  .jobdetailList{
+    width: 80%;
+    margin: 1rem auto;
+    font-size: 10px;
+  }
+  .lsrole{
+   width: 80%;
+   margin: 1rem auto;
+    font-size: 10px;
+  }
+  .col-sm-4{
+    width: 50%;
+  }
+  .col-sm-8{
+    width: 50%;
   }
 }
 
@@ -330,15 +421,35 @@ body {
   .imgcard {
     width: 25rem;
     margin: 2rem auto;
+    display: flex;
   }
-  .img {
-  }
+  
   .jobdetail {
     display: flex;
     flex-direction: column;
     margin-left: 1rem;
     font-size: 14px;
     margin-top: 1rem;
-    margin-bottom: -3rem;
+  }
+  .dark-mode-toggle{
+   margin-right: 1rem;
+  }
+  .pagination li {
+    margin: 0 5px; /* Space between numbers, prev and next */
+  }
+  .lsimg {
+    margin-top: 60%;
+    margin-left: 10%;
+    height: 20%;
+  }
+  .jobdetailList{
+    width: 80%;
+    margin: 1rem auto;
+    font-size: 14px;
+  }
+  .lsrole{
+   width: 80%;
+   margin: 1rem auto;
+    font-size: 15px;
   }
 }

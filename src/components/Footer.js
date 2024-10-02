@@ -13,7 +13,7 @@ import {
 
 function Footer() {
   return (
-    <footer className="bg-body-tertiary text-center" style={{ marginTop: "10rem" }} >
+    <footer className=" text-center" style={{ marginTop: "10rem" }} >
       {/* <!-- Grid container --> */}
       <div className="container p-4 pb-0">
        <p className="follow" > Follow Us: </p>

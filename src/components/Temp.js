@@ -2,7 +2,10 @@ import React from 'react'
 
 const Temp = () => {
   return (
-   
+    <>
+ 
+
+   {/* form component */}
     <div className='container'>  
     <form className='containerForm' >
       <div className="mb-3">
@@ -45,6 +48,8 @@ const Temp = () => {
     </form>
     {/* {message && <div className="alert alert-info mt-3">{message}</div>} Conditional message display */}
   </div>
+
+  </>
   )
 }
 

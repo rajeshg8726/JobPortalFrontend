@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-
+import DarkModeToggle from './DarkModeToggle';
+import './Stylesheet.css';
 function Header({handleSearch}) {
    
     return (
+        <>
         <div>
-            <nav className="navbar navbar-expand-lg bg-body-tertiary">
+            <nav className="navbar navbar-expand-lg ">
+           
                 <div className="container-fluid">
                     <Link className="navbar-brand" to="/"> 
                         <img src="/rglogo.png" alt="RGLOGO" style={{ width: "2rem" }} />
@@ -29,6 +32,7 @@ function Header({handleSearch}) {
                                 <Link className="nav-link" to="/updates">Updates</Link>
                             </li>
                         </ul>
+                         <DarkModeToggle />
                         <div className="d-flex" role="search">
                             <input
                                 className="form-control me-2"
@@ -51,6 +55,7 @@ function Header({handleSearch}) {
                 ))}
             </div> */}
         </div>
+        </>
     );
 }
 
