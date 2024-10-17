@@ -38,7 +38,7 @@ const Sidebar = () => {
           </Link>
         </li>
         <li>
-          <Link to="#" className="nav-link text-white">
+          <Link to="/admin/add-category" className="nav-link text-white">
             {/* <svg className="bi me-2" width="16" height="16"><use xlink:to="#grid"></use></svg> */}
             JOB CATEGORY
           </Link>

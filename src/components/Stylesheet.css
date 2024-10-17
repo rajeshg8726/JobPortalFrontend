@@ -258,8 +258,69 @@ body.dark-mode {
   width: 25%;
   height: 5%;
 }
+.categories{
+  width: 50%;
+  margin: 2rem auto;
+}
+
+/* Style for the dropdown container */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Style for the button to trigger the dropdown */
+.dropbtn {
+  background-color: gray;
+  color: white;
+  padding: 2px;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Container for the dropdown content */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Dropdown item containing batch names and job lists */
+.dropdown-item {
+  padding: 12px 16px;
+  text-align: left;
+}
+
+/* Job list inside the dropdown item */
+.job-list {
+  display: none;
+  padding: 10px 0 0;
+}
+
+/* Batch name styling */
+.batch-name {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Show the dropdown content when hovering over the dropdown container */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Show job list when hovering over batch name */
+.dropdown-item:hover .job-list {
+  display: block;
+}
 
 
+
+
+/* Media Queries for responsiveness */
 /* For small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
   .containerJob .nav {

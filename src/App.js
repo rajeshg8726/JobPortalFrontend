@@ -25,7 +25,10 @@ import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsAndConditions from './components/TermsAndConditions';
 import { getToken } from "firebase/messaging";
 import { messaging } from './firebase-config';
-
+import Categories from './components/Categories';
+import JobsForFullTime from './components/JobsForFullTime';
+import JobsForBatchOrCity from './components/JobsForBatchOrCity';
+import JobsByRoles from './components/JobsByRoles';
 
 
 function App() {
@@ -82,14 +85,19 @@ useEffect(() => {
           <Route path="job/:id/:slug" element={<JobDetail />} />
           <Route path="privacy-policy" element={<PrivacyPolicy />} />
           <Route path="terms-and-conditions" element={<TermsAndConditions />} />
+          <Route path='jobsbytype/:jobType' element={ < JobsForFullTime /> } />
+          <Route path="jobs/:jobTypeOrCity" element={<JobsForBatchOrCity />} />
+          <Route path="jobsbyrole/:jobRoles" element={< JobsByRoles />} />
 
 
         </Route>
+        
         <Route path="/admin/*" element={<AdminLayout />}>
           <Route path="add-new-job" element={<AdminJobAdd />} />
           <Route path="job-list" element={<Tables />} />
           <Route path="user-feedback-list" element={<FeedbackTable />} />
           <Route path="edit-job/:id" element={< EditJobData />} />
+          <Route path="add-category" element={< Categories />} />
           
 
         </Route>

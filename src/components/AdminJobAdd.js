@@ -27,11 +27,32 @@ const AdminJobAdd = () => {
     description: '',
     joblink: '',
     jobtype:'',
+    jobbyrole: '',
+    jobbycity:'',
+    batch1:'',
+    batch2:'',
+    batch3:'',
     companyLogo: null
   });
 
   const [message, setMessage] = useState(''); // State for the submission message
  // Initialize useNavigate
+ const [category , setCategory] = useState([]);
+
+ useEffect(() => {
+  // Fetch categories when the component mounts
+  const fetchCategories = async () => {
+      try {
+          const response = await axios.get(`${backendURL}/api/getCategory`);
+          setCategory(response.data.CategoryData);  // Assuming response.data is the array of categories
+      } catch (error) {
+          console.error('Error fetching categories:', error);
+      }
+  };
+
+  fetchCategories();
+}, [backendURL]);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -77,13 +98,98 @@ const AdminJobAdd = () => {
     <div className='container'>  
       <form className='containerForm' onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label htmlFor="jobTitle" className="form-label">Company Name</label>
+          <label htmlFor="floatingInput" className="form-label ">Company Name</label>
           <input type="text" className="form-control" id="title" name="title" value={formData.title} onChange={handleChange} />
         </div>
         <div className="mb-3">
-          <label htmlFor="jobtype" className="form-label">Job Type</label>
-          <input type="text" className="form-control" id="jobtype" name="jobtype" value={formData.jobtype} onChange={handleChange} />
+          <select className='form-select' name="jobtype" value={formData.jobtype} onChange={handleChange}>
+                <option value="">Select Job Type</option>
+                { category && category.length > 0 ? (  // Check if category is defined and not empty
+                    category.map((cat) => (
+                        <option key={cat.id} value={cat.id}>
+                            {cat.name}
+                        </option>
+                    ))
+                ) : (
+                    <option disabled>Loading Job Type...</option>
+                )}
+            </select>
         </div>
+        <div className="mb-3">
+          <select className='form-select' name="jobbycity" value={formData.jobbycity} onChange={handleChange}>
+                <option value="">Select Job City</option>
+                {category && category.length > 0 ? (  // Check if category is defined and not empty
+                    category.map((cat) => (
+                        <option key={cat.id} value={cat.id}>
+                            {cat.name}
+                        </option>
+                    ))
+                ) : (
+                    <option disabled>Loading Job City...</option>
+                )}
+            </select>
+        </div>
+        
+        <div className="mb-3">
+          <select className='form-select' name="jobbyrole" value={formData.jobbyrole} onChange={handleChange}>
+                <option value="">Select Job Role</option>
+                {category && category.length > 0 ? (  // Check if category is defined and not empty
+                    category.map((cat) => (
+                        <option key={cat.id} value={cat.id}>
+                            {cat.name}
+                        </option>
+                    ))
+                ) : (
+                    <option disabled>Loading Job Role...</option>
+                )}
+            </select>
+        </div>
+
+        {/* Batches Fields */}
+
+        <div className="mb-3">
+          <select className='form-select' name="batch1" value={formData.batch1} onChange={handleChange}>
+                <option value="">Select Job Batch One</option>
+                {category && category.length > 0 ? (  // Check if category is defined and not empty
+                    category.map((cat) => (
+                        <option key={cat.id} value={cat.id}>
+                            {cat.name}
+                        </option>
+                    ))
+                ) : (
+                    <option disabled>Loading Job Batches...</option>
+                )}
+            </select>
+        </div>
+        <div className="mb-3">
+          <select className='form-select' name="batch2" value={formData.batch2} onChange={handleChange}>
+                <option value="">Select Job Batch Two</option>
+                {category && category.length > 0 ? (  // Check if category is defined and not empty
+                    category.map((cat) => (
+                        <option key={cat.id} value={cat.id}>
+                            {cat.name}
+                        </option>
+                    ))
+                ) : (
+                    <option disabled>Loading Job Batches...</option>
+                )}
+            </select>
+        </div>
+        <div className="mb-3">
+          <select className='form-select' name="batch3" value={formData.batch3} onChange={handleChange}>
+                <option value="">Select Job Batche Three</option>
+                {category && category.length > 0 ? (  // Check if category is defined and not empty
+                    category.map((cat) => (
+                        <option key={cat.id} value={cat.id}>
+                            {cat.name}
+                        </option>
+                    ))
+                ) : (
+                    <option disabled>Loading Job Batches...</option>
+                )}
+            </select>
+        </div>
+
         <div className="mb-3">
           <label htmlFor="jobRole" className="form-label">Job Role</label>
           <input type="text" className="form-control" id="role" name="role" value={formData.role} onChange={handleChange} />
@@ -109,7 +215,7 @@ const AdminJobAdd = () => {
           <input type="text" className="form-control" id="joblink" name="joblink" value={formData.joblink} onChange={handleChange} />
         </div>
         <div className="mb-3">
-          <label htmlFor="companyLogo" className="form-label">Company Logo</label>
+          <label htmlFor="companyLogo" className="form-label"></label>
           <input type="file" className="form-control" id="companyLogo" name="companyLogo" onChange={handleFileChange} />
         </div>
         <button type="submit" className="btn btn-primary btnsub">Submit</button>
