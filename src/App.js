@@ -29,7 +29,11 @@ import Categories from './components/Categories';
 import JobsForFullTime from './components/JobsForFullTime';
 import JobsForBatchOrCity from './components/JobsForBatchOrCity';
 import JobsByRoles from './components/JobsByRoles';
-
+import InterviewExperience from './components/InterviewExperience';
+import InterviewFormExp from './components/InterviewFormExp';
+import InterviewExpDetails from './components/InterviewExpDetails';
+import AdminAddInvExp from './components/AdminAddInvExp';
+import InvUsersExpList from './components/InvUsersExpList';
 
 function App() {
   const [filteredData, setFilteredData] = useState([]);
@@ -85,22 +89,28 @@ useEffect(() => {
           <Route path="job/:id/:slug" element={<JobDetail />} />
           <Route path="privacy-policy" element={<PrivacyPolicy />} />
           <Route path="terms-and-conditions" element={<TermsAndConditions />} />
+          <Route path="real-life-interview-experiences" element={< InterviewExperience />} />
+          <Route path="add-interview-experiences" element={< InterviewFormExp />} />
+          <Route path="interview-experience-details/:id" element={< InterviewExpDetails  />} />
           <Route path='jobsbytype/:jobType' element={ < JobsForFullTime /> } />
           <Route path="jobs/:jobTypeOrCity" element={<JobsForBatchOrCity />} />
           <Route path="jobsbyrole/:jobRoles" element={< JobsByRoles />} />
-
-
         </Route>
         
         <Route path="/admin/*" element={<AdminLayout />}>
           <Route path="add-new-job" element={<AdminJobAdd />} />
           <Route path="job-list" element={<Tables />} />
+          <Route path="interviews/:listURL" element={< InvUsersExpList />} />
           <Route path="user-feedback-list" element={<FeedbackTable />} />
           <Route path="edit-job/:id" element={< EditJobData />} />
-          <Route path="add-category" element={< Categories />} />
+          <Route path="category/:categoryType" element={< Categories />} />
+          <Route path="add-work-category" element={< Categories />} />
+          <Route path="add-role-category" element={< Categories />} />
+          <Route path="add-company-category" element={< Categories />} />
+          <Route path="edit-user-interviews/:id" element={< AdminAddInvExp />} />
           
-
         </Route>
+
         <Route path="/admin/login" element={< Login />} >
         </Route>
         <Route path="/admin/register" element={< Register />} >

@@ -69,14 +69,10 @@ function Header({ handleSearch }) {
                                 </ul>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" to="/about">About</Link>
+                                <Link className="nav-link" to="/real-life-interview-experiences">Interviews</Link>
                             </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/contact">Contact</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/updates">Updates</Link>
-                            </li>
+                            
+                           
                         </ul>
                         <DarkModeToggle />
                         <div className="d-flex" role="search">

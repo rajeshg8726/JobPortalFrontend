@@ -177,7 +177,7 @@ const AdminJobAdd = () => {
         </div>
         <div className="mb-3">
           <select className='form-select' name="batch3" value={formData.batch3} onChange={handleChange}>
-                <option value="">Select Job Batche Three</option>
+                <option value="">Select Job Batch Three</option>
                 {category && category.length > 0 ? (  // Check if category is defined and not empty
                     category.map((cat) => (
                         <option key={cat.id} value={cat.id}>

@@ -2,9 +2,10 @@ body {
   font-family: "Poppins", Times, serif;
 }
 
+
 /* toggle for dark-light button */
 /* Light Mode */
-body.light-mode .nav .footer{
+body.light-mode{
   background-color: #ffffff;
   color: #000000;
 }
@@ -15,8 +16,9 @@ body.dark-mode {
   color: #ffffff;
 }
 
-
-
+.navbar{
+  color: rgb(122,124,135);
+}
 
 .facebk {
   background-color: #3b5998;
@@ -38,6 +40,7 @@ body.dark-mode {
 .copyright {
   background-color: rgba(0, 0, 0, 0.05);
   color: gray;
+  font-size: 13px;
 }
 .insta {
   background-color: #ac2bac;
@@ -136,10 +139,9 @@ body.dark-mode {
 }
 
 .card-img-top {
-  width: 70%;
-  object-fit: cover;
-  height: 25%;
-  margin: 1rem auto;
+  max-width: 60%;
+  height: auto;
+  margin: 5% auto;
 }
 
 .card-body {
@@ -318,6 +320,14 @@ body.dark-mode {
 }
 
 
+.footer {
+  margin: 0 auto;
+  margin-top: 10rem;
+  font-size: 14px;
+  color: rgb(122,124,135);
+  display: flex;
+  justify-content: space-evenly;
+}
 
 
 /* Media Queries for responsiveness */
@@ -369,9 +379,7 @@ body.dark-mode {
    .pagination li {
     margin: 0 1px; /* Space between numbers, prev and next */
   }
-  .lsimg {
-    
-  }
+
   .col-sm-2 {
     width: 70%;
     height: 5%;
@@ -402,6 +410,24 @@ body.dark-mode {
     text-decoration: none;
     transition: background-color .3s ease, color .3s ease;
 }
+
+  .footer{
+    font-size: 13px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .fhead{
+    font-size: 18px;
+  }
+  .textStyle{
+    text-align: center;
+  }
+
+  .socialIcon{
+    display: flex;
+    justify-content: center;
+  }
 }
 
 /* For medium devices (tablets, 600px to 768px) */
@@ -459,6 +485,12 @@ body.dark-mode {
   .col-sm-8{
     width: 50%;
   }
+  .footer{
+    font-size: 12px;
+  }
+  .fhead{
+    font-size: 14px;
+  }
 }
 
 /* For large devices (desktops, 768px and up) */
@@ -514,3 +546,4 @@ body.dark-mode {
     font-size: 15px;
   }
 }
+

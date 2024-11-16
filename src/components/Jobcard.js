@@ -3,7 +3,7 @@ import './Stylesheet.css';
 import { Link } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMapMarkerAlt, faWallet, faBriefcase } from '@fortawesome/free-solid-svg-icons';
+import { faMapMarkerAlt, faWallet, faBriefcase, faCalendar } from '@fortawesome/free-solid-svg-icons';
 import slugify from 'react-slugify';
 
 
@@ -34,6 +34,7 @@ function Jobcard({ jobfilter }) {
                                     <p><FontAwesomeIcon icon={faBriefcase} /><span className='ms-2'>{post.batches}</span></p>
                                     <p><FontAwesomeIcon icon={faMapMarkerAlt} /><span className='ms-2'>{post.location}</span></p>
                                     <p><FontAwesomeIcon icon={faWallet} /> <span className='ms-2'>{post.pay}</span></p>
+                                    <p hidden><FontAwesomeIcon icon={faCalendar}  /> <span className='ms-2'></span>{new Date(post.created_at).toLocaleDateString()}</p>
                                 </div>
                             </div>
                         </div>

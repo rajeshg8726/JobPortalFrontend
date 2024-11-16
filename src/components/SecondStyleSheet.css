@@ -1,0 +1,96 @@
+.addInvBtn{
+    margin-left: 85%;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.filters{
+    display: flex;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+.f1, .f2, .f3{
+    width: 15%;
+    margin: 0 2rem;
+}
+
+.invcard{
+    display: flex;
+    height: 8rem;
+}
+
+.title{
+    display: flex;
+    position: relative;
+    margin-left: 8%;
+    margin-top: 2%;
+}
+
+.icon{
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    margin-left: 2%;
+    margin-top: 4%;
+}
+
+.views{
+    display: flex;
+    position: absolute;
+    margin-left: 85%;
+    margin-top: 5%;
+}
+
+.user{
+    position: absolute;
+    margin-top: 6%;
+    margin-left: 8%;
+}
+
+.link{
+    text-decoration: none;
+}
+
+.count{
+    position: absolute;
+    margin-left: 2rem;
+    margin-top: -7%;
+}
+
+.iconexp{
+    position: relative;
+}
+.userexp{
+    position: absolute;
+    margin-top: 5.3%;
+    margin-left: 5%;
+}
+.postdate{
+    position: absolute;
+    margin-left: 80%;
+    margin-top: 5%;
+}
+
+
+
+.clamped {
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Show only 3 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    
+  }
+  
+  .expanded {
+    display: block; /* Show full content when expanded */
+  }
+  
+  .toggle-button {
+    color: #007bff;
+    cursor: pointer;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+  

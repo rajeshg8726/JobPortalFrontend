@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import ReactPaginate from 'react-paginate';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faEdit,
@@ -10,29 +10,44 @@ import {
 const PER_PAGE = 10; // 3 rows per page with 3 columns each
 
 
-const Tables = () => {
-
+const InvUsersExpList = () => {
+  const {listURL} = useParams();
   const [jobPost, setJobPost] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const navigate = useNavigate();
   const backendURL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    const getJobs = async () => {
-      try {
-        const res = await axios.get(`${backendURL}/api/getAllJobs`);
-        const result = res.data.JobsData;
-        console.log(result);
-        setJobPost(result);
-      } catch (error) {
-        console.log(error);
-      }
+    const getAdminAddedInvExp = async () => {
+        try {
+            let endpoint = '';
+            // Determine the API endpoint based on the route param
+            switch (listURL) {
+                case 'users-added-interviews-list':
+                    endpoint = 'getUsersInvExps';
+                    break;
+                case 'admin-added-interviews-list':
+                    endpoint = 'getAdminAddedInvExps';
+                    break;
+                default:
+                    console.log("Invalid route");
+            }
 
-    }
+            if (endpoint) {
+              const res = await axios.get(`${backendURL}/api/${endpoint}`);
+              const result = res.data.InvData;
+              console.log(result);
+              setJobPost(result);
+            }
+        } catch (error) {
+            console.log('Error', error);
+        }
+    };
 
-    getJobs();
+    getAdminAddedInvExp();
+}, [listURL, backendURL]);
 
-  }, []);
+
 
   useEffect(() => {
 
@@ -53,11 +68,11 @@ const Tables = () => {
   // for deletig the job 
   const handleDelete = async (id) => {
     try {
-      const response = await axios.delete(`${backendURL}/api/deletejob/${id}`, {
+      const response = await axios.delete(`${backendURL}/api/deleteAdminAddedInvExp/${id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json',
+          
         },
       });
 
@@ -66,7 +81,7 @@ const Tables = () => {
         alert(result.message); // Show success message
         // Optionally, refresh the job list or update the state to remove the deleted job from the table
       } else {
-        alert('Job Deleted Successfully!');
+        alert('Interviews Deleted Successfully!');
       }
     } catch (error) {
       console.error('Error:', error);
@@ -76,7 +91,7 @@ const Tables = () => {
 
   // for Editing the job
   const handleEdit = (id) => {
-    navigate(`/admin/edit-job/${id}`);
+    navigate(`/admin/edit-user-interviews/${id}`);
   }
 
   const offset = currentPage * PER_PAGE;
@@ -88,10 +103,13 @@ const Tables = () => {
       <thead>
         <tr>
           <th scope="col">S.No.</th>
+          <th scope="col">User Name</th>
+          <th scope="col">User Email</th>
           <th scope="col">Company Name</th>
           <th scope="col">Job Role</th>
-          <th scope="col">Batches</th>
-          <th scope="col">Expected Pay</th>
+          <th scope="col">Title</th>
+          <th scope="col">Worktype</th>
+          <th scope="col" hidden>Details</th>
           <th scope="col">Edit/Delete</th>
         </tr>
       </thead>
@@ -101,10 +119,13 @@ const Tables = () => {
           currentPageData.map((post, index) => (
             <tr key={post.id}>
               <th scope="row">{index + 1}</th>
+              <td> {post.name} </td>
+              <td> {post.email} </td>
+              <td> {post.companyName} </td>
+              <td> {post.jobRole} </td>
               <td> {post.title} </td>
-              <td> {post.role} </td>
-              <td> {post.batches} </td>
-              <td> {post.pay} </td>
+              <td> {post.experience} </td>
+              <td hidden> {post.details} </td>
               <td> <button className='btn btn-sm'><FontAwesomeIcon icon={faEdit} onClick={() => handleEdit(post.id)} /> </button>  <button className='btn btn-sm' onClick={() => handleDelete(post.id)} > <FontAwesomeIcon icon={faTrashAlt} /> </button>  </td>
             </tr>
           ))
@@ -128,4 +149,5 @@ const Tables = () => {
   )
 }
 
-export default Tables
+export default InvUsersExpList
+

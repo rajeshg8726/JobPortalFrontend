@@ -11,7 +11,6 @@ const Sidebar = () => {
 
   }
   return (
-
     <div className="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark sidebar" >
       <Link to="/admin/add-new-job" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
         {/* <svg className="bi me-2" width="40" height="32"><use xlink:to="#bootstrap"></use></svg> */}
@@ -20,35 +19,46 @@ const Sidebar = () => {
       <hr />
       <ul className="nav nav-pills flex-column mb-auto">
         <li className="nav-item">
-          <Link to="/admin/add-new-job" className="nav-link " aria-current="page" style={{color:"white"}}>
+          <Link to="/admin/add-new-job" className="nav-link " aria-current="page" style={{ color: "white" }}>
             {/* <svg className="bi me-2" width="16" height="16"><use xlink:to="#home"></use></svg> */}
-            ADD JOB
+            Add Jobs
           </Link>
         </li>
         <li>
           <Link to="/admin/job-list" className="nav-link text-white">
             {/* <svg className="bi me-2" width="16" height="16"><use xlink:to="#speedometer2"></use></svg> */}
-            JOB LIST
+            Jobs List
           </Link>
         </li>
         <li>
           <Link to="/admin/user-feedback-list" className="nav-link text-white">
             {/* <svg className="bi me-2" width="16" height="16"><use xlink:to="#table"></use></svg> */}
-            USERS FEEDBACK
+            Users Feedback
           </Link>
         </li>
-        <li>
-          <Link to="/admin/add-category" className="nav-link text-white">
-            {/* <svg className="bi me-2" width="16" height="16"><use xlink:to="#grid"></use></svg> */}
-            JOB CATEGORY
-          </Link>
-        </li>
-        <li>
-          <Link to="#" className="nav-link text-white">
-            {/* <svg className="bi me-2" width="16" height="16"><use xlink:to="#people-circle"></use></svg> */}
-            ADMIN USERS
-          </Link>
-        </li>
+        <li><Link to="/admin/category/add-category" className="nav-link text-white">
+          Job Category
+        </Link></li>
+        <li><Link to="/admin/category/add-company-category" className="nav-link text-white">
+          Company Category
+        </Link></li>
+
+        <li><Link to="/admin/category/add-role-category" className="nav-link text-white">
+          Role Category
+        </Link></li>
+        <li><Link to="/admin/category/add-work-category" className="nav-link text-white">
+          Work Category
+        </Link></li>
+      
+        
+        <li><Link to="/admin/interviews/users-added-interviews-list" className="nav-link text-white">
+          Invw Exps List From Users
+        </Link></li>
+        
+        <li><Link to="/admin/interviews/admin-added-interviews-list" className="nav-link text-white">
+          Invw Exps List From Admin
+        </Link></li>
+         
       </ul>
       <hr />
       <div className="dropdown">

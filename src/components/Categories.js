@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import './Stylesheet.css'; 
+import React, { useState } from 'react';
+import './Stylesheet.css';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 const Categories = () => {
     const [message, setMessage] = useState('');
@@ -9,6 +10,7 @@ const Categories = () => {
     });
 
     const backendURL = process.env.REACT_APP_API_URL;
+    const { categoryType } = useParams();  // Extract the route param
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -19,30 +21,48 @@ const Categories = () => {
     }
 
     const handleSubmit = async (event) => {
-        event.preventDefault();  // Prevents page refresh on form submission
-
+        event.preventDefault();
         try {
-            const sentCat = await axios.post(`${backendURL}/api/insertCategory`, formData, {
-                headers: {
-                    'Content-Type': 'application/json'  // Set to JSON for text data
-                }
-            });
+            let endpoint = '';
 
-            console.log(sentCat.data);
-            setMessage('Category Added Successfully!');
+            switch (categoryType) {
+                case 'add-category':
+                    endpoint = 'insertCategory';
+                    break;
+                case 'add-company-category':
+                    endpoint = 'insertCompanyCat';
+                    break;
+                case 'add-role-category':
+                    endpoint = 'insertRoleCat';
+                    break;
+                case 'add-work-category':
+                    endpoint = 'insertWorkCat';
+                    break;
+                default:
+                    console.log("Invalid route");
+            }
+
+            if (endpoint) {
+                const sentCat = await axios.post(`${backendURL}/api/${endpoint}`, formData, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                console.log(sentCat.data);
+                setMessage('Category Added Successfully!');
+            }
         } catch (error) {
-            console.error('Error encountered:', error);
+            console.error('Error:', error.response ? error.response.data : error.message);
+            setMessage('Failed to add category. Please try again.');
         }
     }
 
     return (
         <div className="categories container">
-            {/* Display message */}
-            {message && <div className="alert alert-info mt-3">{message}</div>}
-
+            {message && <div className="alert alert-primary mt-3 mb-3">{message}</div>}
             <form onSubmit={handleSubmit}>
-                {/* Category Name input */}
-                <div data-mdb-input-init className="form-outline my-4">
+                <div data-mdb-input-init className="form-outline my-4 mx-4">
                     <label className="form-label text-center" htmlFor="name">Category Name</label>
                     <input 
                         type="text" 
@@ -53,7 +73,6 @@ const Categories = () => {
                         onChange={handleChange} 
                     />
                 </div>
-                {/* Submit button */}
                 <button type="submit" className="btn btn-primary btn-block mb-4 btnsub">ADD</button>
             </form>
         </div>

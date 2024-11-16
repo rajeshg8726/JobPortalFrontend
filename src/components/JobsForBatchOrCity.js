@@ -9,6 +9,7 @@ import axios from 'axios';
 
 const PER_PAGE = 9;
 
+
 function JobsForBatchOrCity() {
     const { jobTypeOrCity } = useParams(); // Get the batch or city from the route params
     const [currentPage, setCurrentPage] = useState(0);

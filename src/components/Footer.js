@@ -7,22 +7,24 @@ import {
   faTwitter,
   faInstagram,
   faLinkedin,
-  faGithub,
   faYoutube,
 } from '@fortawesome/free-brands-svg-icons';
 
 function Footer() {
   return (
-    <footer className=" text-center" style={{ marginTop: "10rem" }} >
-      {/* <!-- Grid container --> */}
-      <div className="container p-4 pb-0">
-       <p className="follow" > Follow Us: </p>
+    <>
+    <footer class="border-top py-5 footer">
+    <div class="">
+      <div className="container ">
+      <span class="text-muted textStyle">RGJobs</span> <br />
+      <p className='text-xs textStyle'>We provide the latest updates on your <br/> dream job opportunities so you don't <br/> miss any chance to achieve your goals.</p>
+       <p className="follow textStyle" > Follow Us: </p>
         {/* <!-- Section: Social media --> */}
-        <section className="mb-4">
+        <section className="mb-4 socialIcon">
           {/* <!-- Facebook --> */}
           <Link
             data-mdb-ripple-init
-            className="btn text-white btn-floating m-1 facebk"
+            className="btn text-white btn-floating m-1 facebk btn-sm"
             target="_blank"
             to="https://www.facebook.com/profile.php?id=61566032126186"
             role="button"
@@ -33,9 +35,9 @@ function Footer() {
           {/* <!-- Twitter --> */}
           <Link
             data-mdb-ripple-init
-            className="btn text-white btn-floating m-1 twit"
+            className="btn btn-sm text-white btn-floating m-1 twit"
             target="_blank"
-            to="https://www.twitter.com/"
+            to="https://x.com/rgjobs_updates"
             role="button"
           >
             <FontAwesomeIcon icon={faTwitter} />
@@ -44,7 +46,7 @@ function Footer() {
           {/* <!-- YouTube --> */}
           <Link
             data-mdb-ripple-init
-            className="btn text-white btn-floating m-1 google"
+            className="btn btn-sm text-white btn-floating m-1 google"
             target="_blank"
             to="https://www.youtube.com/@RajeshGupta-e5d/videos"
             role="button"
@@ -55,7 +57,7 @@ function Footer() {
           {/* <!-- Instagram --> */}
           <Link
             data-mdb-ripple-init
-            className="btn text-white btn-floating m-1 insta"
+            className="btn btn-sm text-white btn-floating m-1 insta"
             target="_blank"
             to="https://www.instagram.com/rgjobs_updates/"
             role="button"
@@ -66,7 +68,7 @@ function Footer() {
           {/* <!-- LinkedIn --> */}
           <Link
             data-mdb-ripple-init
-            className="btn text-white btn-floating m-1 lkd"
+            className="btn btn-sm text-white btn-floating m-1 lkd"
             target="_blank"
             to="https://www.linkedin.com/company/rgjobs/?viewAsMember=true"
             role="button"
@@ -74,31 +76,56 @@ function Footer() {
             <FontAwesomeIcon icon={faLinkedin} />
           </Link>
 
-          {/* <!-- Github --> */}
-          <Link
-            data-mdb-ripple-init
-            className="btn text-white btn-floating m-1 github"
-            target="_blank"
-            to="https://www.github.com/"
-            role="button"
-          >
-            <FontAwesomeIcon icon={faGithub} />
-          </Link>
+          
         </section>
         {/* <!-- Section: Social media --> */}
       </div>
-      {/* <!-- Grid container -->
-    <!-- Copyright --> */}
-  {/*  Privay Policy and T&C */}
-  <div className="policy">
-    <Link className="ptc"  role='button' to="/privacy-policy"> Privacy Policy</Link> | 
-    <Link className="ptc" role='button' to="/terms-and-conditions"> Terms & Conditions</Link>
-  </div>
-      <div className="text-center p-3 copyright" >
+    </div>
+
+    <div className="">
+    <h5 className='fhead textStyle' >Company</h5>
+      <ul class="nav flex-column">
+        <li class="nav-item mb-2 textStyle"><Link to="/about" class="nav-link p-0 text-muted">About Us</Link></li>
+        <li class="nav-item mb-2 textStyle"><Link to="/contact" class="nav-link p-0 text-muted">Contact Us</Link></li>
+        <li class="nav-item mb-2 textStyle"><Link to="/updates" class="nav-link p-0 text-muted">Updates</Link></li>
+        <li class="nav-item mb-2 textStyle"><Link to="/privacy-policy" class="nav-link p-0 text-muted">Privacy Policy</Link></li>
+        <li class="nav-item mb-2 textStyle"><Link to="/terms-and-conditions" class="nav-link p-0 text-muted">Terms & Conditions</Link></li>
+      </ul>
+    </div>
+
+
+
+
+    <div class="">
+      <h5 className='fhead textStyle'>Location</h5>
+      <ul class="nav flex-column">
+        <li class="nav-item mb-2 textStyle"><Link to="/jobs/Remote" class="nav-link p-0 text-muted">Remote</Link></li>
+        <li class="nav-item mb-2 textStyle"><Link to="/jobs/Bengaluru" class="nav-link p-0 text-muted">Bengaluru</Link></li>
+        <li class="nav-item mb-2 textStyle"><Link to="/jobs/Hyderabad" class="nav-link p-0 text-muted">Hyderabad</Link></li>
+        <li class="nav-item mb-2 textStyle"><Link to="/jobs/Gurgoan" class="nav-link p-0 text-muted">Gurgaon</Link></li>
+        <li class="nav-item mb-2 textStyle"><Link to="/jobs/Chennai" class="nav-link p-0 text-muted">Chennai</Link></li>
+      </ul>
+    </div>
+
+    <div class="">
+      <h5 className='fhead textStyle'>Roles</h5>
+      <ul class="nav flex-column">
+        <li class="nav-item mb-2 textStyle"><Link to="/jobsbyrole/software-developer-jobs" class="nav-link p-0 text-muted">Backend Developer</Link></li>
+        <li class="nav-item mb-2 textStyle"><Link to="/jobsbyrole/software-engineer-jobs" class="nav-link p-0 text-muted">Frontend Developer</Link></li>
+        <li class="nav-item mb-2 textStyle"><Link to="/jobsbyrole/analytics-and-data-science-jobs" class="nav-link p-0 text-muted">Analytics & Data Science</Link></li>
+        <li class="nav-item mb-2 textStyle"><Link to="/jobsbyrole/software-testing-jobs" class="nav-link p-0 text-muted">Testing</Link></li>
+        <li class="nav-item mb-2 textStyle"><Link to="/jobsbyrole/technical-support-jobs" class="nav-link p-0 text-muted">Technical Support</Link></li>
+      </ul>
+
+    </div>
+
+  </footer>
+
+
+      <div className=" text-center p-3 copyright" >
         Copyright © 2024 RGJobs | All rights reserved
       </div>
-      {/* <!-- Copyright --> */}
-    </footer>
+      </>
   )
 }
 
