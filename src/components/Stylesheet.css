@@ -12,11 +12,11 @@ body.light-mode{
 
 /* Dark mode */
 body.dark-mode {
-  background-color: #3b373e;
+  background-color: rgb(17,0,31);
   color: #ffffff;
 }
 
-.navbar{
+.nav-link{
   color: rgb(122,124,135);
 }
 
@@ -324,7 +324,6 @@ body.dark-mode {
   margin: 0 auto;
   margin-top: 10rem;
   font-size: 14px;
-  color: rgb(122,124,135);
   display: flex;
   justify-content: space-evenly;
 }

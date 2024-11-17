@@ -164,7 +164,7 @@ const InterviewExperience = () => {
                 >
                     <div className="invcard card">
                         <div className="title">
-                            <h5>{item.title}</h5>
+                           <strong> <h5>{item.title}</h5> </strong>
                         </div>
                         <div className="icon">
                             <FontAwesomeIcon icon={faCircleUser} size="2xl" style={{ color: "#74C0FC" }} />
@@ -176,7 +176,7 @@ const InterviewExperience = () => {
                             </p>
                         </div>
                         <div className="views">
-                            <FontAwesomeIcon icon={faEye} size="lg" style={{ color: "#74C0FC" }} />
+                            <FontAwesomeIcon className='eye' icon={faEye} size="lg" style={{ color: "#74C0FC" }} />
                             <p className="count">{item.count}</p>  {/* Display the updated count */}
                         </div>
                     </div>

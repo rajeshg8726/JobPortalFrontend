@@ -40,11 +40,11 @@ const InterviewExpDetails = () => {
   return (
     <div className="container">
       <div className="htitle border-bottom my-4 mx-4">
-        Interview Title: {invData.title}
+        {invData.title}
       </div>
 
       <div className="iconexp">
-        <FontAwesomeIcon icon={faCircleUser} size="2xl" style={{ color: "#74C0FC" }} />
+        <FontAwesomeIcon className='invusericon' icon={faCircleUser} size="2xl" style={{ color: "#74C0FC" }} />
       </div>
       <div className="userexp">
         {invData.anonymous === 1 ? "Anonymous User" : invData.name}

@@ -1,5 +1,8 @@
 .addInvBtn{
-    margin-left: 85%;
+    /* margin-left: 85%;
+     */
+     display: flex;
+     justify-content: flex-end;
     margin-top: 2rem;
     margin-bottom: 2rem;
 }
@@ -93,4 +96,123 @@
     margin-top: 10px;
   }
   
-  
+  /* For Small Devices Smartphones */
+@media only screen and (max-width: 600px) {
+    .addInvBtn {
+
+    }
+    .icon{
+        max-width: 8%;
+    }
+    h5{
+        font-size: 13px;
+    }
+    .user{
+        font-size: 10px;
+        position: absolute;
+        margin-top: 5rem;
+        margin-left: 2.5rem;
+    }
+    .title{
+        position: relative;
+        justify-content: center;
+        align-items: center;
+        width: 70%;
+        margin: 6% auto;
+    }
+    
+    .count{
+    
+        font-size: 10px;
+        position: absolute;
+        width: 70%;
+        margin-top: 10%;
+        margin-left: 85%;
+    
+    }
+    .eye{
+        max-width: 60%;
+    }
+    
+.htitle{
+    font-size: 12px; }
+    
+    .userexp{
+        position: absolute;
+        font-size: 10px;
+        margin-top: 5.5rem;
+        margin-left: 8%;
+    
+    }
+    
+    .postdate{
+        position: absolute;
+        font-size: 10px;
+        margin-top: 5.5rem;
+    
+    }
+    
+    .content{
+    font-size: 12px;
+    }
+
+
+}
+
+  /* For medium devices (tablets, 600px to 768px) */
+@media only screen and (min-width: 600px) and (max-width: 769px) {
+
+        h5{
+            font-size: 15px;
+        }
+
+        
+            .user {
+                font-size: 12px;
+                position: absolute;
+                margin-top: 5rem;
+                margin-left: 10%;
+                justify-content: flex-start;
+                display: flex;
+
+        }
+        .title{
+            position: relative;
+            justify-content: flex-start;
+            width: 80%;
+            margin: 4% auto;
+        }
+
+           
+.htitle{
+    font-size: 13px; }
+    
+    .userexp{
+        position: absolute;
+        font-size: 12px;
+        margin-top: 4.5rem;
+        margin-left: 8%;
+    
+    }
+    
+    .postdate{
+        position: absolute;
+        font-size: 12px;
+        margin-top: 4.5rem;
+    
+    }
+    
+    .content{
+    font-size: 13px;
+    }
+
+        
+}
+
+/* for large devices */
+
+@media only screen and (min-width: 900px) {
+
+
+}
+ 
