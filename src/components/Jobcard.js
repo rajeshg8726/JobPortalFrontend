@@ -10,6 +10,8 @@ import slugify from 'react-slugify';
 const PER_PAGE = 9;
 
 function Jobcard({ jobfilter }) {
+
+    
     const [currentPage, setCurrentPage] = useState(0);
 
     const handlePageClick = ({ selected }) => {
@@ -36,7 +38,9 @@ function Jobcard({ jobfilter }) {
                                     <p><FontAwesomeIcon icon={faWallet} /> <span className='ms-2'>{post.pay}</span></p>
                                     <p hidden><FontAwesomeIcon icon={faCalendar}  /> <span className='ms-2'></span>{new Date(post.created_at).toLocaleDateString()}</p>
                                 </div>
+                            <div className="btnapply btn btn-sm btn-outline-success"> Apply Now </div>
                             </div>
+
                         </div>
                     </Link>
                 ))}

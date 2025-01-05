@@ -227,6 +227,7 @@ body.dark-mode {
   width: 100%;
 }
 
+
 .table {
   width: 80%;
   margin: 0 auto;
@@ -427,6 +428,21 @@ body.dark-mode {
     display: flex;
     justify-content: center;
   }
+
+  .btnapply{
+    display: flex;
+    width: 50%;
+    margin: 2% auto;
+    justify-content: center;
+    border-radius: 10px;
+  }
+  .btnapplyJobDetail{
+    display: flex;
+    width: 50%;
+    margin: 2% auto;
+    justify-content: center;
+    border-radius: 15px;
+  }
 }
 
 /* For medium devices (tablets, 600px to 768px) */
@@ -490,6 +506,19 @@ body.dark-mode {
   .fhead{
     font-size: 14px;
   }
+  .btnapply{
+    display: flex;
+    width: 50%;
+    margin: 2% auto;
+    justify-content: center;
+    border-radius: 10px;
+  }
+  .btnapplyJobDetail{
+    display: flex;
+    width: 70%;
+    justify-content: start;
+    border-radius: 15px;
+  }
 }
 
 /* For large devices (desktops, 768px and up) */
@@ -543,6 +572,19 @@ body.dark-mode {
    width: 80%;
    margin: 1rem auto;
     font-size: 15px;
+  }
+  .btnapply{
+    display: flex;
+    width: 50%;
+    margin: 2% auto;
+    justify-content: center;
+    border-radius: 10px;
+  }
+  .btnapplyJobDetail{
+    display: flex;
+    width: 45%;
+    justify-content: start;
+    border-radius: 15px;
   }
 }
 

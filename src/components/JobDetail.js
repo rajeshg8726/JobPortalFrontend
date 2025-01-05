@@ -72,6 +72,10 @@ const JobDetail = () => {
   }, [backendURL]);
 
 
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to the top of the page
+}, []); // Runs only once when the component is mounted
+
 
   // Pagination logic
   const handlePageClick = ({ selected }) => {
@@ -199,7 +203,7 @@ const JobDetail = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <button className="btn active btn-outline-success btn-sm">
+                    <button className="btn btn-outline-success btn-sm">
                       APPLY FOR THIS JOB
                     </button>
                   </Link>
@@ -246,6 +250,9 @@ const JobDetail = () => {
                                   <FontAwesomeIcon icon={faWallet} />
                                   <span className="ms-2">{joblst.pay}</span>
                                 </p>
+
+                              <div className="btnapplyJobDetail btn btn-sm btn-outline-success"> Apply Now </div>
+
                               </div>
                             </div>
                           </div>
@@ -311,7 +318,9 @@ const JobDetail = () => {
                                   <FontAwesomeIcon icon={faWallet} />
                                   <span className="ms-2">{joblst.pay}</span>
                                 </p>
+                              <div className="btnapplyJobDetail btn btn-sm btn-outline-success"> Apply Now </div>
                               </div>
+
                             </div>
                           </div>
                         </div>
@@ -390,7 +399,7 @@ const JobDetail = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <button className="btn active btn-outline-success btn-sm">
+                    <button className="btn btn-outline-success btn-sm">
                       APPLY FOR THIS JOB
                     </button>
                   </Link>
