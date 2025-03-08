@@ -4,9 +4,14 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMapMarkerAlt, faWallet, faBriefcase } from '@fortawesome/free-solid-svg-icons';
-import slugify from 'react-slugify';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faMapMarkerAlt,
+  faWallet,
+  faBriefcase,
+  faShareAlt,
+} from "@fortawesome/free-solid-svg-icons";
+import slugify from "react-slugify";
 import ReactPaginate from "react-paginate";
 
 // Custom hook to get window width
@@ -71,11 +76,26 @@ const JobDetail = () => {
     getJobsToList();
   }, [backendURL]);
 
-
   useEffect(() => {
     window.scrollTo(0, 0); // Scroll to the top of the page
-}, []); // Runs only once when the component is mounted
+  }, []); // Runs only once when the component is mounted
 
+  const handleShare = (post) => {
+    if (navigator.share) {
+      navigator
+        .share({
+          title: post.title,
+          text: `Check out this job: ${post.title} at ${post.location}. Expected Pay: ${post.pay}.`,
+          url: `${window.location.origin}/job/${post.id}/${slugify(
+            post.title
+          )}`,
+        })
+        .then(() => console.log("Successful share"))
+        .catch((error) => console.log("Error sharing", error));
+    } else {
+      alert("Web Share API is not supported in your browser.");
+    }
+  };
 
   // Pagination logic
   const handlePageClick = ({ selected }) => {
@@ -86,7 +106,6 @@ const JobDetail = () => {
   const offset = currentPage * jobsPerPage;
   const currentJobs = jobListData.slice(offset, offset + jobsPerPage);
   const pageCount = Math.ceil(jobListData.length / jobsPerPage);
-
 
   if (error) {
     return <div>Error fetching data: {error.message}</div>;
@@ -207,6 +226,14 @@ const JobDetail = () => {
                       APPLY FOR THIS JOB
                     </button>
                   </Link>
+                  <div
+                    type="button"
+                    className="share-buttonsonJobDetailOnMobile btn btn-sm btn-outline-primary"
+                    onClick={() => handleShare(jobData)}
+                  >
+                    <FontAwesomeIcon className="shareIcon" icon={faShareAlt} />{" "}
+                    <span style={{marginLeft:"10%"}} > Share </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -251,8 +278,11 @@ const JobDetail = () => {
                                   <span className="ms-2">{joblst.pay}</span>
                                 </p>
 
-                              <div className="btnapplyJobDetail btn btn-sm btn-outline-success"> Apply Now </div>
-
+                                <div className="btnapplyJobDetail btn btn-sm btn-outline-success">
+                                  {" "}
+                                  Apply Now{" "}
+                                </div>
+                                
                               </div>
                             </div>
                           </div>
@@ -263,19 +293,19 @@ const JobDetail = () => {
                 ))}
               </ul>
               {/* Pagination Component */}
-          <ReactPaginate
-            previousLabel={"Previous"}
-            nextLabel={"Next"}
-            breakLabel={"..."}
-            breakClassName={"break-me"}
-            pageCount={pageCount}
-            marginPagesDisplayed={2}
-            pageRangeDisplayed={5}
-            onPageChange={handlePageClick}
-            containerClassName={"pagination"}
-            subContainerClassName={"pages pagination"}
-            activeClassName={"active"}
-          />
+              <ReactPaginate
+                previousLabel={"Previous"}
+                nextLabel={"Next"}
+                breakLabel={"..."}
+                breakClassName={"break-me"}
+                pageCount={pageCount}
+                marginPagesDisplayed={2}
+                pageRangeDisplayed={5}
+                onPageChange={handlePageClick}
+                containerClassName={"pagination"}
+                subContainerClassName={"pages pagination"}
+                activeClassName={"active"}
+              />
             </div>
           </>
         ) : (
@@ -302,7 +332,7 @@ const JobDetail = () => {
                           </div>
                           <div className="col-sm-8">
                             <div className="card-body">
-                            <h6 className="card-title lsrole">
+                              <h6 className="card-title lsrole">
                                 {joblst.role}
                               </h6>
                               <div className="jobdetailList">
@@ -312,15 +342,19 @@ const JobDetail = () => {
                                 </p>
                                 <p>
                                   <FontAwesomeIcon icon={faMapMarkerAlt} />
-                                  <span className="ms-2">{joblst.location}</span>
+                                  <span className="ms-2">
+                                    {joblst.location}
+                                  </span>
                                 </p>
                                 <p>
                                   <FontAwesomeIcon icon={faWallet} />
                                   <span className="ms-2">{joblst.pay}</span>
                                 </p>
-                              <div className="btnapplyJobDetail btn btn-sm btn-outline-success"> Apply Now </div>
+                                <div className="btnapplyJobDetail btn btn-sm btn-outline-success">
+                                  {" "}
+                                  Apply Now{" "}
+                                </div>
                               </div>
-
                             </div>
                           </div>
                         </div>
@@ -329,19 +363,19 @@ const JobDetail = () => {
                   </li>
                 ))}
                 {/* Pagination Component */}
-          <ReactPaginate
-            previousLabel={"Previous"}
-            nextLabel={"Next"}
-            breakLabel={"..."}
-            breakClassName={"break-me"}
-            pageCount={pageCount}
-            marginPagesDisplayed={2}
-            pageRangeDisplayed={5}
-            onPageChange={handlePageClick}
-            containerClassName={"pagination"}
-            subContainerClassName={"pages pagination"}
-            activeClassName={"active"}
-          />
+                <ReactPaginate
+                  previousLabel={"Previous"}
+                  nextLabel={"Next"}
+                  breakLabel={"..."}
+                  breakClassName={"break-me"}
+                  pageCount={pageCount}
+                  marginPagesDisplayed={2}
+                  pageRangeDisplayed={5}
+                  onPageChange={handlePageClick}
+                  containerClassName={"pagination"}
+                  subContainerClassName={"pages pagination"}
+                  activeClassName={"active"}
+                />
               </ul>
             </div>
 
@@ -403,6 +437,14 @@ const JobDetail = () => {
                       APPLY FOR THIS JOB
                     </button>
                   </Link>
+                  <div
+                    type="button"
+                    className="share-buttonsonJobDetail btn btn-sm btn-outline-primary"
+                    onClick={() => handleShare(jobData)}
+                  >
+                    <FontAwesomeIcon className="shareIcon" icon={faShareAlt} />{" "}
+                    <span style={{marginLeft:"10%"}} > Share </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -414,4 +456,3 @@ const JobDetail = () => {
 };
 
 export default JobDetail;
-

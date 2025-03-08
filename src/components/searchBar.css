@@ -1,0 +1,111 @@
+/* 🔹 Default Styles (for Large Screens) */
+.search-bar {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  background: rgba(255, 255, 255, 0.9); /* Light background */
+  padding: 12px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: nowrap; /* Prevents wrapping */
+}
+
+/* Input Fields */
+.search-bar input {
+  flex: 1; /* Equal spacing */
+  min-width: 200px; /* Prevents shrinking */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+/* Search Button */
+.search-bar button {
+  padding: 10px 15px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  white-space: nowrap; /* Prevents text wrapping */
+}
+
+.search-bar button:hover {
+  background-color: #218838;
+}
+
+/* ✅ Responsive Media Queries */
+
+/* 🔸 Large Devices (Laptops, Desktops) */
+@media (min-width: 1024px) {
+  .search-bar {
+    width: 85%;
+    margin: 0 -15%; /* Adds spacing */
+    padding: auto;
+
+  }
+  .search-bar input {
+    min-width: 180px;
+    padding: 10px;
+    border-radius: 12px;
+    margin: 1% 1%;
+  }
+  .search-bar button {
+    padding: 10px;
+    border-radius: 12px;
+    margin: 1% 1%;
+  }
+}
+
+
+
+/* 🔸 Small Tablets & Large Phones */
+@media (max-width: 769px) {
+  .search-bar {
+    width: 90%;
+    flex-wrap: wrap; /* Wrap elements in smaller screens */
+    padding: 10px;
+    margin: 0 -15%; /* Adds spacing */
+  }
+  .search-bar input {
+    width: 48%; /* Side-by-side on medium screens */
+    min-width: unset;
+    padding: 10px;
+    border-radius: 12px;
+    margin: 1% 1%;
+  }
+  .search-bar button {
+    width: 48%; /* Keeps the button aligned */
+    text-align: center;
+    padding: 10px;
+    border-radius: 12px;
+  }
+}
+
+/* 🔸 Mobile Phones */
+@media (max-width: 480px) {
+  .search-bar {
+    flex-direction: column; /* Stack elements */
+    width: 95%;
+    padding: 12px;
+    margin: 0 -14%;
+  }
+  .search-bar input {
+    width: 100%; /* Full width inputs */
+    margin-bottom: 8px; /* Adds spacing */
+    padding: auto;
+    border-radius: 12px;
+  }
+  .search-bar button {
+    width: 100%; /* Full width button */
+    padding: auto;
+    border-radius: 12px;
+  }
+}

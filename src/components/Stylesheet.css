@@ -3,29 +3,32 @@ body {
 }
 
 
+
 /* toggle for dark-light button */
 /* Light Mode */
-body.light-mode{
+body.light-mode {
   background-color: #ffffff;
   color: #000000;
 }
 
 /* Dark mode */
 body.dark-mode {
-  background-color: rgb(17,0,31);
+  background-color: rgb(17, 0, 31);
   color: #ffffff;
 }
 
-.nav-link{
-  color: rgb(122,124,135);
+.nav-link {
+  color: rgb(122, 124, 135);
 }
 
 .facebk {
   background-color: #3b5998;
 }
+
 .twit {
   background-color: #55acee;
 }
+
 .google {
   background-color: #dd4b39;
 }
@@ -37,11 +40,13 @@ body.dark-mode {
 .github {
   background-color: #333333;
 }
+
 .copyright {
   background-color: rgba(0, 0, 0, 0.05);
   color: gray;
   font-size: 13px;
 }
+
 .insta {
   background-color: #ac2bac;
 }
@@ -136,8 +141,12 @@ body.dark-mode {
   /* background-color:white; */
   margin-bottom: -1rem;
   width: 100%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
 .card-img-top {
   max-width: 60%;
   height: auto;
@@ -174,7 +183,8 @@ body.dark-mode {
 
 /* Individual page numbers */
 .pagination__link {
-  margin: 5px 20px; /* Add space between page numbers */
+  margin: 5px 20px;
+  /* Add space between page numbers */
   padding: 10px 15px;
   border-radius: 5px;
   border: 1px solid #007bff;
@@ -202,9 +212,7 @@ body.dark-mode {
 }
 
 /* Hover effect */
-.pagination__link:hover:not(.pagination__link--disabled):not(
-    .pagination__link--active
-  ) {
+.pagination__link:hover:not(.pagination__link--disabled):not(.pagination__link--active) {
   background-color: #007bff;
   color: white;
 }
@@ -215,6 +223,7 @@ body.dark-mode {
   width: 50%;
   margin: 10rem auto;
 }
+
 .adl {
   display: flex;
 
@@ -237,31 +246,37 @@ body.dark-mode {
 .jobImg {
   border-radius: 10px;
 }
+
 .container {
   display: flex;
   flex-direction: column;
 }
+
 .ptc {
   text-decoration: none;
   color: gray;
 }
+
 .follow {
   color: gray;
 }
+
 .privacycontainer {
   display: container;
   flex-direction: column;
 }
-.listjob{
+
+.listjob {
   text-decoration: none;
-  
+
 }
 
-.col-sm-2{
+.col-sm-2 {
   width: 25%;
   height: 5%;
 }
-.categories{
+
+.categories {
   width: 50%;
   margin: 2rem auto;
 }
@@ -288,7 +303,7 @@ body.dark-mode {
   position: absolute;
   background-color: #f9f9f9;
   min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
 
@@ -329,6 +344,11 @@ body.dark-mode {
   justify-content: space-evenly;
 }
 
+.alyShare {
+  display: flex;
+  flex-direction: row;
+  margin: 0 auto;
+}
 
 /* Media Queries for responsiveness */
 /* For small devices (phones, 600px and down) */
@@ -347,14 +367,17 @@ body.dark-mode {
     margin: 2rem auto;
     margin-top: 5rem;
   }
+
   .jobcontain {
     width: 80%;
     margin: 0 auto;
   }
+
   .imgcard {
     margin-top: 2rem;
     display: flex;
   }
+
   .jobLink {
     text-decoration: none;
     color: inherit;
@@ -362,6 +385,7 @@ body.dark-mode {
     justify-content: center;
     margin: 2rem;
   }
+
   .jobdetail {
     display: flex;
     flex-direction: column;
@@ -373,11 +397,14 @@ body.dark-mode {
   .card-title {
     margin-top: 1rem;
   }
-  .dark-mode-toggle{
+
+  .dark-mode-toggle {
     margin-bottom: 1rem;
-   }
-   .pagination li {
-    margin: 0 1px; /* Space between numbers, prev and next */
+  }
+
+  .pagination li {
+    margin: 0 1px;
+    /* Space between numbers, prev and next */
   }
 
   .col-sm-2 {
@@ -385,19 +412,22 @@ body.dark-mode {
     height: 5%;
     display: flex;
     margin: 1rem auto;
-}
-  .jobdetailList{
+  }
+
+  .jobdetailList {
     display: flex;
     flex-direction: column;
     margin-left: 1rem;
     margin-top: 1rem;
     font-size: 14px;
-    
+
   }
-  .lsrole{
-   margin-left: 1rem;
-  font-size: 14px;
+
+  .lsrole {
+    margin-left: 1rem;
+    font-size: 14px;
   }
+
   .pagination__link {
     display: flex;
     width: 70%;
@@ -409,39 +439,57 @@ body.dark-mode {
     padding: 1px 2px;
     text-decoration: none;
     transition: background-color .3s ease, color .3s ease;
-}
+  }
 
-  .footer{
+  .footer {
     font-size: 13px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
   }
-  .fhead{
+
+  .fhead {
     font-size: 18px;
   }
-  .textStyle{
+
+  .textStyle {
     text-align: center;
   }
 
-  .socialIcon{
+  .socialIcon {
     display: flex;
     justify-content: center;
   }
 
-  .btnapply{
+  .btnapply {
     display: flex;
-    width: 50%;
-    margin: 2% auto;
+    width: 45%;
     justify-content: center;
-    border-radius: 10px;
+    margin: 2% 1rem;
+    border-radius: 15px;
   }
-  .btnapplyJobDetail{
+
+  .btnapplyJobDetail {
     display: flex;
     width: 50%;
     margin: 2% auto;
     justify-content: center;
     border-radius: 15px;
+  }
+  .share-buttonsonJobDetailOnMobile{
+
+      position: absolute;
+      top: 3.5rem;
+      right: 1rem;
+      width: 26%;
+      border-radius: 15px;
+    
+  }
+  
+  .share-buttons {
+    max-width: 5%;
+    margin: 2% auto;
+    color: #0b57d0
   }
 }
 
@@ -455,6 +503,7 @@ body.dark-mode {
     width: 85%;
     margin: 0 auto;
   }
+
   .jobLink {
     text-decoration: none;
     color: inherit;
@@ -462,10 +511,12 @@ body.dark-mode {
     justify-content: center;
     margin: 2rem;
   }
+
   .imgcard {
     width: 80%;
     display: flex;
   }
+
   .jobdetail {
     display: flex;
     flex-direction: column;
@@ -473,51 +524,75 @@ body.dark-mode {
     margin-top: 1rem;
     font-size: 14px;
   }
-  .dark-mode-toggle{
+
+  .dark-mode-toggle {
     margin-bottom: 1rem;
-   }
-   .pagination li {
-    margin: 0 10px; /* Space between numbers, prev and next */
   }
+
+  .pagination li {
+    margin: 0 10px;
+    /* Space between numbers, prev and next */
+  }
+
   .lsimg {
     margin-top: 80%;
     margin-left: 10%;
     height: 13%;
   }
-  .jobdetailList{
+
+  .jobdetailList {
     width: 80%;
     margin: 1rem auto;
     font-size: 10px;
   }
-  .lsrole{
-   width: 80%;
-   margin: 1rem auto;
+
+  .lsrole {
+    width: 80%;
+    margin: 1rem auto;
     font-size: 10px;
   }
-  .col-sm-4{
+
+  .col-sm-4 {
     width: 50%;
   }
-  .col-sm-8{
+
+  .col-sm-8 {
     width: 50%;
   }
-  .footer{
+
+  .footer {
     font-size: 12px;
   }
-  .fhead{
+
+  .fhead {
     font-size: 14px;
   }
-  .btnapply{
+
+  .btnapply {
     display: flex;
-    width: 50%;
-    margin: 2% auto;
-    justify-content: center;
-    border-radius: 10px;
+    width: 36%;
+    margin: 2% 1rem;
+    border-radius: 15px;
   }
-  .btnapplyJobDetail{
+
+  .btnapplyJobDetail {
     display: flex;
     width: 70%;
     justify-content: start;
     border-radius: 15px;
+  }
+  .share-buttonsonJobDetail{
+    position: absolute;
+    top: 7.5rem;
+    right: 0.5rem;
+    width: 11%;
+    border-radius: 15px;
+  }
+ 
+  .share-buttons {
+    max-width: 5%;
+    margin: 2% auto;
+    color: #0b57d0
   }
 }
 
@@ -531,6 +606,7 @@ body.dark-mode {
     margin: 0 auto;
     justify-content: center;
   }
+
   .jobLink {
     text-decoration: none;
     color: inherit;
@@ -544,7 +620,7 @@ body.dark-mode {
     margin: 2rem auto;
     display: flex;
   }
-  
+
   .jobdetail {
     display: flex;
     flex-direction: column;
@@ -552,39 +628,70 @@ body.dark-mode {
     font-size: 14px;
     margin-top: 1rem;
   }
-  .dark-mode-toggle{
-   margin-right: 1rem;
+
+  .dark-mode-toggle {
+    margin-right: 1rem;
   }
+
   .pagination li {
-    margin: 0 5px; /* Space between numbers, prev and next */
+    margin: 0 5px;
+    /* Space between numbers, prev and next */
   }
+
   .lsimg {
     margin-top: 60%;
     margin-left: 10%;
     height: 20%;
   }
-  .jobdetailList{
+
+  .jobdetailList {
     width: 80%;
     margin: 1rem auto;
     font-size: 14px;
   }
-  .lsrole{
-   width: 80%;
-   margin: 1rem auto;
+
+  .lsrole {
+    width: 80%;
+    margin: 1rem auto;
     font-size: 15px;
   }
-  .btnapply{
-    display: flex;
-    width: 50%;
-    margin: 2% auto;
-    justify-content: center;
-    border-radius: 10px;
-  }
-  .btnapplyJobDetail{
+
+
+
+  .btnapplyJobDetail {
     display: flex;
     width: 45%;
     justify-content: start;
     border-radius: 15px;
   }
-}
 
+  .btnapply {
+    display: flex;
+    width: 45%;
+    margin: 2% 1rem;
+    border-radius: 15px;
+    justify-content: center;
+  }
+
+  .share-buttons {
+    max-width: 5%;
+    margin: 2% auto;
+    color: #0b57d0
+  }
+
+  .share-buttonsonJobDetail {
+    display: flex;
+    width: 8%;
+    border-radius: 15px;
+    position: absolute;
+    top: 8rem;
+    right: 4rem;
+    color: #0b57d0;
+    justify-content: center;
+  }
+
+  .shareIcon {
+    margin-top: 5%;
+  }
+
+}
