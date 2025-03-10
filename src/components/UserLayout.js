@@ -7,7 +7,7 @@ import Temp from './Temp';
 function UserLayout({handleSearch}) {
   return (
     <div>
-      <Header  handleSearch = {handleSearch} />
+      <Header  />
       <div className="content">
         <Outlet />
       </div>

@@ -4,7 +4,7 @@ import axios from 'axios';
 import DarkModeToggle from './DarkModeToggle';
 import './Stylesheet.css';
 
-function Header({ handleSearch }) {
+function Header() {
     return (
         <>
             <nav className="navbar navbar-expand-lg  ">
@@ -75,28 +75,10 @@ function Header({ handleSearch }) {
                            
                         </ul>
                         <DarkModeToggle />
-                        <div className="d-flex" role="search">
-                            <input
-                                className="form-control me-2"
-                                type="search"
-                                placeholder="Search"
-                                aria-label="Search"
-                                onChange={handleSearch}
-                            />
-                        </div>
+        
                     </div>
                 </div>
             </nav>
-
-            {/* Display the filtered results */}
-            {/* <div>
-                {filteredData.map((job, index) => (
-                    <div key={index}>
-                        <h4>{job.title}</h4>
-                        <p>{job.description}</p>
-                    </div>
-                ))}
-            </div> */}
         </>
     );
 }

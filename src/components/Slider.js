@@ -1,14 +1,30 @@
 import React, { useState } from 'react';
 import './searchBar.css';
+import axios from 'axios';
+import { redirect } from 'react-router-dom';
+const Slider = ({ setJobs }) => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [location, setLocation] = useState("");
+  const [role, setRole] = useState("");
 
-const Slider = ({ onSearch }) => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [location, setLocation] = useState('');
-  const [role, setRole] = useState('');
-
-  const handleSearch = (e) => {
+  const backnedURL = process.env.REACT_APP_API_URL;
+  // When the search form is submitted, call the API
+  const handleSearch = async (e) => {
     e.preventDefault();
-    onSearch({ searchTerm, location, role });
+    
+    try {
+      // Replace REACT_APP_API_URL with your backend base URL (e.g., http://yourdomain.com)
+      const response = await axios.get(
+        `${backnedURL}/api/jobs-search`,
+        {
+          params: { searchTerm, location, role },
+        }
+      );
+      // Update the parent component's jobs state with the filtered results
+      setJobs(response.data);
+    } catch (error) {
+      console.error("Error fetching jobs:", error);
+    }
   };
 
   return (
@@ -19,28 +35,28 @@ const Slider = ({ onSearch }) => {
           <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
         </div>
         <div className="carousel-inner">
-          <div className="carousel-item active" data-bs-interval="100000000">
+          <div className="carousel-item active" data-bs-interval="10000">
             <div className="carousel-bg" style={{ backgroundImage: "url(" + process.env.PUBLIC_URL + "/images/t1.webp)", height: '400px', backgroundSize: 'cover', backgroundPosition: 'center' }}>
               <div className="carousel-caption d-flex justify-content-center align-items-center" style={{ top: '50%', transform: 'translateY(-50%)', width: '100%' }}>
                 <div className="search-bar">
                   <form onSubmit={handleSearch}>
                     <input type="text" placeholder="Search by job role" value={role} onChange={(e) => setRole(e.target.value)} />
                     <input type="text" placeholder="Search by location" value={location} onChange={(e) => setLocation(e.target.value)} />
-                    <input type="text" placeholder="Search by keyword" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+                    <input type="text" placeholder="Search by title, skills" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
                     <button type="submit">Search</button>
                   </form>
                 </div>
               </div>
             </div>
           </div>
-          <div className="carousel-item" data-bs-interval="100000000">
+          <div className="carousel-item" data-bs-interval="10000">
             <div className="carousel-bg" style={{ backgroundImage: "url(" + process.env.PUBLIC_URL + "/images/t2.webp)", height: '400px', backgroundSize: 'cover', backgroundPosition: 'center' }}>
               <div className="carousel-caption d-flex justify-content-center align-items-center" style={{ top: '50%', transform: 'translateY(-50%)', width: '100%' }}>
                 <div className="search-bar">
                   <form onSubmit={handleSearch}>
                     <input type="text" placeholder="Search by job role" value={role} onChange={(e) => setRole(e.target.value)} />
                     <input type="text" placeholder="Search by location" value={location} onChange={(e) => setLocation(e.target.value)} />
-                    <input type="text" placeholder="Search by keyword" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+                    <input type="text" placeholder="Search by title,skills" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
                     <button type="submit">Search</button>
                   </form>
                 </div>
