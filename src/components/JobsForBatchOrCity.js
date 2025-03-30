@@ -3,7 +3,7 @@ import './Stylesheet.css';
 import { Link, useParams } from 'react-router-dom'; // useParams to capture route params
 import ReactPaginate from 'react-paginate';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMapMarkerAlt, faWallet, faBriefcase } from '@fortawesome/free-solid-svg-icons';
+import { faMapMarkerAlt, faWallet, faBriefcase,faShareAlt } from '@fortawesome/free-solid-svg-icons';
 import slugify from 'react-slugify';
 import axios from 'axios';
 
@@ -72,9 +72,38 @@ function JobsForBatchOrCity() {
         getJobsByTypeOrCity();
     }, [jobTypeOrCity, backendURL]);
 
+    useEffect(() => {
+        window.scrollTo(0, 0); // Scroll to the top of the page
+      }, []); // Runs only once when the component is mounted
+
+      const handleShare = (post) => {
+        const jobTitle = post.title || "Job Opportunity";
+        const jobLocation = post.location || "Unknown Location";
+        const jobPay = post.pay || "Salary not disclosed";
+        const jobURL = `${window.location.origin}/job/${post.id}/${slugify(jobTitle)}`;
+      
+        if (navigator.share) {
+          navigator
+            .share({
+              title: `Job Opportunity at ${jobTitle}\n`,
+              text: `Check out this job: ${jobTitle}\n at ${jobLocation}\n Expected Pay: ${jobPay}\n`,
+              url: `Apply here: ${jobURL}\n`,
+            })
+            .then(() => console.log("Successful share"))
+            .catch((error) => console.log("Error sharing", error));
+        } else {
+          // Fallback: Copy link to clipboard
+          navigator.clipboard.writeText(jobURL).then(() => {
+            alert("Job link copied to clipboard!");
+          });
+        }
+      };
+      
+
     const handlePageClick = ({ selected }) => {
         setCurrentPage(selected);
     };
+
 
     const offset = currentPage * PER_PAGE;
     const currentPageJob = jobs.slice(offset, offset + PER_PAGE);
@@ -94,6 +123,19 @@ function JobsForBatchOrCity() {
                                     <p><FontAwesomeIcon icon={faMapMarkerAlt} /><span className='ms-2'>{post.location}</span></p>
                                     <p><FontAwesomeIcon icon={faWallet} /><span className='ms-2'>{post.pay}</span></p>
                                 </div>
+                                <div className="alyShare">
+                <div className="btnapply btn btn-sm btn-outline-success">
+                  {" "}
+                  Apply Now{" "}
+                </div>
+                <div
+                  type="button"
+                  className="share-buttons btn btn-sm"
+                  onClick={() => handleShare(post)}
+                >
+                  <FontAwesomeIcon icon={faShareAlt} />
+                </div>
+                </div>
                             </div>
                         </div>
                     </Link>

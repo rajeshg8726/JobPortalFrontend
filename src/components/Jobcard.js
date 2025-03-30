@@ -34,9 +34,9 @@ function Jobcard({ jobfilter }) {
     if (navigator.share) {
       navigator
         .share({
-          title: jobTitle,
-          text: `Check out this job: ${jobTitle} at ${jobLocation}. Expected Pay: ${jobPay}.`,
-          url: jobURL,
+          title: `Job Opportunity at ${jobTitle}\n`,
+          text: `Check out this job: ${jobTitle}\n at ${jobLocation}\n Expected Pay: ${jobPay}\n`,
+          url: `Apply here: ${jobURL}\n`,
         })
         .then(() => console.log("Successful share"))
         .catch((error) => console.log("Error sharing", error));

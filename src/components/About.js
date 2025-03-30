@@ -1,7 +1,13 @@
 import React from 'react'
 import './Stylesheet.css';
+import { useEffect } from 'react';
 
 const About = () => {
+
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to the top of the page
+  }, []); // Runs only once when the component is mounted
+
   return (
 
 <div className="page-container">

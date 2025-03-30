@@ -232,8 +232,17 @@ const JobDetail = () => {
                     onClick={() => handleShare(jobData)}
                   >
                     <FontAwesomeIcon className="shareIcon" icon={faShareAlt} />{" "}
-                    <span style={{marginLeft:"10%"}} > Share </span>
+                    <span style={{ marginLeft: "10%" }} > Share </span>
                   </div>
+
+                  <div className="dobcalc" style={{margin:"1rem auto"}} > 
+                      <Link to="https://www.dobcalc.com" target="_blank" >
+                      <button className="btn btn-outline-primary btn-sm">
+                      Check Your Age <span class="badge text-bg-secondary">New</span>
+                    </button>
+                       </Link>
+                    </div>
+
                 </div>
               </div>
             </div>
@@ -282,7 +291,7 @@ const JobDetail = () => {
                                   {" "}
                                   Apply Now{" "}
                                 </div>
-                                
+
                               </div>
                             </div>
                           </div>
@@ -443,8 +452,17 @@ const JobDetail = () => {
                     onClick={() => handleShare(jobData)}
                   >
                     <FontAwesomeIcon className="shareIcon" icon={faShareAlt} />{" "}
-                    <span style={{marginLeft:"10%"}} > Share </span>
+                    <span style={{ marginLeft: "10%" }} > Share </span>
                   </div>
+
+                    <div className="dobcalc" style={{margin:"1rem 1rem"}} > 
+                      <Link to="https://www.dobcalc.com" target="_blank" >
+                      <button className="btn btn-outline-primary btn-sm">
+                      Check Your Age <span class="badge text-bg-secondary">New</span>
+                    </button>
+                       </Link>
+                    </div>
+
                 </div>
               </div>
             </div>

@@ -1,6 +1,11 @@
 import React from 'react';
+import { useEffect } from 'react';
 
 const PrivacyPolicy = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to the top of the page
+  }, []); // Runs only once when the component is mounted
+  
   return (
     <div className="container my-5">
       <h4 className='text-center mt-8'> <strong> Privacy Policy </strong></h4>

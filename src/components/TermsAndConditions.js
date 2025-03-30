@@ -1,6 +1,12 @@
 import React from 'react';
+import { useEffect } from 'react';
 
 const TermsAndConditions = () => {
+
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to the top of the page
+  }, []); // Runs only once when the component is mounted
+
   return (
     <div className="container my-5 ">
       <h4 className='text-center mt-4'> <strong> Terms and Conditions </strong></h4>

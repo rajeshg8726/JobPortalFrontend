@@ -3,6 +3,7 @@ import './Stylesheet.css';
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 const Contact = () => {
 
   const[formData, setFormData] = useState([]);
@@ -28,6 +29,11 @@ const Contact = () => {
       setMessage('Error during submission. Please try again.');
     }
   }
+
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to the top of the page
+  }, []); // Runs only once when the component is mounted
+
   return (
     <div className="page-container">
        {/* Display message */}

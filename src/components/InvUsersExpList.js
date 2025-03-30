@@ -47,7 +47,9 @@ const InvUsersExpList = () => {
     getAdminAddedInvExp();
 }, [listURL, backendURL]);
 
-
+useEffect(() => {
+  window.scrollTo(0, 0); // Scroll to the top of the page
+}, []); // Runs only once when the component is mounted
 
   useEffect(() => {
 
