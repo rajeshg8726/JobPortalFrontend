@@ -132,7 +132,7 @@ const JobDetail = () => {
     hiringOrganization: {
       "@type": "Organization",
       name: "RGJobs",
-      sameAs: "https://rgjobs.in",
+      sameAs: "https://www.rgjobs.in",
       logo: `${backendURL}/rglogo.png`,
     },
     jobLocation: {
@@ -149,7 +149,7 @@ const JobDetail = () => {
       value: jobData.pay,
     },
     jobBenefits: "Career growth opportunities",
-    url: `https://rgjobs.in/job/${slug}`,
+    url: `https://www.rgjobs.in/job/${slug}`,
   };
 
   return (

@@ -34,9 +34,8 @@ import InterviewFormExp from './components/InterviewFormExp';
 import InterviewExpDetails from './components/InterviewExpDetails';
 import AdminAddInvExp from './components/AdminAddInvExp';
 import InvUsersExpList from './components/InvUsersExpList';
-
+import Sitemap from './components/Sitemap';
 function App() {
-  const [data, setData] = useState([]);
   const [jobs, setJobs] = useState([]);
 
 
@@ -65,13 +64,8 @@ function App() {
   /// call requestNotify function when page loads
 
   useEffect(() => {
-
     requestNotification();
-
   }, []);
-
-
-
 
 
   return (
@@ -93,6 +87,9 @@ function App() {
           <Route path="jobsbyrole/:jobRoles" element={< JobsByRoles />} />
 
         </Route>
+
+        {/* for sitemap  */}
+        <Route path="/sitemap.xml" element={<Sitemap />} />
 
         <Route path="/admin/*" element={<AdminLayout />}>
           <Route path="add-new-job" element={<AdminJobAdd />} />
