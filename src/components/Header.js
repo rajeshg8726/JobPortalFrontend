@@ -1,86 +1,168 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
-import DarkModeToggle from './DarkModeToggle';
-import './Stylesheet.css';
+import React from "react";
+import { Link, NavLink } from "react-router-dom";
+import DarkModeToggle from "./DarkModeToggle";
+import "./Header.css";
 
 function Header() {
-    return (
-        <>
-            <nav className="navbar navbar-expand-lg  ">
-                <div className="container-fluid">
-                    <Link className="navbar-brand" to="/">
-                        <img src="/rgjobs_logo.webp" alt="RGLOGO" style={{ maxWidth: "5rem" }} />
-                    </Link>
-                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
-                    <div className="collapse navbar-collapse" id="navbarToggleExternalContent">
-                        <ul className="navbar-nav me-auto mb-2 mb-lg-0 ">
-                            <li className="nav-item">
-                                <Link className="nav-link " aria-current="page" to="/">Home</Link>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <Link class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Batches
-                                </Link>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><Link class="dropdown-item" to='/jobs/2023-batch' >2023 Batch</Link></li>
-                                    <li><Link class="dropdown-item" to='/jobs/2024-batch' >2024 Batch</Link></li>
-                                    <li><Link class="dropdown-item" to='/jobs/2025-batch' >2025 Batch</Link></li>
-                                    <li><Link class="dropdown-item" to='/jobs/2026-batch' >2026 Batch</Link></li>
-                                </ul>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <Link class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Work Type
-                                </Link>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><Link class="dropdown-item" to='/jobsbytype/Internship-jobs' >Internships</Link></li>
-                                    <li><Link class="dropdown-item" to='/jobsbytype/full-time-jobs' >Full Time</Link></li>
-                                </ul>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <Link class="nav-link dropdown-toggle" to="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Location
-                                </Link>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><Link class="dropdown-item" to='/jobs/Bengaluru' >Bengaluru</Link></li>
-                                    <li><Link class="dropdown-item" to='/jobs/Hyderabad' >Hyderabad</Link></li>
-                                    <li><Link class="dropdown-item" to='/jobs/Gurgaon' >Gurgaon</Link></li>
-                                    <li><Link class="dropdown-item" to='/jobs/Noida' >Noida</Link></li>
-                                    <li><Link class="dropdown-item" to='/jobs/Chennai' >Chennai</Link></li>
-                                    <li><Link class="dropdown-item" to='/jobs/Pune' >Pune</Link></li>
-                                    <li><Link class="dropdown-item" to='/jobs/Remote' >Remote</Link></li>
-                                </ul>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <Link class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Roles
-                                </Link>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><Link class="dropdown-item" to='/jobsbyrole/software-engineer-jobs' >Software Engineer</Link></li>
-                                    <li><Link class="dropdown-item" to='/jobsbyrole/software-developer-jobs' >Software Developer</Link></li>
-                                    <li><Link class="dropdown-item" to='/jobsbyrole/software-testing-jobs' >Software Testing</Link></li>
-                                    <li><Link class="dropdown-item" to='/jobsbyrole/cloud-engineeer-jobs' >Cloud Engineer</Link></li>
-                                    <li><Link class="dropdown-item" to='/jobsbyrole/analytics-and-data-science-jobs' >Analytics & Data Science</Link></li>
-                                    <li><Link class="dropdown-item" to='/jobsbyrole/devops-engineer-jobs' >DevOps Engineer</Link></li>
-                                    <li><Link class="dropdown-item" to='/jobsbyrole/technical-support-jobs' >Technical Support Engineer</Link></li>
-                                </ul>
-                            </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/real-life-interview-experiences">Interviews</Link>
-                            </li>
-                            
-                           
-                        </ul>
-                        <DarkModeToggle />
-        
-                    </div>
-                </div>
-            </nav>
-        </>
-    );
+  return (
+    <header className="modern-header">
+      <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-2">
+        <div className="container-fluid">
+          <Link className="navbar-brand d-flex align-items-center" to="/">
+            <img
+              src="/rgjobs_logo.webp"
+              alt="RGLOGO"
+              style={{ maxWidth: "2.8rem", marginRight: "0.5rem" }}
+            />
+            {/* <span className="brand-text">RGJobs</span> */}
+          </Link>
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarModern"
+            aria-controls="navbarModern"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navbarModern">
+            <ul className="navbar-nav ms-auto mb-2 mb-lg-0 modern-nav">
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/" end>
+                  Home
+                </NavLink>
+              </li>
+              <li className="nav-item dropdown">
+                <span
+                  className="nav-link dropdown-toggle"
+                  id="batchesDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                  tabIndex={0}
+                >
+                  Batches
+                </span>
+                <ul className="dropdown-menu" aria-labelledby="batchesDropdown">
+                  {["2023", "2024", "2025", "2026"].map((batch) => (
+                    <li key={batch}>
+                      <NavLink className="dropdown-item" to={`/jobs/${batch}-batch`}>
+                        {batch} Batch
+                      </NavLink>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+              <li className="nav-item dropdown">
+                <span
+                  className="nav-link dropdown-toggle"
+                  id="workTypeDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                  tabIndex={0}
+                >
+                  Work Type
+                </span>
+                <ul className="dropdown-menu" aria-labelledby="workTypeDropdown">
+                  <li>
+                    <NavLink className="dropdown-item" to="/jobsbytype/Internship-jobs">
+                      Internships
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink className="dropdown-item" to="/jobsbytype/full-time-jobs">
+                      Full Time
+                    </NavLink>
+                  </li>
+                </ul>
+              </li>
+              <li className="nav-item dropdown">
+                <span
+                  className="nav-link dropdown-toggle"
+                  id="locationDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                  tabIndex={0}
+                >
+                  Location
+                </span>
+                <ul className="dropdown-menu" aria-labelledby="locationDropdown">
+                  {["Bengaluru", "Hyderabad", "Gurgaon", "Noida", "Chennai", "Pune", "Remote"].map((city) => (
+                    <li key={city}>
+                      <NavLink className="dropdown-item" to={`/jobs/${city}`}>
+                        {city}
+                      </NavLink>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+              <li className="nav-item dropdown">
+                <span
+                  className="nav-link dropdown-toggle"
+                  id="rolesDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                  tabIndex={0}
+                >
+                  Roles
+                </span>
+                <ul className="dropdown-menu" aria-labelledby="rolesDropdown">
+                  <li>
+                    <NavLink className="dropdown-item" to="/jobsbyrole/software-engineer-jobs">
+                      Software Engineer
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink className="dropdown-item" to="/jobsbyrole/software-developer-jobs">
+                      Software Developer
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink className="dropdown-item" to="/jobsbyrole/software-testing-jobs">
+                      Software Testing
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink className="dropdown-item" to="/jobsbyrole/cloud-engineeer-jobs">
+                      Cloud Engineer
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink className="dropdown-item" to="/jobsbyrole/analytics-and-data-science-jobs">
+                      Analytics & Data Science
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink className="dropdown-item" to="/jobsbyrole/devops-engineer-jobs">
+                      DevOps Engineer
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink className="dropdown-item" to="/jobsbyrole/technical-support-jobs">
+                      Technical Support Engineer
+                    </NavLink>
+                  </li>
+                </ul>
+              </li>
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/real-life-interview-experiences">
+                  Interviews
+                </NavLink>
+              </li>
+            </ul>
+            <div className="d-flex align-items-center ms-lg-3 mt-3 mt-lg-0">
+              <DarkModeToggle />
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+  );
 }
 
 export default Header;

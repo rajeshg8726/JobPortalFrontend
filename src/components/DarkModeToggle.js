@@ -1,38 +1,39 @@
-// Import necessary libraries
 import React, { useState, useEffect } from "react";
 import { DarkModeSwitch } from "react-toggle-dark-mode";
-import './Stylesheet.css';
+import './Darkmode.css'; // Assuming you have a CSS file for styling
 
 const DarkModeToggle = () => {
   // State to handle dark mode
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    // Prefer saved theme, else system preference
+    const saved = localStorage.getItem("theme");
+    if (saved) return saved === "dark";
+    return window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+  });
 
   // Toggle dark mode
   const toggleDarkMode = (checked) => {
     setIsDarkMode(checked);
-    // Set the theme in localStorage or apply changes to your app
-    document.body.className = checked ? "dark-mode" : "light-mode";
+    document.body.classList.toggle("dark-mode", checked);
+    document.body.classList.toggle("light-mode", !checked);
   };
 
-  // Persist the theme
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) {
-      setIsDarkMode(savedTheme === "dark");
-      document.body.className = savedTheme === "dark" ? "dark-mode" : "light-mode";
-    }
-  }, []);
-
+  // Persist and apply theme on mount and change
   useEffect(() => {
     localStorage.setItem("theme", isDarkMode ? "dark" : "light");
+    document.body.classList.toggle("dark-mode", isDarkMode);
+    document.body.classList.toggle("light-mode", !isDarkMode);
   }, [isDarkMode]);
 
   return (
-    <div className="dark-mode-toggle">
+    <div className="dark-mode-toggle" title={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}>
       <DarkModeSwitch
         checked={isDarkMode}
         onChange={toggleDarkMode}
-        size={30} // You can adjust the size of the toggle
+        size={30}
+        sunColor="#fbbf24"
+        moonColor="#2563eb"
       />
     </div>
   );

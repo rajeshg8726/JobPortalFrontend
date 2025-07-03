@@ -1,20 +1,16 @@
-
 import React, { useState, useEffect } from 'react';
-import './Stylesheet.css';
+import './adminSide.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const AdminJobAdd = () => {
-
   const backendURL = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     const token = localStorage.getItem('token');
-    
     if (!token) {
-      navigate('/admin/login'); 
-     
+      navigate('/admin/login');
     }
   }, [navigate]);
 
@@ -26,33 +22,30 @@ const AdminJobAdd = () => {
     location: '',
     description: '',
     joblink: '',
-    jobtype:'',
+    jobtype: '',
     jobbyrole: '',
-    jobbycity:'',
-    batch1:'',
-    batch2:'',
-    batch3:'',
+    jobbycity: '',
+    batch1: '',
+    batch2: '',
+    batch3: '',
     companyLogo: null
   });
 
-  const [message, setMessage] = useState(''); // State for the submission message
- // Initialize useNavigate
- const [category , setCategory] = useState([]);
+  const [message, setMessage] = useState('');
+  const [category, setCategory] = useState([]);
+  const [loading, setLoading] = useState(false);
 
- useEffect(() => {
-  // Fetch categories when the component mounts
-  const fetchCategories = async () => {
+  useEffect(() => {
+    const fetchCategories = async () => {
       try {
-          const response = await axios.get(`${backendURL}/api/getCategory`);
-          setCategory(response.data.CategoryData);  // Assuming response.data is the array of categories
+        const response = await axios.get(`${backendURL}/api/getCategory`);
+        setCategory(response.data.CategoryData);
       } catch (error) {
-          console.error('Error fetching categories:', error);
+        console.error('Error fetching categories:', error);
       }
-  };
-
-  fetchCategories();
-}, [backendURL]);
-
+    };
+    fetchCategories();
+  }, [backendURL]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -68,161 +61,156 @@ const AdminJobAdd = () => {
       companyLogo: e.target.files[0]
     });
   };
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     const data = new FormData();
     for (const key in formData) {
       data.append(key, formData[key]);
     }
-
     try {
       const response = await axios.post(`${backendURL}/api/job`, data, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+        headers: { 'Content-Type': 'multipart/form-data' }
       });
-      console.log(response.data);
       setMessage('Job added successfully!');
       setTimeout(() => {
-        navigate('/admin/job-list'); // Navigate to /admin/job-list after 2 seconds
-      }, 1000); // Adjust the timeout duration as needed
+        navigate('/admin/job-list');
+      }, 1200);
     } catch (error) {
-      console.error(error);
       setMessage('Failed to add job. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className='container'>  
-      <form className='containerForm' onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="floatingInput" className="form-label ">Company Name</label>
-          <input type="text" className="form-control" id="title" name="title" value={formData.title} onChange={handleChange} />
+    <div className="modern-jobadd-container">
+      <form className="modern-jobadd-form" onSubmit={handleSubmit}>
+        <h1 className="modern-jobadd-title">Add New Job</h1>
+        <div className="modern-jobadd-row">
+          <div className="modern-jobadd-field">
+            <label>Company Name</label>
+            <input type="text" name="title" value={formData.title} onChange={handleChange} required />
+          </div>
+          <div className="modern-jobadd-field">
+            <label>Job Role</label>
+            <input type="text" name="role" value={formData.role} onChange={handleChange} required />
+          </div>
         </div>
-        <div className="mb-3">
-          <select className='form-select' name="jobtype" value={formData.jobtype} onChange={handleChange}>
-                <option value="">Select Job Type</option>
-                { category && category.length > 0 ? (  // Check if category is defined and not empty
-                    category.map((cat) => (
-                        <option key={cat.id} value={cat.id}>
-                            {cat.name}
-                        </option>
-                    ))
-                ) : (
-                    <option disabled>Loading Job Type...</option>
-                )}
+        <div className="modern-jobadd-row">
+          <div className="modern-jobadd-field">
+            <label>Expected Pay</label>
+            <input type="text" name="pay" value={formData.pay} onChange={handleChange} required />
+          </div>
+          <div className="modern-jobadd-field">
+            <label>Job Locations</label>
+            <input type="text" name="location" value={formData.location} onChange={handleChange} required />
+          </div>
+        </div>
+        <div className="modern-jobadd-row">
+          <div className="modern-jobadd-field">
+            <label>Job Type</label>
+            <select name="jobtype" value={formData.jobtype} onChange={handleChange} required>
+              <option value="">Select Job Type</option>
+              {category && category.length > 0
+                ? category.map((cat) => (
+                    <option key={cat.id} value={cat.id}>{cat.name}</option>
+                  ))
+                : <option disabled>Loading...</option>
+              }
             </select>
-        </div>
-        <div className="mb-3">
-          <select className='form-select' name="jobbycity" value={formData.jobbycity} onChange={handleChange}>
-                <option value="">Select Job City</option>
-                {category && category.length > 0 ? (  // Check if category is defined and not empty
-                    category.map((cat) => (
-                        <option key={cat.id} value={cat.id}>
-                            {cat.name}
-                        </option>
-                    ))
-                ) : (
-                    <option disabled>Loading Job City...</option>
-                )}
+          </div>
+          <div className="modern-jobadd-field">
+            <label>Job City</label>
+            <select name="jobbycity" value={formData.jobbycity} onChange={handleChange} required>
+              <option value="">Select Job City</option>
+              {category && category.length > 0
+                ? category.map((cat) => (
+                    <option key={cat.id} value={cat.id}>{cat.name}</option>
+                  ))
+                : <option disabled>Loading...</option>
+              }
             </select>
+          </div>
         </div>
-        
-        <div className="mb-3">
-          <select className='form-select' name="jobbyrole" value={formData.jobbyrole} onChange={handleChange}>
-                <option value="">Select Job Role</option>
-                {category && category.length > 0 ? (  // Check if category is defined and not empty
-                    category.map((cat) => (
-                        <option key={cat.id} value={cat.id}>
-                            {cat.name}
-                        </option>
-                    ))
-                ) : (
-                    <option disabled>Loading Job Role...</option>
-                )}
+        <div className="modern-jobadd-row">
+          <div className="modern-jobadd-field">
+            <label>Job Role Category</label>
+            <select name="jobbyrole" value={formData.jobbyrole} onChange={handleChange} required>
+              <option value="">Select Job Role</option>
+              {category && category.length > 0
+                ? category.map((cat) => (
+                    <option key={cat.id} value={cat.id}>{cat.name}</option>
+                  ))
+                : <option disabled>Loading...</option>
+              }
             </select>
+          </div>
+          <div className="modern-jobadd-field">
+            <label>Job Link</label>
+            <input type="text" name="joblink" value={formData.joblink} onChange={handleChange} required />
+          </div>
         </div>
-
-        {/* Batches Fields */}
-
-        <div className="mb-3">
-          <select className='form-select' name="batch1" value={formData.batch1} onChange={handleChange}>
-                <option value="">Select Job Batch One</option>
-                {category && category.length > 0 ? (  // Check if category is defined and not empty
-                    category.map((cat) => (
-                        <option key={cat.id} value={cat.id}>
-                            {cat.name}
-                        </option>
-                    ))
-                ) : (
-                    <option disabled>Loading Job Batches...</option>
-                )}
+        <div className="modern-jobadd-row">
+          <div className="modern-jobadd-field">
+            <label>Batch One</label>
+            <select name="batch1" value={formData.batch1} onChange={handleChange} required>
+              <option value="">Select Batch One</option>
+              {category && category.length > 0
+                ? category.map((cat) => (
+                    <option key={cat.id} value={cat.id}>{cat.name}</option>
+                  ))
+                : <option disabled>Loading...</option>
+              }
             </select>
-        </div>
-        <div className="mb-3">
-          <select className='form-select' name="batch2" value={formData.batch2} onChange={handleChange}>
-                <option value="">Select Job Batch Two</option>
-                {category && category.length > 0 ? (  // Check if category is defined and not empty
-                    category.map((cat) => (
-                        <option key={cat.id} value={cat.id}>
-                            {cat.name}
-                        </option>
-                    ))
-                ) : (
-                    <option disabled>Loading Job Batches...</option>
-                )}
+          </div>
+          <div className="modern-jobadd-field">
+            <label>Batch Two</label>
+            <select name="batch2" value={formData.batch2} onChange={handleChange} required>
+              <option value="">Select Batch Two</option>
+              {category && category.length > 0
+                ? category.map((cat) => (
+                    <option key={cat.id} value={cat.id}>{cat.name}</option>
+                  ))
+                : <option disabled>Loading...</option>
+              }
             </select>
+          </div>
         </div>
-        <div className="mb-3">
-          <select className='form-select' name="batch3" value={formData.batch3} onChange={handleChange}>
-                <option value="">Select Job Batch Three</option>
-                {category && category.length > 0 ? (  // Check if category is defined and not empty
-                    category.map((cat) => (
-                        <option key={cat.id} value={cat.id}>
-                            {cat.name}
-                        </option>
-                    ))
-                ) : (
-                    <option disabled>Loading Job Batches...</option>
-                )}
+        <div className="modern-jobadd-row">
+          <div className="modern-jobadd-field">
+            <label>Batch Three</label>
+            <select name="batch3" value={formData.batch3} onChange={handleChange} required>
+              <option value="">Select Batch Three</option>
+              {category && category.length > 0
+                ? category.map((cat) => (
+                    <option key={cat.id} value={cat.id}>{cat.name}</option>
+                  ))
+                : <option disabled>Loading...</option>
+              }
             </select>
+          </div>
+          <div className="modern-jobadd-field">
+            <label>For Batches</label>
+            <input type="text" name="batches" value={formData.batches} onChange={handleChange} required />
+          </div>
         </div>
-
-        <div className="mb-3">
-          <label htmlFor="jobRole" className="form-label">Job Role</label>
-          <input type="text" className="form-control" id="role" name="role" value={formData.role} onChange={handleChange} />
+        <div className="modern-jobadd-field">
+          <label>Job Description</label>
+          <textarea name="description" value={formData.description} onChange={handleChange} rows={3} required />
         </div>
-        <div className="mb-3">
-          <label htmlFor="forBatches" className="form-label">For Batches</label>
-          <input type="text" className="form-control" id="batches" name="batches" value={formData.batches} onChange={handleChange} />
+        <div className="modern-jobadd-field">
+          <label>Company Logo</label>
+          <input type="file" name="companyLogo" onChange={handleFileChange} accept="image/*" />
         </div>
-        <div className="mb-3">
-          <label htmlFor="expectedPay" className="form-label">Expected Pay</label>
-          <input type="text" className="form-control" id="pay" name="pay" value={formData.pay} onChange={handleChange} />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="jobLocations" className="form-label">Job Locations</label>
-          <input type="text" className="form-control" id="location" name="location" value={formData.location} onChange={handleChange} />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="jobDescriptions" className="form-label">Job Descriptions</label>
-          <input type="text" className="form-control" id="description" name="description" value={formData.description} onChange={handleChange} />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="jobDescriptions" className="form-label">Job Link</label>
-          <input type="text" className="form-control" id="joblink" name="joblink" value={formData.joblink} onChange={handleChange} />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="companyLogo" className="form-label"></label>
-          <input type="file" className="form-control" id="companyLogo" name="companyLogo" onChange={handleFileChange} />
-        </div>
-        <button type="submit" className="btn btn-primary btnsub">Submit</button>
+        <button type="submit" className="modern-jobadd-btn" disabled={loading}>
+          {loading ? 'Submitting...' : 'Submit'}
+        </button>
+        {message && <div className="modern-jobadd-message">{message}</div>}
       </form>
-      {message && <div className="alert alert-info mt-3">{message}</div>} {/* Conditional message display */}
     </div>
   );
-}
+};
 
 export default AdminJobAdd;

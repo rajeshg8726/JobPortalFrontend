@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './SecondStyleSheet.css';
+import './InterviewsPages.css'; // Assuming you have a CSS file for styling
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleUser, faEye } from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate } from 'react-router-dom';
@@ -14,53 +14,42 @@ const InterviewExperience = () => {
     const [roleCat, setroleCat] = useState([]);
     const [workCat, setworkCat] = useState([]);
 
-
-    // Fetch different categories
+    // Fetch categories
     useEffect(() => {
         const getCompanyCat = async () => {
             try {
                 const cat = await axios.get(`${backendURL}/api/getCompanyCat`);
-                const res = cat.data.roleData;
-                setCompanyCat(res);
+                setCompanyCat(cat.data.roleData);
             } catch (error) {
                 console.error("Error fetching interview data:", error);
-                
             }
         }
         getCompanyCat();
-
-    },[backendURL]);
+    }, [backendURL]);
 
     useEffect(() => {
-        const getCompanyCat = async () => {
+        const getRolesCat = async () => {
             try {
                 const cat = await axios.get(`${backendURL}/api/getRolesCat`);
-                const res = cat.data.roleData;
-                setroleCat(res);
+                setroleCat(cat.data.roleData);
             } catch (error) {
                 console.error("Error fetching interview data:", error);
-                
             }
         }
-        getCompanyCat();
+        getRolesCat();
+    }, [backendURL]);
 
-    },[backendURL]);
     useEffect(() => {
-        const getCompanyCat = async () => {
+        const getWorkCat = async () => {
             try {
                 const cat = await axios.get(`${backendURL}/api/getWorkCat`);
-                const res = cat.data.roleData;
-                setworkCat(res);
+                setworkCat(cat.data.roleData);
             } catch (error) {
                 console.error("Error fetching interview data:", error);
-                
             }
         }
-        getCompanyCat();
-
-    },[backendURL]);
-
-
+        getWorkCat();
+    }, [backendURL]);
 
     // Fetch interview data from the backend
     useEffect(() => {
@@ -69,7 +58,7 @@ const InterviewExperience = () => {
                 const res = await axios.get(`${backendURL}/api/getAdminAddedInvExps`);
                 const fetchedData = res.data.InvData.map(item => ({
                     ...item,
-                    count: Number(localStorage.getItem(`count_${item.id}`)) || 0  // Set initial count from localStorage
+                    count: Number(localStorage.getItem(`count_${item.id}`)) || 0
                 }));
                 setInvData(fetchedData);
             } catch (error) {
@@ -87,7 +76,7 @@ const InterviewExperience = () => {
             )
         );
         const newCount = Number(localStorage.getItem(`count_${id}`)) + 1 || 1;
-        localStorage.setItem(`count_${id}`, newCount);  // Update localStorage
+        localStorage.setItem(`count_${id}`, newCount);
     };
 
     // Handle navigation to add new interview experience
@@ -105,94 +94,91 @@ const InterviewExperience = () => {
     const offset = currentPage * PER_PAGE;
     const currentPageJob = invData.slice(offset, offset + PER_PAGE);
     const pageCount = Math.ceil(invData.length / PER_PAGE);
+
     return (
-        <div className="container">
-            <div className="addInvBtn">
-                <button type="button" className="btn btn-sm btn-success" onClick={handleAddExperienceClick}>Share Experience</button>
+        <div className="modern-invexp-container">
+            <div className="modern-invexp-header">
+                <h1>
+                    Real-Life Interview <span className="modern-invexp-highlight">Experience:</span> Achieve Your DREAMS!
+                </h1>
+                <p className="modern-invexp-lead">
+                    Discover the latest job experiences shared by achievers of dreams so that you can share yours next.
+                </p>
+                <p className="modern-invexp-motto"><strong>Be A Hustler! | Be Prepared</strong></p>
+                <button type="button" className="modern-invexp-btn" onClick={handleAddExperienceClick}>
+                    Share Experience
+                </button>
             </div>
-            <div className="bodyhead text-center">
-                <h1><strong>Real-Life Interview <span style={{ color: 'rgb(212,31,48)' }}>Experience:</span> Achieve Your DREAMS!</strong></h1>
-                <p style={{ color: 'rgb(122,124,135)' }}>Discover the latest job experiences shared by achievers of dreams so that you can share yours next.</p>
-                <p><strong>Be A Hustler! | Be Prepared</strong></p>
+            <div className="modern-invexp-filters">
+                <select className="modern-invexp-select">
+                    <option defaultValue="">Company</option>
+                    {companyCat && companyCat.length > 0
+                        ? companyCat.map((cat) => (
+                            <option key={cat.id} value={cat.id}>{cat.name}</option>
+                        ))
+                        : <option disabled>Loading...</option>
+                    }
+                </select>
+                <select className="modern-invexp-select">
+                    <option defaultValue="">Work Type</option>
+                    {workCat && workCat.length > 0
+                        ? workCat.map((cat) => (
+                            <option key={cat.id} value={cat.id}>{cat.name}</option>
+                        ))
+                        : <option disabled>Loading...</option>
+                    }
+                </select>
+                <select className="modern-invexp-select">
+                    <option defaultValue="">Job Role</option>
+                    {roleCat && roleCat.length > 0
+                        ? roleCat.map((cat) => (
+                            <option key={cat.id} value={cat.id}>{cat.name}</option>
+                        ))
+                        : <option disabled>Loading...</option>
+                    }
+                </select>
             </div>
-            <div className="filters">
-                <div className="f1">
-                    <select className="form-select form-select-sm" aria-label=".form-select-sm example">
-                        <option selected>Company</option>
-                        {
-                            companyCat && companyCat.length > 0 ? (
-                                companyCat.map((cat) => (
-                                    <option key={cat.id} value={cat.id}> {cat.name} </option>
-                                ))
-                            ) : <option disabled>Loading Job Batches...</option>
-                        }
-                        
-                    </select>
-                </div>
-                <div className="f2">
-                    <select className="form-select form-select-sm" aria-label=".form-select-sm example">
-                        <option selected>Work Type</option>
-                        {
-                            workCat && workCat.length > 0 ? (
-                                workCat.map((cat) => (
-                                    <option key={cat.id} value={cat.id}> {cat.name} </option>
-                                ))
-                            ) : <option disabled>Loading Job Batches...</option>
-                        }
-                    </select>
-                </div>
-                <div className="f3">
-                    <select className="form-select form-select-sm" aria-label=".form-select-sm example">
-                        <option selected>Job Role</option>
-                        {
-                            roleCat && roleCat.length > 0 ? (
-                                roleCat.map((cat) => (
-                                    <option key={cat.id} value={cat.id}> {cat.name} </option>
-                                ))
-                            ) : <option disabled>Loading Job Batches...</option>
-                        }
-                    </select>
-                </div>
+            <div className="modern-invexp-list">
+                {currentPageJob.map((item) => (
+                    <Link
+                        key={item.id}
+                        className="modern-invexp-card-link"
+                        to={`/interview-experience-details/${item.id}`}
+                        onClick={() => incrementCount(item.id)}
+                    >
+                        <div className="modern-invexp-card">
+                            <div className="modern-invexp-card-header">
+                                <h5>{item.title}</h5>
+                                <FontAwesomeIcon icon={faCircleUser} size="2x" className="modern-invexp-usericon" />
+                            </div>
+                            <div className="modern-invexp-card-user">
+                                <span>
+                                    {item.anonymous === 1 ? "Anonymous User" : item.name}
+                                </span>
+                                <span className="modern-invexp-date">
+                                    {new Date(item.created_at).toLocaleDateString()}
+                                </span>
+                            </div>
+                            <div className="modern-invexp-card-footer">
+                                <span className="modern-invexp-views">
+                                    <FontAwesomeIcon icon={faEye} className="modern-invexp-eye" />
+                                    <span className="modern-invexp-count">{item.count}</span>
+                                </span>
+                            </div>
+                        </div>
+                    </Link>
+                ))}
             </div>
-
-            {currentPageJob.map((item) => (
-                <Link
-                    key={item.id}
-                    className="link my-4 mx-4"
-                    to={`/interview-experience-details/${item.id}`}
-                    onClick={() => incrementCount(item.id)}
-                >
-                    <div className="invcard card">
-                        <div className="title">
-                           <strong> <h5>{item.title}</h5> </strong>
-                        </div>
-                        <div className="icon">
-                            <FontAwesomeIcon icon={faCircleUser} size="2xl" style={{ color: "#74C0FC" }} />
-                        </div>
-                        <div className="user">
-                            <p>
-                                {item.anonymous === 1 ? "Anonymous User" : item.name}
-                                <span> {new Date(item.created_at).toLocaleDateString()} </span>
-                            </p>
-                        </div>
-                        <div className="views">
-                            <FontAwesomeIcon className='eye' icon={faEye} size="lg" style={{ color: "#74C0FC" }} />
-                            <p className="count">{item.count}</p>  {/* Display the updated count */}
-                        </div>
-                    </div>
-                </Link>
-            ))}
-
             <ReactPaginate
-                previousLabel={"← Previous"}
-                nextLabel={"Next →"}
+                previousLabel={"←"}
+                nextLabel={"→"}
                 pageCount={pageCount}
                 onPageChange={handlePageClick}
-                containerClassName={"pagination"}
-                previousLinkClassName={"pagination__link"}
-                nextLinkClassName={"pagination__link"}
-                disabledClassName={"pagination__link--disabled"}
-                activeClassName={"pagination__link--active"}
+                containerClassName={"modern-pagination"}
+                previousLinkClassName={"modern-pagination-link"}
+                nextLinkClassName={"modern-pagination-link"}
+                disabledClassName={"modern-pagination-link--disabled"}
+                activeClassName={"modern-pagination-link--active"}
             />
         </div>
     );

@@ -1,0 +1,314 @@
+.modern-jobdetail-layout {
+  display: flex;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  flex-wrap: wrap;
+}
+
+.modern-jobdetail-card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0,123,255,0.07);
+  flex: 2 1 400px;
+  min-width: 320px;
+  padding: 2rem 2rem 1.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modern-jobdetail-img-wrap {
+  width: 120px;
+  height: 120px;
+  background: #f8fafc;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.2rem;
+  overflow: hidden;
+}
+
+.modern-jobdetail-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.modern-jobdetail-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #007bff;
+  margin-bottom: 0.7rem;
+  text-align: center;
+}
+
+.modern-jobdetail-meta {
+  display: flex;
+  gap: 1.2rem;
+  justify-content: center;
+  color: #444;
+  font-size: 1.05rem;
+  margin-bottom: 1.1rem;
+  flex-wrap: wrap;
+}
+
+.modern-jobdetail-role {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: #222;
+}
+
+.modern-jobdetail-section {
+  margin-bottom: 1.2rem;
+}
+
+.modern-jobdetail-section ul {
+  margin: 0.5rem 0 0 1.2rem;
+  padding: 0;
+}
+
+.modern-jobdetail-actions {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+  flex-wrap: wrap;
+}
+
+.modern-jobdetail-apply {
+  background: #007bff;
+  color: #fff;
+  padding: 0.7rem 1.7rem;
+  border-radius: 22px;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 1.1rem;
+  border: none;
+  outline: none;
+  transition: background 0.2s;
+  box-shadow: 0 2px 8px rgba(0,123,255,0.09);
+}
+
+.modern-jobdetail-apply:hover,
+.modern-jobdetail-apply:focus {
+  background: #0056b3;
+  color: #fff;
+}
+
+.modern-jobdetail-share {
+  background: #f1f7ff;
+  color: #007bff;
+  border: none;
+  border-radius: 22px;
+  padding: 0.7rem 1.2rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.modern-jobdetail-share:hover,
+.modern-jobdetail-share:focus {
+  background: #007bff;
+  color: #fff;
+}
+
+.modern-jobdetail-extra {
+  margin-top: 0.7rem;
+}
+
+.modern-jobdetail-blog {
+  background: #fff;
+  color: #007bff;
+  border: 1px solid #007bff;
+  border-radius: 18px;
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.modern-jobdetail-blog:hover,
+.modern-jobdetail-blog:focus {
+  background: #007bff;
+  color: #fff;
+}
+
+.badge-new {
+  background: #007bff;
+  color: #fff;
+  border-radius: 8px;
+  padding: 0.2em 0.7em;
+  font-size: 0.8em;
+  margin-left: 0.5em;
+}
+
+.modern-joblist-sidebar {
+  flex: 1 1 260px;
+  min-width: 260px;
+  background: #f8fafc;
+  border-radius: 18px;
+  padding: 1.5rem 1rem;
+  box-shadow: 0 2px 12px rgba(0,123,255,0.04);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  height: fit-content;
+}
+
+.modern-joblist-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #007bff;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.modern-joblist-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.2rem 0;
+}
+
+.modern-joblist-item {
+  margin-bottom: 1rem;
+}
+
+.modern-joblist-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.modern-joblist-card {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,123,255,0.05);
+  padding: 0.7rem 0.7rem;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.modern-joblist-card:hover {
+  box-shadow: 0 4px 16px rgba(0,123,255,0.13);
+  transform: translateY(-2px) scale(1.01);
+}
+
+.modern-joblist-img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #f8fafc;
+}
+
+.modern-joblist-role {
+  font-weight: 600;
+  color: #222;
+  font-size: 1rem;
+  margin-bottom: 0.2rem;
+}
+
+.modern-joblist-meta {
+  display: flex;
+  gap: 0.7rem;
+  color: #555;
+  font-size: 0.93rem;
+  flex-wrap: wrap;
+}
+
+/* Pagination styles (reuse from previous modern-pagination) */
+.modern-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.modern-pagination-link {
+  background: #f1f7ff;
+  color: #007bff;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  margin: 0 2px;
+}
+
+.modern-pagination-link--active,
+.modern-pagination-link:focus {
+  background: #007bff;
+  color: #fff;
+}
+
+.modern-pagination-link--disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Responsive styles */
+@media (max-width: 900px) {
+  .modern-jobdetail-layout {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .modern-jobdetail-card,
+  .modern-joblist-sidebar {
+    min-width: 0;
+    width: 100%;
+    max-width: 100vw;
+  }
+  .modern-jobdetail-card {
+    padding: 1.2rem 0.7rem 1rem 0.7rem;
+  }
+  .modern-joblist-sidebar {
+    padding: 1rem 0.5rem;
+  }
+}
+@media (max-width: 600px) {
+    .modern-pagination{
+        gap: 1rem;
+    }
+  .modern-jobdetail-title {
+    font-size: 1.2rem;
+  }
+  .modern-jobdetail-meta {
+    font-size: 0.95rem;
+    gap: 0.5rem;
+  }
+  .modern-jobdetail-card {
+    padding: 0.7rem 0.2rem 0.7rem 0.2rem;
+  }
+  .modern-joblist-title {
+    font-size: 1rem;
+  }
+  .modern-joblist-card {
+    gap: 0.4rem;
+    padding: 0.5rem 0.5rem;
+  }
+  .modern-joblist-img {
+    width: 36px;
+    height: 36px;
+  }
+}
+.modern-loading {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #007bff;
+  margin: 2rem 0;
+}

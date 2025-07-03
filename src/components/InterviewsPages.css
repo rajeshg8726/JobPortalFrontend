@@ -1,0 +1,534 @@
+
+/* InterviewExperience css code */
+/* Add to Stylesheet.css or your main CSS file */
+/* Modern Interview Experience Styles */
+.modern-invexp-container {
+  min-height: 80vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #e0e7ef 100%);
+  padding: 2.5rem 1rem 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modern-invexp-header {
+  width: 100%;
+  max-width: 800px;
+  text-align: center;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modern-invexp-header h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #007bff;
+  margin-bottom: 0.5rem;
+  letter-spacing: 1px;
+}
+
+.modern-invexp-highlight {
+  color: #d41f30;
+  font-weight: 800;
+}
+
+.modern-invexp-lead {
+  color: #555;
+  font-size: 1.08rem;
+  margin-bottom: 0.5rem;
+}
+
+.modern-invexp-motto {
+  color: #222;
+  font-size: 1rem;
+  margin-bottom: 1.2rem;
+}
+
+.modern-invexp-btn {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 22px;
+  padding: 0.7rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,123,255,0.09);
+}
+.modern-invexp-btn:hover,
+.modern-invexp-btn:focus {
+  background: #0056b3;
+}
+
+.modern-invexp-filters {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  max-width: 800px;
+}
+
+.modern-invexp-select {
+  padding: 0.6rem 1rem;
+  border: 1px solid #cce0ff;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #f8fafc;
+  min-width: 140px;
+  transition: border 0.2s;
+  outline: none;
+}
+.modern-invexp-select:focus {
+  border-color: #007bff;
+}
+
+.modern-invexp-list {
+  width: 100%;
+  max-width: 800px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.modern-invexp-card-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.modern-invexp-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,123,255,0.07);
+  padding: 1.2rem 1.2rem 1rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  transition: box-shadow 0.2s, transform 0.2s;
+  cursor: pointer;
+  min-height: 170px;
+}
+.modern-invexp-card:hover {
+  box-shadow: 0 8px 32px rgba(0,123,255,0.13);
+  transform: translateY(-4px) scale(1.01);
+}
+
+.modern-invexp-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.modern-invexp-card-header h5 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #007bff;
+  margin: 0;
+  flex: 1;
+  text-align: left;
+}
+
+.modern-invexp-usericon {
+  color: #74C0FC;
+}
+
+.modern-invexp-card-user {
+  display: flex;
+  justify-content: space-between;
+  color: #444;
+  font-size: 0.98rem;
+  margin-top: 0.2rem;
+}
+
+.modern-invexp-date {
+  color: #888;
+  font-size: 0.93rem;
+}
+
+.modern-invexp-card-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 0.2rem;
+}
+
+.modern-invexp-views {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #007bff;
+  font-size: 1rem;
+}
+
+.modern-invexp-eye {
+  color: #74C0FC;
+}
+
+.modern-invexp-count {
+  font-weight: 600;
+  color: #222;
+}
+
+/* Pagination styles (reuse from previous modern-pagination) */
+.modern-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.modern-pagination-link {
+  background: #f1f7ff;
+  color: #007bff;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  margin: 0 2px;
+}
+
+.modern-pagination-link--active,
+.modern-pagination-link:focus {
+  background: #007bff;
+  color: #fff;
+}
+
+.modern-pagination-link--disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Responsive styles */
+@media (max-width: 900px) {
+  .modern-invexp-list {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .modern-invexp-header {
+    max-width: 98vw;
+  }
+  .modern-invexp-filters {
+    max-width: 98vw;
+  }
+}
+@media (max-width: 600px) {
+  .modern-invexp-header h1 {
+    font-size: 1.2rem;
+  }
+  .modern-invexp-lead,
+  .modern-invexp-motto {
+    font-size: 0.97rem;
+  }
+  .modern-invexp-btn {
+    font-size: 1rem;
+    padding: 0.6rem 1.2rem;
+  }
+  .modern-invexp-card {
+    padding: 0.8rem 0.7rem 0.7rem 0.7rem;
+    min-height: 120px;
+  }
+}
+
+/* InterviewExpDetail css code */
+/* Add to Stylesheet.css or your main CSS file */
+/* Modern Interview Experience Details Styles */
+.modern-invexpdetails-container {
+  min-height: 80vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #e0e7ef 100%);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 2.5rem 1rem 2rem 1rem;
+}
+
+.modern-invexpdetails-card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0,123,255,0.07);
+  max-width: 700px;
+  width: 100%;
+  padding: 2.2rem 2rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.modern-invexpdetails-header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 1.2rem;
+}
+
+.modern-invexpdetails-title {
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: #007bff;
+  margin-bottom: 0.4rem;
+  word-break: break-word;
+}
+
+.modern-invexpdetails-user {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 1.08rem;
+  color: #2563eb;
+  margin-bottom: 0.3rem;
+}
+
+.modern-invexpdetails-usericon {
+  color: #74C0FC;
+}
+
+.modern-invexpdetails-date {
+  color: #888;
+  font-size: 0.97rem;
+  margin-bottom: 0.7rem;
+}
+
+.modern-invexpdetails-content {
+  width: 100%;
+  color: #333;
+  font-size: 1.08rem;
+  line-height: 1.7;
+  margin-bottom: 1.2rem;
+  max-height: 14em;
+  overflow: hidden;
+  position: relative;
+  transition: max-height 0.3s;
+}
+.modern-invexpdetails-content.expanded {
+  max-height: 1000em;
+  overflow: visible;
+}
+.modern-invexpdetails-content-line {
+  margin-bottom: 0.7em;
+}
+
+.modern-invexpdetails-toggle {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.7rem 1.5rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  align-self: center;
+  transition: background 0.2s;
+  margin-top: 0.2rem;
+}
+.modern-invexpdetails-toggle:hover,
+.modern-invexpdetails-toggle:focus {
+  background: #0056b3;
+}
+
+.modern-invexpdetails-loading {
+  width: 100%;
+  text-align: center;
+  color: #007bff;
+  font-size: 1.2rem;
+  margin: 2rem 0;
+}
+
+/* Responsive styles */
+@media (max-width: 700px) {
+  .modern-invexpdetails-card {
+    padding: 1.2rem 0.7rem 1rem 0.7rem;
+    max-width: 98vw;
+  }
+  .modern-invexpdetails-title {
+    font-size: 1.15rem;
+  }
+  .modern-invexpdetails-user {
+    font-size: 0.97rem;
+  }
+  .modern-invexpdetails-content {
+    font-size: 0.97rem;
+  }
+  .modern-invexpdetails-toggle {
+    font-size: 0.97rem;
+    padding: 0.6rem 1.1rem;
+  }
+}
+
+
+/* css for interviewformExp */
+/* Add to Stylesheet.css or your main CSS file */
+/* Modern Interview Experience Form Styles */
+.modern-invform-container {
+  min-height: 80vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #e0e7ef 100%);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 2.5rem 1rem 2rem 1rem;
+}
+
+.modern-invform-card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0,123,255,0.07);
+  max-width: 600px;
+  width: 100%;
+  padding: 2.2rem 2rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.modern-invform-title {
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: #007bff;
+  margin-bottom: 0.4rem;
+  text-align: center;
+  width: 100%;
+}
+
+.modern-invform-lead {
+  color: #555;
+  font-size: 1.08rem;
+  margin-bottom: 1.2rem;
+  text-align: center;
+  width: 100%;
+}
+
+.modern-invform-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.modern-invform-row {
+  display: flex;
+  gap: 1.2rem;
+  width: 100%;
+}
+
+.modern-invform-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.modern-invform-field label {
+  font-weight: 600;
+  color: #007bff;
+  margin-bottom: 0.1rem;
+}
+
+.modern-invform-field input,
+.modern-invform-field textarea {
+  border: 1px solid #cce0ff;
+  border-radius: 8px;
+  padding: 0.7rem 1rem;
+  font-size: 1rem;
+  background: #f8fafc;
+  transition: border 0.2s;
+  outline: none;
+  resize: none;
+}
+.modern-invform-field input:focus,
+.modern-invform-field textarea:focus {
+  border-color: #007bff;
+}
+
+.modern-invform-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: -0.5rem;
+}
+
+.modern-invform-checkbox input[type="checkbox"] {
+  accent-color: #007bff;
+  width: 18px;
+  height: 18px;
+}
+
+.modern-invform-btn {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 22px;
+  padding: 0.8rem 2.2rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 0.5rem;
+  align-self: center;
+  box-shadow: 0 2px 8px rgba(0,123,255,0.09);
+}
+.modern-invform-btn:hover,
+.modern-invform-btn:focus {
+  background: #0056b3;
+}
+
+.modern-invform-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modern-invform-modal-content {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 4px 24px rgba(0,123,255,0.13);
+  padding: 2rem 2.5rem;
+  font-size: 1.1rem;
+  text-align: center;
+  color: #222;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  max-width: 90vw;
+}
+
+@media (max-width: 700px) {
+  .modern-invform-card {
+    padding: 1.2rem 0.7rem 1rem 0.7rem;
+    max-width: 98vw;
+  }
+  .modern-invform-title {
+    font-size: 1.15rem;
+  }
+  .modern-invform-lead {
+    font-size: 0.97rem;
+  }
+  .modern-invform-row {
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+  .modern-invform-btn {
+    font-size: 1rem;
+    padding: 0.7rem 1.2rem;
+  }
+  .modern-invform-modal-content {
+    padding: 1.2rem 1rem;
+    font-size: 1rem;
+  }
+}

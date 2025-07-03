@@ -1,111 +1,156 @@
-/* 🔹 Default Styles (for Large Screens) */
-.search-bar {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 70%;
-  background: rgba(255, 255, 255, 0.9); /* Light background */
-  padding: 12px;
-  border-radius: 10px;
+/* Modern Slider & Search Bar Styles */
+.slider-modern-container {
+  width: 100%;
+  max-width: 100vw;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.modern-carousel {
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0,123,255,0.08);
+}
+
+.carousel-bg-modern {
+  min-height: 400px;
+  background-size: cover;
+  background-position: center;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  flex-wrap: nowrap; /* Prevents wrapping */
+  position: relative;
 }
 
-/* Input Fields */
-.search-bar input {
-  flex: 1; /* Equal spacing */
-  min-width: 200px; /* Prevents shrinking */
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+.slider-content-center {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  background: rgba(255,255,255,0.85);
+  border-radius: 18px;
+  padding: 2.5rem 1.5rem 2rem 1.5rem;
+  box-shadow: 0 4px 24px rgba(0,123,255,0.07);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.slider-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #007bff;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.slider-subtitle {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.modern-search-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  width: 100%;
+  justify-content: center;
+}
+
+.modern-search-bar input {
+  flex: 1 1 140px;
+  min-width: 120px;
+  padding: 0.7rem 1rem;
+  border: 1px solid #cce0ff;
+  border-radius: 8px;
   font-size: 1rem;
+  outline: none;
+  transition: border 0.2s;
+  background: #f8fafc;
 }
 
-/* Search Button */
-.search-bar button {
-  padding: 10px 15px;
-  background-color: #28a745;
-  color: white;
+.modern-search-bar input:focus {
+  border-color: #007bff;
+}
+
+.modern-search-bar button {
+  padding: 0.7rem 2rem;
+  background: #007bff;
+  color: #fff;
   border: none;
-  border-radius: 5px;
-  cursor: pointer;
+  border-radius: 8px;
   font-size: 1rem;
-  white-space: nowrap; /* Prevents text wrapping */
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  box-shadow: 0 2px 8px rgba(0,123,255,0.09);
 }
 
-.search-bar button:hover {
-  background-color: #218838;
+.modern-search-bar button:hover,
+.modern-search-bar button:focus {
+  background: #0056b3;
 }
 
-/* ✅ Responsive Media Queries */
-
-/* 🔸 Large Devices (Laptops, Desktops) */
-@media (min-width: 1024px) {
-  .search-bar {
-    width: 85%;
-    margin: 0 -15%; /* Adds spacing */
-    padding: auto;
-
+/* Responsive styles */
+@media (max-width: 1024px) {
+  .slider-content-center {
+    max-width: 90vw;
+    padding: 2rem 1rem 1.5rem 1rem;
   }
-  .search-bar input {
-    min-width: 180px;
-    padding: 10px;
-    border-radius: 12px;
-    margin: 1% 1%;
-  }
-  .search-bar button {
-    padding: 10px;
-    border-radius: 12px;
-    margin: 1% 1%;
+  .carousel-bg-modern {
+    min-height: 320px;
   }
 }
 
-
-
-/* 🔸 Small Tablets & Large Phones */
-@media (max-width: 769px) {
-  .search-bar {
-    width: 90%;
-    flex-wrap: wrap; /* Wrap elements in smaller screens */
-    padding: 10px;
-    margin: 0 -15%; /* Adds spacing */
+@media (max-width: 768px) {
+  .carousel-bg-modern {
+    min-height: 220px;
   }
-  .search-bar input {
-    width: 48%; /* Side-by-side on medium screens */
-    min-width: unset;
-    padding: 10px;
-    border-radius: 12px;
-    margin: 1% 1%;
+  .slider-content-center {
+    padding: 1.2rem 0.5rem 1rem 0.5rem;
+    max-width: 98vw;
   }
-  .search-bar button {
-    width: 48%; /* Keeps the button aligned */
-    text-align: center;
-    padding: 10px;
-    border-radius: 12px;
+  .slider-title {
+    font-size: 1.3rem;
+  }
+  .slider-subtitle {
+    font-size: 1rem;
+  }
+  .modern-search-bar {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .modern-search-bar input,
+  .modern-search-bar button {
+    width: 100%;
+    min-width: 0;
+    font-size: 0.98rem;
   }
 }
 
-/* 🔸 Mobile Phones */
 @media (max-width: 480px) {
-  .search-bar {
-    flex-direction: column; /* Stack elements */
-    width: 95%;
-    padding: 12px;
-    margin: 0 -14%;
+  .slider-content-center {
+    padding: 0.7rem 0.2rem 0.7rem 0.2rem;
+    border-radius: 10px;
   }
-  .search-bar input {
-    width: 100%; /* Full width inputs */
-    margin-bottom: 8px; /* Adds spacing */
-    padding: auto;
-    border-radius: 12px;
+  .slider-title {
+    font-size: 1.05rem;
   }
-  .search-bar button {
-    width: 100%; /* Full width button */
-    padding: auto;
-    border-radius: 12px;
+  .slider-subtitle {
+    font-size: 0.95rem;
+  }
+  .modern-search-bar input,
+  .modern-search-bar button {
+    font-size: 0.93rem;
+    padding: 0.6rem 0.7rem;
+  }
+  .carousel-bg-modern {
+    min-height: 140px;
+  }
+  .modern-search-bar input {
+  flex: 1 1 80px;
   }
 }

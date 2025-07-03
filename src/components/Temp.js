@@ -2,14 +2,9 @@ import React from 'react'
 import './Stylesheet.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
-import {
-  faFacebook,
-  faTwitter,
-  faInstagram,
-  faLinkedin,
-  faGithub,
-  faYoutube,
-} from '@fortawesome/free-brands-svg-icons';
+
+// for testing purpose component
+// This component is used to test the CSS styles and layout
 const Temp = () => {
   return (
     <>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Stylesheet.css";
+import './jobCard.css'; // Assuming you have a CSS file for styling
 import { Link } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -29,14 +29,16 @@ function Jobcard({ jobfilter }) {
     const jobTitle = post.title || "Job Opportunity";
     const jobLocation = post.location || "Unknown Location";
     const jobPay = post.pay || "Salary not disclosed";
-    const jobURL = `${window.location.origin}/job/${post.id}/${slugify(jobTitle)}`;
-  
+    const jobURL = `${window.location.origin}/job/${post.id}/${slugify(
+      jobTitle
+    )}`;
+
     if (navigator.share) {
       navigator
         .share({
-          title: `Job Opportunity at ${jobTitle}\n`,
-          text: `Check out this job: ${jobTitle}\n at ${jobLocation}\n Expected Pay: ${jobPay}\n`,
-          url: `Apply here: ${jobURL}\n`,
+          title: `Job Opportunity at ${jobTitle}`,
+          text: `Check out this job: ${jobTitle} at ${jobLocation}. Expected Pay: ${jobPay}.`,
+          url: jobURL,
         })
         .then(() => console.log("Successful share"))
         .catch((error) => console.log("Error sharing", error));
@@ -47,72 +49,73 @@ function Jobcard({ jobfilter }) {
       });
     }
   };
-  
+
   return (
-    <div className="row">
-      <div className="containerJob">
-        {currentPageJob.map((post) => (
-          <Link
-            key={post.id}
-            className="jobLink"
-            to={`/job/${post.id}/${slugify(post.title)}`}
-          >
-            <div className="card">
-              <img
-                src={`${process.env.REACT_APP_API_URL}/${post.image}`}
-                className="card-img-top img"
-                alt={post.title}
-              />
-              <div className="card-body">
-                <h6 className="card-title text-center">{post.role}</h6>
-                <div className="jobdetail">
-                  <p>
-                    <FontAwesomeIcon icon={faBriefcase} />
-                    <span className="ms-2">{post.batches}</span>
-                  </p>
-                  <p>
-                    <FontAwesomeIcon icon={faMapMarkerAlt} />
-                    <span className="ms-2">{post.location}</span>
-                  </p>
-                  <p>
-                    <FontAwesomeIcon icon={faWallet} />{" "}
-                    <span className="ms-2">{post.pay}</span>
-                  </p>
-                  <p hidden>
-                    <FontAwesomeIcon icon={faCalendar} />{" "}
-                    <span className="ms-2"></span>
-                    {new Date(post.created_at).toLocaleDateString()}
-                  </p>
+    <div className="modern-jobcard-row">
+      <div className="modern-jobcard-container">
+        {currentPageJob.length === 0 ? (
+          <div className="no-jobs-found">No jobs found.</div>
+        ) : (
+          currentPageJob.map((post) => (
+            <div className="modern-jobcard" key={post.id}>
+              <div className="modern-jobcard-img-wrap">
+                <img
+                  src={`${process.env.REACT_APP_API_URL}/${post.image}`}
+                  className="modern-jobcard-img"
+                  alt={post.title}
+                />
+              </div>
+              <div className="modern-jobcard-body">
+                <h6 className="modern-jobcard-title">{post.role}</h6>
+                <div className="modern-jobcard-details">
+                  <span>
+                    <FontAwesomeIcon icon={faBriefcase} /> {post.batches}
+                  </span>
+                  <span>
+                    <FontAwesomeIcon icon={faMapMarkerAlt} /> {post.location}
+                  </span>
+                  <span>
+                    <FontAwesomeIcon icon={faWallet} /> {post.pay}
+                  </span>
                 </div>
-                <div className="alyShare">
-                <div className="btnapply btn btn-sm btn-outline-success">
-                  {" "}
-                  Apply Now{" "}
+                <div className="modern-jobcard-footer">
+                  <Link
+                    className="modern-jobcard-apply"
+                    to={`/job/${post.id}/${slugify(post.title)}`}
+                  >
+                    Apply Now
+                  </Link>
+                  <button
+                    type="button"
+                    className="modern-jobcard-share"
+                    onClick={() => handleShare(post)}
+                    aria-label="Share job"
+                  >
+                    <FontAwesomeIcon icon={faShareAlt} />
+                  </button>
                 </div>
-                <div
-                  type="button"
-                  className="share-buttons btn btn-sm"
-                  onClick={() => handleShare(post)}
-                >
-                  <FontAwesomeIcon icon={faShareAlt} />
-                </div>
+                <div className="modern-jobcard-date">
+                  <FontAwesomeIcon icon={faCalendar} />{" "}
+                  {new Date(post.created_at).toLocaleDateString()}
                 </div>
               </div>
             </div>
-          </Link>
-        ))}
+          ))
+        )}
       </div>
-      <ReactPaginate
-        previousLabel={"← Previous"}
-        nextLabel={"Next →"}
-        pageCount={pageCount}
-        onPageChange={handlePageClick}
-        containerClassName={"pagination"}
-        previousLinkClassName={"pagination__link"}
-        nextLinkClassName={"pagination__link"}
-        disabledClassName={"pagination__link--disabled"}
-        activeClassName={"pagination__link--active"}
-      />
+      {pageCount > 1 && (
+        <ReactPaginate
+          previousLabel={"←"}
+          nextLabel={"→"}
+          pageCount={pageCount}
+          onPageChange={handlePageClick}
+          containerClassName={"modern-pagination"}
+          previousLinkClassName={"modern-pagination-link"}
+          nextLinkClassName={"modern-pagination-link"}
+          disabledClassName={"modern-pagination-link--disabled"}
+          activeClassName={"modern-pagination-link--active"}
+        />
+      )}
     </div>
   );
 }

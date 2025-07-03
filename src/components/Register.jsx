@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './Stylesheet.css';
+import './loginRegister.css';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -38,35 +38,36 @@ const Register = () => {
   };
 
   return (
-    <div className="loginCard">
-       {/* Display message */}
-       {message && <p>{message}</p>}
-      <h4 className='adl'>Admin Register</h4>
-      <form onSubmit={handleSubmit}>
-        {/* Email input */}
-        <div data-mdb-input-init className="form-outline mb-4">
-          <input type="text" id="name" name='name' className="form-control" value={formData.name} onChange={handleChange} />
-          <label className="form-label" htmlFor="form2Example1">Name</label>
-        </div>
+    <div className="modern-login-container">
+      <div className="modern-login-card">
+        {/* Display message */}
+        {message && <p>{message}</p>}
+        <h4 className='modern-login-title'>Admin Register</h4>
+        <form onSubmit={handleSubmit} className="modern-login-form">
+          {/* Email input */}
+          <div className="modern-login-field">
+            <label htmlFor="name">Name</label>
+            <input type="text" id="name" name='name' value={formData.name} onChange={handleChange} />
+          </div>
 
-        <div data-mdb-input-init className="form-outline mb-4">
-          <input type="email" id="email" name='email' className="form-control" value={formData.email} onChange={handleChange} />
-          <label className="form-label" htmlFor="form2Example1">Email address</label>
-        </div>
+          <div className="modern-login-field">
+            <label htmlFor="email">Email address</label>
+            <input type="email" id="email" name='email' value={formData.email} onChange={handleChange} />
+          </div>
 
-        {/* Password input */}
-        <div data-mdb-input-init className="form-outline mb-4">
-          <input type="password" id="password" name='password' className="form-control" value={formData.password} onChange={handleChange} />
-          <label className="form-label" htmlFor="form2Example2">Password</label>
-        </div>
+          {/* Password input */}
+          <div className="modern-login-field">
+            <label htmlFor="password">Password</label>
+            <input type="password" id="password" name='password' value={formData.password} onChange={handleChange} />
+          </div>
 
-        {/* Submit button */}
-        <button type="submit" className="btn btn-primary btn-block mb-4 btnsub">Register</button>
-        <div className="text-center">
-          <p>Registered User: <Link to="/admin/login">Login</Link></p>
-        </div>
-       
-      </form>
+          {/* Submit button */}
+          <button type="submit" className="btn btn-primary btn-block mb-4 btnsub modern-login-btn">Register</button>
+          <div className="text-center modern-login-link">
+            <p>Registered User: <Link to="/admin/login">Login</Link></p>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

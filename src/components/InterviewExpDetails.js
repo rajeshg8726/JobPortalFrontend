@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './SecondStyleSheet.css';
+import './InterviewsPages.css'; // Assuming you have a CSS file for styling
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
@@ -16,53 +16,52 @@ const InterviewExpDetails = () => {
       try {
         const res = await axios.get(`${backendURL}/api/getAdminAddedInvById/${id}`);
         setInvData(res.data.InvData);
-        console.log(res.data.InvData);  // For debugging
       } catch (error) {
         console.error('Error fetching interview data:', error);
       }
     };
     getAllInterviewsById();
+    window.scrollTo(0, 0);
   }, [backendURL, id]);
 
   const formatContentWithLineBreaks = (text) => {
-    // Split the text into sentences or segments of approximately three lines
-    const sentences = text.split('.').map((sentence, index) => (
-      <React.Fragment key={index}>
-        {sentence.trim() && `${sentence.trim()}.`}
-        {(index + 1) % 3 === 0 && <br />  } {/* Insert line break after every three sentences */}
-      </React.Fragment>
+    if (!text) return null;
+    return text.split('\n').map((line, idx) => (
+      <p key={idx} className="modern-invexpdetails-content-line">{line.trim()}</p>
     ));
-    return sentences;
   };
 
-  if (!invData) return <div>Loading...</div>;
+  if (!invData) return <div className="modern-invexpdetails-loading">Loading...</div>;
 
   return (
-    <div className="container">
-      <div className="htitle border-bottom my-4 mx-4">
-        {invData.title}
-      </div>
-
-      <div className="iconexp">
-        <FontAwesomeIcon className='invusericon' icon={faCircleUser} size="2xl" style={{ color: "#74C0FC" }} />
-      </div>
-      <div className="userexp">
-        {invData.anonymous === 1 ? "Anonymous User" : invData.name}
-      </div>
-
-      <div className="postdate float-end">
-        {new Date(invData.created_at).toLocaleDateString()}
-      </div>
-
-      <div className={`content my-4 mx-4 ${isExpanded ? 'expanded' : 'clamped'}`}>
-        {formatContentWithLineBreaks(invData.details)}
-      </div>
-
-      <div
-        className="toggle-button"
-        onClick={() => setIsExpanded(!isExpanded)}
-      >
-        {isExpanded ? "Show Less" : "Show More"}
+    <div className="modern-invexpdetails-container">
+      <div className="modern-invexpdetails-card">
+        <div className="modern-invexpdetails-header">
+          <h1 className="modern-invexpdetails-title">{invData.title}</h1>
+          <div className="modern-invexpdetails-user">
+            <FontAwesomeIcon className="modern-invexpdetails-usericon" icon={faCircleUser} size="2x" />
+            <span>
+              {invData.anonymous === 1 ? "Anonymous User" : invData.name}
+            </span>
+          </div>
+          <div className="modern-invexpdetails-date">
+            {new Date(invData.created_at).toLocaleDateString()}
+          </div>
+        </div>
+        <div className={`modern-invexpdetails-content ${isExpanded ? 'expanded' : 'clamped'}`}>
+          {isExpanded
+            ? formatContentWithLineBreaks(invData.details)
+            : formatContentWithLineBreaks(invData.details?.split('\n').slice(0, 5).join('\n'))
+          }
+        </div>
+        {invData.details && invData.details.split('\n').length > 5 && (
+          <button
+            className="modern-invexpdetails-toggle"
+            onClick={() => setIsExpanded(!isExpanded)}
+          >
+            {isExpanded ? "Show Less" : "Show More"}
+          </button>
+        )}
       </div>
     </div>
   );

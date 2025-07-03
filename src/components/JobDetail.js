@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import "./Stylesheet.css";
+import "./JobDetailModern.css";
 import axios from "axios";
-import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -13,51 +12,40 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import slugify from "react-slugify";
 import ReactPaginate from "react-paginate";
+import PageNotFound from "./PageNotFound";
 
-// Custom hook to get window width
+// ...useWindowSize hook remains unchanged...
+
 const useWindowSize = () => {
-  const [windowSize, setWindowSize] = useState({
-    width: undefined,
-  });
-
+  const [windowSize, setWindowSize] = useState({ width: undefined });
   useEffect(() => {
-    const handleResize = () => {
-      setWindowSize({
-        width: window.innerWidth,
-      });
-    };
-
+    const handleResize = () => setWindowSize({ width: window.innerWidth });
     window.addEventListener("resize", handleResize);
-
     handleResize();
-
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
   return windowSize;
 };
 
 const JobDetail = () => {
-  const [jobData, setJobData] = useState(null); // Initialize jobData as null
+  const [jobData, setJobData] = useState(null);
   const [error, setError] = useState(null);
   const { id, slug } = useParams();
   const backendURL = process.env.REACT_APP_API_URL;
   const [jobListData, setJobListData] = useState([]);
-  const size = useWindowSize(); // Use the custom hook to get the screen size
-  const [currentPage, setCurrentPage] = useState(0); // New state for current page
-  const jobsPerPage = 5; // Jobs per page
+  const size = useWindowSize();
+  const [currentPage, setCurrentPage] = useState(0);
+  const jobsPerPage = 5;
+
   useEffect(() => {
     const getDataFromApi = async () => {
       try {
         const response = await axios.get(`${backendURL}/api/job/${id}`);
-        const rt = response.data.job;
-        setJobData(rt);
+        setJobData(response.data.job);
       } catch (error) {
-        console.error("Error fetching data:", error);
         setError(error);
       }
     };
-
     getDataFromApi();
   }, [id, backendURL]);
 
@@ -65,20 +53,17 @@ const JobDetail = () => {
     const getJobsToList = async () => {
       try {
         const resData = await axios.get(`${backendURL}/api/getAllJobs`);
-        const jobslist = resData.data.JobsData;
-        setJobListData(jobslist);
+        setJobListData(resData.data.JobsData);
       } catch (error) {
-        console.error("Error fetching data:", error);
         setError(error);
       }
     };
-
     getJobsToList();
   }, [backendURL]);
 
   useEffect(() => {
-    window.scrollTo(0, 0); // Scroll to the top of the page
-  }, []); // Runs only once when the component is mounted
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleShare = (post) => {
     if (navigator.share) {
@@ -86,37 +71,23 @@ const JobDetail = () => {
         .share({
           title: post.title,
           text: `Check out this job: ${post.title} at ${post.location}. Expected Pay: ${post.pay}.`,
-          url: `${window.location.origin}/job/${post.id}/${slugify(
-            post.title
-          )}`,
+          url: `${window.location.origin}/job/${post.id}/${slugify(post.title)}`,
         })
-        .then(() => console.log("Successful share"))
-        .catch((error) => console.log("Error sharing", error));
+        .catch(() => {});
     } else {
       alert("Web Share API is not supported in your browser.");
     }
   };
 
-  // Pagination logic
-  const handlePageClick = ({ selected }) => {
-    setCurrentPage(selected); // Set the selected page
-  };
-
-  // Calculate the offset and the current jobs to display
+  const handlePageClick = ({ selected }) => setCurrentPage(selected);
   const offset = currentPage * jobsPerPage;
   const currentJobs = jobListData.slice(offset, offset + jobsPerPage);
   const pageCount = Math.ceil(jobListData.length / jobsPerPage);
 
-  if (error) {
-    return <div>Error fetching data: {error.message}</div>;
-  }
+  if (error) return <PageNotFound />;
+  if (!jobData) return <div className="modern-loading">Loading...</div>;
 
-  if (!jobData) {
-    // If jobData is null (loading state)
-    return <div>Loading...</div>;
-  }
-
-  // Structured Data for JobPosting
+  // Structured Data for SEO
   const structuredData = {
     "@context": "https://schema.org/",
     "@type": "JobPosting",
@@ -164,310 +135,121 @@ const JobDetail = () => {
           {JSON.stringify(structuredData)}
         </script>
       </Helmet>
-      <div className="row">
-        {size.width <= 768 ? (
-          // On mobile, render job detail first and then job list
-          <>
-            {/* Job Detail */}
-            <div className="jobcontain col-sm-8">
-              <div key={jobData.id} className="jobDetail">
-                <div className="imgcard">
-                  <img
-                    src={`${process.env.REACT_APP_API_URL}/${jobData.image}`}
-                    className="card-img-top"
-                    alt={`${jobData.title} job at ${jobData.location}`}
-                  />
-                </div>
-                <div className="container">
-                  <h3 className="text-center">
-                    <strong>{jobData.title}</strong>
-                  </h3>
-                  <h5>
-                    {" "}
-                    <strong> Job Role: </strong>
-                  </h5>
-                  <p>{jobData.role}</p>
-                  <h5>
-                    {" "}
-                    <strong>For Batch:</strong>
-                  </h5>
-                  <p>{jobData.batches}</p>
-                  <h5>
-                    {" "}
-                    <strong>Expected Pay:</strong>
-                  </h5>
-                  <p>{jobData.pay}</p>
-                  <h5>
-                    {" "}
-                    <strong>Location:</strong>
-                  </h5>
-                  <p>{jobData.location}</p>
-                  <h5>
-                    {" "}
-                    <strong>Job Requirements:</strong>
-                  </h5>
-                  <ul>
-                    {jobData.description
-                      .split(".")
-                      .map(
-                        (sentence, index) =>
-                          sentence.trim() && (
-                            <li key={index}>{sentence.trim()}.</li>
-                          )
-                      )}
-                  </ul>
-                  <Link
-                    className="jobLink"
-                    to={jobData.joblink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <button className="btn btn-outline-success btn-sm">
-                      APPLY FOR THIS JOB
-                    </button>
-                  </Link>
-                  <div
-                    type="button"
-                    className="share-buttonsonJobDetailOnMobile btn btn-sm btn-outline-primary"
-                    onClick={() => handleShare(jobData)}
-                  >
-                    <FontAwesomeIcon className="shareIcon" icon={faShareAlt} />{" "}
-                    <span style={{ marginLeft: "10%" }} > Share </span>
-                  </div>
-
-                  <div className="dobcalc" style={{margin:"1rem auto"}} > 
-                      <Link to="https://www.dobcalc.com" target="_blank" >
-                      <button className="btn btn-outline-primary btn-sm">
-                      Check Your Age <span class="badge text-bg-secondary">New</span>
-                    </button>
-                       </Link>
-                    </div>
-
-                </div>
-              </div>
+      <div className="modern-jobdetail-layout">
+        {/* Job Detail Card */}
+        <section className="modern-jobdetail-card">
+          <div className="modern-jobdetail-img-wrap">
+            <img
+              src={`${backendURL}/${jobData.image}`}
+              alt={jobData.title}
+              className="modern-jobdetail-img"
+            />
+          </div>
+          <div className="modern-jobdetail-content">
+            <h1 className="modern-jobdetail-title">{jobData.title}</h1>
+            <div className="modern-jobdetail-meta">
+              <span>
+                <FontAwesomeIcon icon={faBriefcase} /> {jobData.batches}
+              </span>
+              <span>
+                <FontAwesomeIcon icon={faMapMarkerAlt} /> {jobData.location}
+              </span>
+              <span>
+                <FontAwesomeIcon icon={faWallet} /> {jobData.pay}
+              </span>
             </div>
-
-            {/* Job List */}
-            <div className="joblist col-sm-4">
-              <ul className="list-group">
-                {currentJobs.map((joblst) => (
-                  <li className="list-group-item" key={joblst.id}>
-                    <Link
-                      className="listjob"
-                      to={`/job/${joblst.id}/${slugify(joblst.title)}`}
-                      target="_blank"
-                    >
-                      <div className="card mb-3">
-                        <div className="row g-0">
-                          <div className="col-sm-2">
-                            <img
-                              src={`${process.env.REACT_APP_API_URL}/${joblst.image}`}
-                              className="card-img-top lsimg"
-                              alt={`${joblst.title} job at ${joblst.location}`}
-                            />
-                          </div>
-                          <div className="col-sm-8">
-                            <div className="card-body">
-                              <h6 className="card-title lsrole">
-                                {joblst.role}
-                              </h6>
-                              <div className="jobdetailList">
-                                <p>
-                                  <FontAwesomeIcon icon={faBriefcase} />
-                                  <span className="ms-2">{joblst.batches}</span>
-                                </p>
-                                <p>
-                                  <FontAwesomeIcon icon={faMapMarkerAlt} />
-                                  <span className="ms-2">
-                                    {joblst.location}
-                                  </span>
-                                </p>
-                                <p>
-                                  <FontAwesomeIcon icon={faWallet} />
-                                  <span className="ms-2">{joblst.pay}</span>
-                                </p>
-
-                                <div className="btnapplyJobDetail btn btn-sm btn-outline-success">
-                                  {" "}
-                                  Apply Now{" "}
-                                </div>
-
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-              {/* Pagination Component */}
-              <ReactPaginate
-                previousLabel={"Previous"}
-                nextLabel={"Next"}
-                breakLabel={"..."}
-                breakClassName={"break-me"}
-                pageCount={pageCount}
-                marginPagesDisplayed={2}
-                pageRangeDisplayed={5}
-                onPageChange={handlePageClick}
-                containerClassName={"pagination"}
-                subContainerClassName={"pages pagination"}
-                activeClassName={"active"}
-              />
+            <div className="modern-jobdetail-role">
+              <strong>Role:</strong> {jobData.role}
             </div>
-          </>
-        ) : (
-          // On larger screens, render job list first and job detail
-          <>
-            {/* Job List */}
-            <div className="joblist col-sm-4">
-              <ul className="list-group">
-                {currentJobs.map((joblst) => (
-                  <li className="list-group-item" key={joblst.id}>
-                    <Link
-                      className="listjob"
-                      to={`/job/${joblst.id}/${slugify(joblst.title)}`}
-                      target="_blank"
-                    >
-                      <div className="card mb-3">
-                        <div className="row g-0">
-                          <div className="col-sm-2">
-                            <img
-                              src={`${process.env.REACT_APP_API_URL}/${joblst.image}`}
-                              className="card-img-top lsimg"
-                              alt={`${joblst.title} job at ${joblst.location}`}
-                            />
-                          </div>
-                          <div className="col-sm-8">
-                            <div className="card-body">
-                              <h6 className="card-title lsrole">
-                                {joblst.role}
-                              </h6>
-                              <div className="jobdetailList">
-                                <p>
-                                  <FontAwesomeIcon icon={faBriefcase} />
-                                  <span className="ms-2">{joblst.batches}</span>
-                                </p>
-                                <p>
-                                  <FontAwesomeIcon icon={faMapMarkerAlt} />
-                                  <span className="ms-2">
-                                    {joblst.location}
-                                  </span>
-                                </p>
-                                <p>
-                                  <FontAwesomeIcon icon={faWallet} />
-                                  <span className="ms-2">{joblst.pay}</span>
-                                </p>
-                                <div className="btnapplyJobDetail btn btn-sm btn-outline-success">
-                                  {" "}
-                                  Apply Now{" "}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </Link>
-                  </li>
-                ))}
-                {/* Pagination Component */}
-                <ReactPaginate
-                  previousLabel={"Previous"}
-                  nextLabel={"Next"}
-                  breakLabel={"..."}
-                  breakClassName={"break-me"}
-                  pageCount={pageCount}
-                  marginPagesDisplayed={2}
-                  pageRangeDisplayed={5}
-                  onPageChange={handlePageClick}
-                  containerClassName={"pagination"}
-                  subContainerClassName={"pages pagination"}
-                  activeClassName={"active"}
-                />
+            <div className="modern-jobdetail-section">
+              <strong>Job Requirements:</strong>
+              <ul>
+                {jobData.description
+                  .split(".")
+                  .map(
+                    (sentence, idx) =>
+                      sentence.trim() && <li key={idx}>{sentence.trim()}.</li>
+                  )}
               </ul>
             </div>
-
-            {/* Job Detail */}
-            <div className="jobcontain col-sm-8">
-              <div key={jobData.id} className="jobDetail">
-                <div className="imgcard">
-                  <img
-                    src={`${process.env.REACT_APP_API_URL}/${jobData.image}`}
-                    className="card-img-top"
-                    alt={`${jobData.title} job at ${jobData.location}`}
-                  />
-                </div>
-                <div className="container">
-                  <h3 className="text-center">
-                    <strong>{jobData.title}</strong>
-                  </h3>
-                  <h5>
-                    {" "}
-                    <strong> Job Role: </strong>
-                  </h5>
-                  <p>{jobData.role}</p>
-                  <h5>
-                    {" "}
-                    <strong>For Batch:</strong>
-                  </h5>
-                  <p>{jobData.batches}</p>
-                  <h5>
-                    {" "}
-                    <strong>Expected Pay:</strong>
-                  </h5>
-                  <p>{jobData.pay}</p>
-                  <h5>
-                    {" "}
-                    <strong>Location:</strong>
-                  </h5>
-                  <p>{jobData.location}</p>
-                  <h5>
-                    {" "}
-                    <strong>Job Requirements:</strong>
-                  </h5>
-                  <ul>
-                    {jobData.description
-                      .split(".")
-                      .map(
-                        (sentence, index) =>
-                          sentence.trim() && (
-                            <li key={index}>{sentence.trim()}.</li>
-                          )
-                      )}
-                  </ul>
-                  <Link
-                    className="jobLink"
-                    to={jobData.joblink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <button className="btn btn-outline-success btn-sm">
-                      APPLY FOR THIS JOB
-                    </button>
-                  </Link>
-                  <div
-                    type="button"
-                    className="share-buttonsonJobDetail btn btn-sm btn-outline-primary"
-                    onClick={() => handleShare(jobData)}
-                  >
-                    <FontAwesomeIcon className="shareIcon" icon={faShareAlt} />{" "}
-                    <span style={{ marginLeft: "10%" }} > Share </span>
-                  </div>
-
-                    <div className="dobcalc" style={{margin:"1rem 1rem"}} > 
-                      <Link to="https://www.dobcalc.com" target="_blank" >
-                      <button className="btn btn-outline-primary btn-sm">
-                      Check Your Age <span class="badge text-bg-secondary">New</span>
-                    </button>
-                       </Link>
-                    </div>
-
-                </div>
-              </div>
+            <div className="modern-jobdetail-actions">
+              <Link
+                to={jobData.joblink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="modern-jobdetail-apply"
+              >
+                Apply for this Job
+              </Link>
+              <button
+                className="modern-jobdetail-share"
+                onClick={() => handleShare(jobData)}
+                aria-label="Share job"
+              >
+                <FontAwesomeIcon icon={faShareAlt} /> Share
+              </button>
             </div>
-          </>
-        )}
+            <div className="modern-jobdetail-extra" hidden>
+              <Link to="https://www.dobcalc.com" target="_blank">
+                <button className="modern-jobdetail-blog">
+                  Check Blogs <span className="badge-new">New</span>
+                </button>
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Job List Sidebar */}
+        <aside className="modern-joblist-sidebar">
+          <h2 className="modern-joblist-title">More Jobs</h2>
+          <ul className="modern-joblist-list">
+            {currentJobs.map((joblst) => (
+              <li key={joblst.id} className="modern-joblist-item">
+                <Link
+                  to={`/job/${joblst.id}/${slugify(joblst.title)}`}
+                  target="_blank"
+                  className="modern-joblist-link"
+                >
+                  <div className="modern-joblist-card">
+                    <img
+                      src={`${backendURL}/${joblst.image}`}
+                      alt={joblst.title}
+                      className="modern-joblist-img"
+                    />
+                    <div>
+                      <div className="modern-joblist-role">{joblst.role}</div>
+                      <div className="modern-joblist-meta">
+                        <span>
+                          <FontAwesomeIcon icon={faBriefcase} /> {joblst.batches}
+                        </span>
+                        <span>
+                          <FontAwesomeIcon icon={faMapMarkerAlt} /> {joblst.location}
+                        </span>
+                        <span>
+                          <FontAwesomeIcon icon={faWallet} /> {joblst.pay}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <ReactPaginate
+            previousLabel={"←"}
+            nextLabel={"→"}
+            breakLabel={"..."}
+            pageCount={pageCount}
+            marginPagesDisplayed={1}
+            pageRangeDisplayed={2}
+            onPageChange={handlePageClick}
+            containerClassName={"modern-pagination"}
+            previousLinkClassName={"modern-pagination-link"}
+            nextLinkClassName={"modern-pagination-link"}
+            disabledClassName={"modern-pagination-link--disabled"}
+            activeClassName={"modern-pagination-link--active"}
+          />
+        </aside>
       </div>
     </>
   );

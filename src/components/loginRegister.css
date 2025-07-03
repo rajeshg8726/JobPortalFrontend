@@ -1,0 +1,293 @@
+/* Modern Login  Styles */
+.modern-login-container {
+  min-height: 80vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #e0e7ef 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1rem 2rem 1rem;
+}
+
+.modern-login-card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0,123,255,0.07);
+  max-width: 400px;
+  width: 100%;
+  padding: 2.2rem 2rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.modern-login-title {
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: #007bff;
+  margin-bottom: 0.4rem;
+  text-align: center;
+  width: 100%;
+}
+
+.modern-login-lead {
+  color: #555;
+  font-size: 1.08rem;
+  margin-bottom: 1.2rem;
+  text-align: center;
+  width: 100%;
+}
+
+.modern-login-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.modern-login-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.modern-login-field label {
+  font-weight: 600;
+  color: #007bff;
+  margin-bottom: 0.1rem;
+}
+
+.modern-login-field input {
+  border: 1px solid #cce0ff;
+  border-radius: 8px;
+  padding: 0.7rem 1rem;
+  font-size: 1rem;
+  background: #f8fafc;
+  transition: border 0.2s;
+  outline: none;
+}
+.modern-login-field input:focus {
+  border-color: #007bff;
+}
+
+.modern-login-btn {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 22px;
+  padding: 0.8rem 2.2rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 0.5rem;
+  align-self: center;
+  box-shadow: 0 2px 8px rgba(0,123,255,0.09);
+}
+.modern-login-btn:disabled {
+  background: #b6d4fe;
+  cursor: not-allowed;
+}
+.modern-login-btn:hover,
+.modern-login-btn:focus {
+  background: #0056b3;
+}
+
+.modern-login-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modern-login-modal-content {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 4px 24px rgba(0,123,255,0.13);
+  padding: 2rem 2.5rem;
+  font-size: 1.1rem;
+  text-align: center;
+  color: #222;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  max-width: 90vw;
+}
+
+@media (max-width: 500px) {
+  .modern-login-card {
+    padding: 1.2rem 0.7rem 1rem 0.7rem;
+    max-width: 98vw;
+  }
+  .modern-login-title {
+    font-size: 1.15rem;
+  }
+  .modern-login-lead {
+    font-size: 0.97rem;
+  }
+  .modern-login-btn {
+    font-size: 1rem;
+    padding: 0.7rem 1.2rem;
+  }
+  .modern-login-modal-content {
+    padding: 1.2rem 1rem;
+    font-size: 1rem;
+  }
+}
+
+
+/* Modern Register Styles */
+.modern-login-container {
+  min-height: 80vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #e0e7ef 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1rem 2rem 1rem;
+}
+
+.modern-login-card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0,123,255,0.07);
+  max-width: 400px;
+  width: 100%;
+  padding: 2.2rem 2rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.modern-login-title {
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: #007bff;
+  margin-bottom: 0.4rem;
+  text-align: center;
+  width: 100%;
+}
+
+.modern-login-lead {
+  color: #555;
+  font-size: 1.08rem;
+  margin-bottom: 1.2rem;
+  text-align: center;
+  width: 100%;
+}
+
+.modern-login-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.modern-login-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.modern-login-field label {
+  font-weight: 600;
+  color: #007bff;
+  margin-bottom: 0.1rem;
+}
+
+.modern-login-field input {
+  border: 1px solid #cce0ff;
+  border-radius: 8px;
+  padding: 0.7rem 1rem;
+  font-size: 1rem;
+  background: #f8fafc;
+  transition: border 0.2s;
+  outline: none;
+}
+.modern-login-field input:focus {
+  border-color: #007bff;
+}
+
+.modern-login-btn {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 22px;
+  padding: 0.8rem 2.2rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 0.5rem;
+  align-self: center;
+  box-shadow: 0 2px 8px rgba(0,123,255,0.09);
+}
+.modern-login-btn:disabled {
+  background: #b6d4fe;
+  cursor: not-allowed;
+}
+.modern-login-btn:hover,
+.modern-login-btn:focus {
+  background: #0056b3;
+}
+
+.modern-login-link {
+  text-align: center;
+  width: 100%;
+  margin-top: 1rem;
+  font-size: 1rem;
+}
+
+.modern-login-link a {
+  color: #007bff;
+  text-decoration: underline;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.modern-login-link a:hover {
+  color: #0056b3;
+}
+
+.modern-login-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modern-login-modal-content {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 4px 24px rgba(0,123,255,0.13);
+  padding: 2rem 2.5rem;
+  font-size: 1.1rem;
+  text-align: center;
+  color: #222;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  max-width: 90vw;
+}
+
+@media (max-width: 500px) {
+  .modern-login-card {
+    padding: 1.2rem 0.7rem 1rem 0.7rem;
+    max-width: 98vw;
+  }
+  .modern-login-title {
+    font-size: 1.15rem;
+  }
+  .modern-login-lead {
+    font-size: 0.97rem;
+  }
+  .modern-login-btn {
+    font-size: 1rem;
+    padding: 0.7rem 1.2rem;
+  }
+  .modern-login-modal-content {
+    padding: 1.2rem 1rem;
+    font-size: 1rem;
+  }
+}

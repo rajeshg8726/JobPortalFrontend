@@ -1,155 +1,158 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ReactPaginate from 'react-paginate';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faEdit,
-  faTrashAlt // This should be `faTrashAlt` instead of `faTrashArrowUp`
-} from '@fortawesome/free-solid-svg-icons';
-const PER_PAGE = 10; // 3 rows per page with 3 columns each
-
+import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import './adminSide.css'; // Assuming you have a CSS file for styling
+const PER_PAGE = 10;
 
 const InvUsersExpList = () => {
-  const {listURL} = useParams();
+  const { listURL } = useParams();
   const [jobPost, setJobPost] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const backendURL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    const getAdminAddedInvExp = async () => {
-        try {
-            let endpoint = '';
-            // Determine the API endpoint based on the route param
-            switch (listURL) {
-                case 'users-added-interviews-list':
-                    endpoint = 'getUsersInvExps';
-                    break;
-                case 'admin-added-interviews-list':
-                    endpoint = 'getAdminAddedInvExps';
-                    break;
-                default:
-                    console.log("Invalid route");
-            }
-
-            if (endpoint) {
-              const res = await axios.get(`${backendURL}/api/${endpoint}`);
-              const result = res.data.InvData;
-              console.log(result);
-              setJobPost(result);
-            }
-        } catch (error) {
-            console.log('Error', error);
-        }
-    };
-
-    getAdminAddedInvExp();
-}, [listURL, backendURL]);
-
-useEffect(() => {
-  window.scrollTo(0, 0); // Scroll to the top of the page
-}, []); // Runs only once when the component is mounted
-
-  useEffect(() => {
-
     const token = localStorage.getItem('token');
-
-    if (!token) {
-      navigate('/admin/login');
-
-    }
-
+    if (!token) navigate('/admin/login');
   }, [navigate]);
 
-  const handlePageClick = ({ selected }) => {
-    setCurrentPage(selected);
-  };
-
-
-  // for deletig the job 
-  const handleDelete = async (id) => {
-    try {
-      const response = await axios.delete(`${backendURL}/api/deleteAdminAddedInvExp/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          
-        },
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        alert(result.message); // Show success message
-        // Optionally, refresh the job list or update the state to remove the deleted job from the table
-      } else {
-        alert('Interviews Deleted Successfully!');
+  useEffect(() => {
+    const getAdminAddedInvExp = async () => {
+      setLoading(true);
+      try {
+        let endpoint = '';
+        switch (listURL) {
+          case 'users-added-interviews-list':
+            endpoint = 'getUsersInvExps';
+            break;
+          case 'admin-added-interviews-list':
+            endpoint = 'getAdminAddedInvExps';
+            break;
+          default:
+            console.log("Invalid route");
+        }
+        if (endpoint) {
+          const res = await axios.get(`${backendURL}/api/${endpoint}`);
+          setJobPost(res.data.InvData);
+        }
+      } catch (error) {
+        console.log('Error', error);
       }
+      setLoading(false);
+    };
+    getAdminAddedInvExp();
+  }, [listURL, backendURL]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  const handlePageClick = ({ selected }) => setCurrentPage(selected);
+
+  const handleDelete = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this interview experience?')) return;
+    try {
+      await axios.delete(`${backendURL}/api/deleteAdminAddedInvExp/${id}`);
+      setJobPost((prev) => prev.filter((item) => item.id !== id));
     } catch (error) {
-      console.error('Error:', error);
       alert('An error occurred. Please try again.');
     }
   };
 
-  // for Editing the job
   const handleEdit = (id) => {
     navigate(`/admin/edit-user-interviews/${id}`);
-  }
+  };
 
   const offset = currentPage * PER_PAGE;
   const currentPageData = jobPost.slice(offset, offset + PER_PAGE);
   const pageCount = Math.ceil(jobPost.length / PER_PAGE);
 
   return (
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">S.No.</th>
-          <th scope="col">User Name</th>
-          <th scope="col">User Email</th>
-          <th scope="col">Company Name</th>
-          <th scope="col">Job Role</th>
-          <th scope="col">Title</th>
-          <th scope="col">Worktype</th>
-          <th scope="col" hidden>Details</th>
-          <th scope="col">Edit/Delete</th>
-        </tr>
-      </thead>
-      <tbody>
-
-        {
-          currentPageData.map((post, index) => (
-            <tr key={post.id}>
-              <th scope="row">{index + 1}</th>
-              <td> {post.name} </td>
-              <td> {post.email} </td>
-              <td> {post.companyName} </td>
-              <td> {post.jobRole} </td>
-              <td> {post.title} </td>
-              <td> {post.experience} </td>
-              <td hidden> {post.details} </td>
-              <td> <button className='btn btn-sm'><FontAwesomeIcon icon={faEdit} onClick={() => handleEdit(post.id)} /> </button>  <button className='btn btn-sm' onClick={() => handleDelete(post.id)} > <FontAwesomeIcon icon={faTrashAlt} /> </button>  </td>
-            </tr>
-          ))
-        }
-      </tbody>
-      <ReactPaginate
-            previousLabel={"Previous"}
-            nextLabel={"Next"}
-            breakLabel={"..."}
-            breakClassName={"break-me"}
+    <div className="modern-table-container">
+      <div className="modern-table-card">
+        <h1 className="modern-table-title">
+          {listURL === 'users-added-interviews-list'
+            ? 'User Submitted Interview Experiences'
+            : 'Admin Submitted Interview Experiences'}
+        </h1>
+        <div className="modern-table-responsive">
+          <table className="modern-table">
+            <thead>
+              <tr>
+                <th>S.No.</th>
+                <th>User Name</th>
+                <th>User Email</th>
+                <th>Company Name</th>
+                <th>Job Role</th>
+                <th>Title</th>
+                <th>Worktype</th>
+                <th className="modern-table-details-col">Details</th>
+                <th>Edit / Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              {loading ? (
+                <tr>
+                  <td colSpan={9} className="modern-table-loading">Loading...</td>
+                </tr>
+              ) : currentPageData.length === 0 ? (
+                <tr>
+                  <td colSpan={9} className="modern-table-empty">No interview experiences found.</td>
+                </tr>
+              ) : (
+                currentPageData.map((post, index) => (
+                  <tr key={post.id}>
+                    <td>{offset + index + 1}</td>
+                    <td>{post.name}</td>
+                    <td>{post.email}</td>
+                    <td>{post.companyName}</td>
+                    <td>{post.jobRole}</td>
+                    <td>{post.title}</td>
+                    <td>{post.experience}</td>
+                    <td className="modern-table-details-col">
+                      <div className="modern-table-details-cell">
+                        <span title={post.details}>
+                          {post.details?.length > 40
+                            ? post.details.slice(0, 40) + '...'
+                            : post.details}
+                        </span>
+                      </div>
+                    </td>
+                    <td>
+                      <button className="modern-table-action edit" onClick={() => handleEdit(post.id)} title="Edit">
+                        <FontAwesomeIcon icon={faEdit} />
+                      </button>
+                      <button className="modern-table-action delete" onClick={() => handleDelete(post.id)} title="Delete">
+                        <FontAwesomeIcon icon={faTrashAlt} />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+        {pageCount > 1 && (
+          <ReactPaginate
+            previousLabel={"←"}
+            nextLabel={"→"}
             pageCount={pageCount}
-            marginPagesDisplayed={2}
-            pageRangeDisplayed={5}
             onPageChange={handlePageClick}
-            containerClassName={"pagination"}
-            subContainerClassName={"pages pagination"}
-            activeClassName={"active"}
+            containerClassName={"modern-pagination"}
+            previousLinkClassName={"modern-pagination-link"}
+            nextLinkClassName={"modern-pagination-link"}
+            disabledClassName={"modern-pagination-link--disabled"}
+            activeClassName={"modern-pagination-link--active"}
           />
-            
-    </table>
-  )
-}
+        )}
+      </div>
+    </div>
+  );
+};
 
-export default InvUsersExpList
+export default InvUsersExpList;
 
