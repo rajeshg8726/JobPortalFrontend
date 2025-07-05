@@ -61,9 +61,7 @@ const JobDetail = () => {
     getJobsToList();
   }, [backendURL]);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+
 
   const handleShare = (post) => {
     if (navigator.share) {

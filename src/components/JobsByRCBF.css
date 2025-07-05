@@ -2,6 +2,7 @@
 /* JobsForBatchOrCity page css */
 /* Modern Jobs By Roles Styles (reuse for batch/city) */
 .modern-jobsbyroles-container {
+  
   min-height: 80vh;
   background: linear-gradient(135deg, #f8fafc 0%, #e0e7ef 100%);
   padding: 2.5rem 1rem 2rem 1rem;
