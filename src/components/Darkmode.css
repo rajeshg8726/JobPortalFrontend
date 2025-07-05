@@ -7,7 +7,7 @@ body.light-mode {
   transition: background 0.3s, color 0.3s;
 }
 body.dark-mode {
-  background: #181c24;
+ background: rgb(17, 0, 31);
   color: #e5e7eb;
   transition: background 0.3s, color 0.3s;
 }
@@ -49,7 +49,7 @@ body.dark-mode {
 .dark-mode .modern-updates-lead,
 .dark-mode .modern-updates-list-item,
 .dark-mode .modern-updates-feature-list {
-  background: #23283a !important;
+  background: rgb(17, 0, 31) !important;
   color: #e5e7eb !important;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18);
 }
