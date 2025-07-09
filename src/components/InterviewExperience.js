@@ -84,9 +84,6 @@ const InterviewExperience = () => {
     navigate("/add-interview-experiences");
   };
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
   const PER_PAGE = 5;
   const [currentPage, setCurrentPage] = useState(0);
 

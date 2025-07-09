@@ -55,10 +55,7 @@ function JobsByRoles() {
         getJobsByRoles();
     }, [jobRoles, backendURL]);
 
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, []);
-
+ 
     const handlePageClick = ({ selected }) => {
         setCurrentPage(selected);
     };
@@ -87,6 +84,10 @@ function JobsByRoles() {
             });
         }
     };
+
+    useEffect(() => {
+        window.scrollTo(0, 0);  // Scroll to top when the component mounts or when currentPageJob changes   
+    }, [currentPageJob]);
 
     return (
         <div className="modern-jobsbyroles-container">

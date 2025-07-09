@@ -155,7 +155,7 @@ const AdminJobAdd = () => {
         <div className="modern-jobadd-row">
           <div className="modern-jobadd-field">
             <label>Batch One</label>
-            <select name="batch1" value={formData.batch1} onChange={handleChange} required>
+            <select name="batch1" value={formData.batch1} onChange={handleChange} >
               <option value="">Select Batch One</option>
               {category && category.length > 0
                 ? category.map((cat) => (
@@ -167,7 +167,7 @@ const AdminJobAdd = () => {
           </div>
           <div className="modern-jobadd-field">
             <label>Batch Two</label>
-            <select name="batch2" value={formData.batch2} onChange={handleChange} required>
+            <select name="batch2" value={formData.batch2} onChange={handleChange} >
               <option value="">Select Batch Two</option>
               {category && category.length > 0
                 ? category.map((cat) => (
@@ -181,7 +181,7 @@ const AdminJobAdd = () => {
         <div className="modern-jobadd-row">
           <div className="modern-jobadd-field">
             <label>Batch Three</label>
-            <select name="batch3" value={formData.batch3} onChange={handleChange} required>
+            <select name="batch3" value={formData.batch3} onChange={handleChange} >
               <option value="">Select Batch Three</option>
               {category && category.length > 0
                 ? category.map((cat) => (

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import './jobCard.css'; // Assuming you have a CSS file for styling
+import React, { useState, useEffect } from "react";
+import "./jobCard.css"; // Assuming you have a CSS file for styling
 import { Link } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,19 +11,29 @@ import {
   faShareAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import slugify from "react-slugify";
+import Loading from './Loading'; // Import your Loading component
+
 
 const PER_PAGE = 9;
 
-function Jobcard({ jobfilter }) {
+function Jobcard(props) {
   const [currentPage, setCurrentPage] = useState(0);
 
   const handlePageClick = ({ selected }) => {
     setCurrentPage(selected);
   };
 
-  const offset = currentPage * PER_PAGE;
-  const currentPageJob = jobfilter.slice(offset, offset + PER_PAGE);
-  const pageCount = Math.ceil(jobfilter.length / PER_PAGE);
+  let offset = currentPage * PER_PAGE;
+  let currentPageJob = props.allJobs.slice(offset, offset + PER_PAGE);
+  let pageCount = Math.ceil(props.allJobs.length / PER_PAGE);
+
+  // If props.allJobs is provided, use it; otherwise, use props.searchedJobs
+  if (props.searchedJobs && props.searchedJobs.length > 0) {
+    // If there are searched jobs, use them instead of allJobs
+    offset = currentPage * PER_PAGE;
+    currentPageJob = props.searchedJobs.slice(offset, offset + PER_PAGE);
+    pageCount = Math.ceil(props.searchedJobs.length / PER_PAGE);
+  }
 
   const handleShare = (post) => {
     const jobTitle = post.title || "Job Opportunity";
@@ -49,6 +59,18 @@ function Jobcard({ jobfilter }) {
       });
     }
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentPageJob]); // Scroll to top when currentPageJob (It's act as a dependency array) changes
+
+  if(props.loading) {
+    return (
+      <div className="loading-container">
+        <Loading />
+      </div>
+    )
+  }
 
   return (
     <div className="modern-jobcard-row">
@@ -82,6 +104,8 @@ function Jobcard({ jobfilter }) {
                   <Link
                     className="modern-jobcard-apply"
                     to={`/job/${post.id}/${slugify(post.title)}`}
+                    target="_blank"
+                  
                   >
                     Apply Now
                   </Link>

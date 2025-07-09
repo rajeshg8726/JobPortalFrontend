@@ -33,9 +33,7 @@ const Contact = () => {
     setSubmitting(false);
   };
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+
 
   return (
     <div className="modern-contact-container">

@@ -2,9 +2,7 @@ import React, { useEffect } from 'react';
 import './SecondStyleSheet.css';
 
 const TermsAndConditions = () => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+
 
   return (
     <div className="modern-terms-container">

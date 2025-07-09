@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './searchBar.css';
 import axios from 'axios';
 
-const Slider = ({ setJobs }) => {
+const Slider = (props) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [location, setLocation] = useState("");
   const [role, setRole] = useState("");
@@ -11,6 +11,8 @@ const Slider = ({ setJobs }) => {
 
   const handleSearch = async (e) => {
     e.preventDefault();
+    e.stopPropagation(); // Prevent carousel from sliding
+    props.setLoading(true);
     try {
       const response = await axios.get(
         `${backnedURL}/api/jobs-search`,
@@ -18,15 +20,16 @@ const Slider = ({ setJobs }) => {
           params: { searchTerm, location, role },
         }
       );
-      setJobs(response.data);
+      props.setSearchedJobs(response.data);
     } catch (error) {
       console.error("Error fetching jobs:", error);
     }
+    props.setLoading(false);
   };
 
   return (
     <div className="slider-modern-container">
-      <div id="carouselExampleIndicators" className="carousel slide modern-carousel" data-bs-ride="carousel">
+      <div id="carouselExampleIndicators" className="carousel slide modern-carousel">
         <div className="carousel-indicators">
           <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>
           <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>

@@ -1,13 +1,18 @@
-import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Outlet, useLocation } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
-import Temp from './Temp';
 
-function UserLayout({handleSearch}) {
+function UserLayout(props) {
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]); // <-- scrolls to top on every route change
+
   return (
     <div>
-      <Header  />
+      <Header setSearchedJobs={props.setSearchedJobs} />
       <div className="content">
         <Outlet />
       </div>

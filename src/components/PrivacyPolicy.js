@@ -3,9 +3,6 @@ import { Link } from 'react-router-dom';
 import './SecondStyleSheet.css';
 
 const PrivacyPolicy = () => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   return (
     <div className="modern-privacy-container">

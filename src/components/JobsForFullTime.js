@@ -28,9 +28,7 @@ function JobsForFullTime() {
         getJobsByType();
     }, [jobType, backendURL]);
 
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, []);
+  
 
     const handlePageClick = ({ selected }) => {
         setCurrentPage(selected);
@@ -61,6 +59,9 @@ function JobsForFullTime() {
     const currentPageJob = jobs.slice(offset, offset + PER_PAGE);
     const pageCount = Math.ceil(jobs.length / PER_PAGE);
 
+    useEffect(() => { 
+        window.scrollTo(0, 0);  // Scroll to top when the component mounts or when currentPageJob changes
+    }, [currentPageJob]);
     return (
         <div className="modern-jobsbyroles-container">
             <h1 className="modern-jobsbyroles-title">

@@ -3,10 +3,6 @@ import './SecondStyleSheet.css';
 import { Link } from 'react-router-dom';
 
 const About = () => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   return (
     <div className="modern-about-container">
       <div className="modern-about-card">

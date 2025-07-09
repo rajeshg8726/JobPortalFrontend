@@ -3,12 +3,12 @@ import { Link, NavLink } from "react-router-dom";
 import DarkModeToggle from "./DarkModeToggle";
 import "./Header.css";
 
-function Header() {
+function Header(props) {
   return (
     <header className="modern-header">
       <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-2">
         <div className="container-fluid">
-          <Link className="navbar-brand d-flex align-items-center" to="/">
+          <Link className="navbar-brand d-flex align-items-center" to="/" onClick={() => props.setSearchedJobs([])}> 
             <img
               src="/rgjobs_logo.webp"
               alt="RGLOGO"
@@ -30,7 +30,7 @@ function Header() {
           <div className="collapse navbar-collapse" id="navbarModern">
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0 modern-nav">
               <li className="nav-item">
-                <NavLink className="nav-link" to="/" end>
+                <NavLink className="nav-link" to="/" onClick={() => props.setSearchedJobs([])} end>
                   Home
                 </NavLink>
               </li>

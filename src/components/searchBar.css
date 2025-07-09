@@ -153,4 +153,7 @@
   .modern-search-bar input {
   flex: 1 1 80px;
   }
+  .carousel-indicators{
+    margin-bottom: -0.5rem;
+  }
 }

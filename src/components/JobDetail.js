@@ -13,6 +13,7 @@ import {
 import slugify from "react-slugify";
 import ReactPaginate from "react-paginate";
 import PageNotFound from "./PageNotFound";
+import Loading from "./Loading";
 
 // ...useWindowSize hook remains unchanged...
 
@@ -83,7 +84,11 @@ const JobDetail = () => {
   const pageCount = Math.ceil(jobListData.length / jobsPerPage);
 
   if (error) return <PageNotFound />;
-  if (!jobData) return <div className="modern-loading">Loading...</div>;
+  if (!jobData) return (
+    <div className="loading-container">
+      <Loading />
+    </div>
+  )
 
   // Structured Data for SEO
   const structuredData = {

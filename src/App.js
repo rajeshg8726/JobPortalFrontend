@@ -39,15 +39,17 @@ import PageNotFound from "./components/PageNotFound";
 
 function App() {
   const [jobs, setJobs] = useState([]);
+  const [searchedJobs, setSearchedJobs] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const backendURL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    // Fetch all jobs initially
+    // Fetch all jobs with empty search
     axios
-      .get(`${backendURL}/api/jobs-search`)
-      .then((response) => setJobs(response.data))
-      .catch((error) => console.error("Error fetching jobs:", error));
+      .get(`${backendURL}/api/getAllJobs`)
+      .then((response) => setJobs(response.data.JobsData))
+      .catch((error) => console.log("Error In Fetching Jobs Data", error));
   }, []);
 
   async function requestNotification() {
@@ -74,13 +76,17 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/*" element={<UserLayout />}>
+        <Route
+          path="/*"
+          element={<UserLayout setSearchedJobs={setSearchedJobs} />}
+        >
           <Route
             index
             element={
               <>
-                <Slider setJobs={setJobs} />
-                <Jobcard jobfilter={jobs} />
+                <Slider setSearchedJobs={setSearchedJobs} setLoading = {setLoading} />
+
+                <Jobcard allJobs={jobs} searchedJobs={searchedJobs} loading = {loading} />
               </>
             }
           />

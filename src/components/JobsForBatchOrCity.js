@@ -67,9 +67,7 @@ function JobsForBatchOrCity() {
         getJobsByTypeOrCity();
     }, [jobTypeOrCity, backendURL]);
 
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, []);
+
 
     const handleShare = (post) => {
         const jobTitle = post.title || "Job Opportunity";
@@ -99,6 +97,10 @@ function JobsForBatchOrCity() {
     const offset = currentPage * PER_PAGE;
     const currentPageJob = jobs.slice(offset, offset + PER_PAGE);
     const pageCount = Math.ceil(jobs.length / PER_PAGE);
+
+        useEffect (() => {
+        window.scrollTo(0, 0);  // Scroll to top when the component mounts  or when currentPageJob changes
+    }, [currentPageJob]);  // Scroll to top when currentPageJob (It's act as a dependency array) changes
 
     return (
         <div className="modern-jobsbyroles-container">

@@ -3,9 +3,7 @@ import './SecondStyleSheet.css';
 import { Link } from 'react-router-dom';
 
 const Updates = () => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+
 
   return (
     <div className="modern-updates-container">
