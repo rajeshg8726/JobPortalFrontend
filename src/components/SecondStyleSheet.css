@@ -2,6 +2,21 @@
 
 /* Add to Stylesheet.css or your main CSS file */
 /* Modern Contact Page Styles */
+
+.modern-contact-email {
+  margin-bottom: 1rem;
+  color: #444;
+  font-size: 1.05rem;
+}
+.modern-contact-link {
+  color: #007bff;
+  text-decoration: underline;
+  font-weight: 500;
+}
+.modern-contact-link:hover {
+  color: #0056b3;
+}
+
 .modern-contact-container {
   min-height: 80vh;
   display: flex;

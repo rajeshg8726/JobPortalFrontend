@@ -11,8 +11,8 @@ import {
   faShareAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import slugify from "react-slugify";
-import Loading from './Loading'; // Import your Loading component
-
+import Loading from "./Loading"; // Import your Loading component
+import ResultNotFound from "./ResultNotFound";
 
 const PER_PAGE = 9;
 
@@ -64,12 +64,21 @@ function Jobcard(props) {
     window.scrollTo(0, 0);
   }, [currentPageJob]); // Scroll to top when currentPageJob (It's act as a dependency array) changes
 
-  if(props.loading) {
+  if (props.loading) {
     return (
       <div className="loading-container">
         <Loading />
       </div>
-    )
+    );
+  }
+
+  // Only show "No Results Found" if a search was performed and no results
+  if (Array.isArray(props.searchedJobs) && props.searchedJobs.length === 0) {
+    return (
+      <div className="result-not-found-container">
+        <ResultNotFound />
+      </div>
+    );
   }
 
   return (
@@ -105,7 +114,6 @@ function Jobcard(props) {
                     className="modern-jobcard-apply"
                     to={`/job/${post.id}/${slugify(post.title)}`}
                     target="_blank"
-                  
                   >
                     Apply Now
                   </Link>

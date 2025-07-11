@@ -33,14 +33,18 @@ const Contact = () => {
     setSubmitting(false);
   };
 
-
-
   return (
     <div className="modern-contact-container">
       <div className="modern-contact-card">
         <h1 className="modern-contact-title">Contact Us</h1>
         <p className="modern-contact-desc">
           Have a question, suggestion, or feedback? Fill out the form below and our team will get back to you soon.
+        </p>
+        <p className="modern-contact-email">
+          Or email us directly at:{" "}
+          <a href="mailto:support@rgjobs.in" className="modern-contact-link">
+            support@rgjobs.in
+          </a>
         </p>
         {message && <div className="modern-contact-message">{message}</div>}
         <form className="modern-contact-form" onSubmit={handleSubmit} autoComplete="off">

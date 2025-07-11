@@ -5,16 +5,23 @@ import "./Header.css";
 
 function Header(props) {
   return (
-    <header className="modern-header">
-      <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-2">
+    <header className="modern-header" role="banner">
+      <nav
+        className="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-2"
+        aria-label="Main navigation"
+      >
         <div className="container-fluid">
-          <Link className="navbar-brand d-flex align-items-center" to="/" onClick={() => props.setSearchedJobs([])}> 
+          <Link
+            className="navbar-brand d-flex align-items-center"
+            to="/"
+            onClick={() => props.setSearchedJobs(null)}
+            aria-label="Go to homepage"
+          >
             <img
               src="/rgjobs_logo.webp"
-              alt="RGLOGO"
+              alt="RGJobs Logo"
               style={{ maxWidth: "2.8rem", marginRight: "0.5rem" }}
             />
-            {/* <span className="brand-text">RGJobs</span> */}
           </Link>
           <button
             className="navbar-toggler"
@@ -30,7 +37,12 @@ function Header(props) {
           <div className="collapse navbar-collapse" id="navbarModern">
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0 modern-nav">
               <li className="nav-item">
-                <NavLink className="nav-link" to="/" onClick={() => props.setSearchedJobs([])} end>
+                <NavLink
+                  className="nav-link"
+                  to="/"
+                  onClick={() => props.setSearchedJobs(null)}
+                  end
+                >
                   Home
                 </NavLink>
               </li>
@@ -48,7 +60,10 @@ function Header(props) {
                 <ul className="dropdown-menu" aria-labelledby="batchesDropdown">
                   {["2023", "2024", "2025", "2026"].map((batch) => (
                     <li key={batch}>
-                      <NavLink className="dropdown-item" to={`/jobs/${batch}-batch`}>
+                      <NavLink
+                        className="dropdown-item"
+                        to={`/jobs/${batch}-batch`}
+                      >
                         {batch} Batch
                       </NavLink>
                     </li>
@@ -66,14 +81,23 @@ function Header(props) {
                 >
                   Work Type
                 </span>
-                <ul className="dropdown-menu" aria-labelledby="workTypeDropdown">
+                <ul
+                  className="dropdown-menu"
+                  aria-labelledby="workTypeDropdown"
+                >
                   <li>
-                    <NavLink className="dropdown-item" to="/jobsbytype/Internship-jobs">
+                    <NavLink
+                      className="dropdown-item"
+                      to="/jobsbytype/Internship-jobs"
+                    >
                       Internships
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink className="dropdown-item" to="/jobsbytype/full-time-jobs">
+                    <NavLink
+                      className="dropdown-item"
+                      to="/jobsbytype/full-time-jobs"
+                    >
                       Full Time
                     </NavLink>
                   </li>
@@ -90,8 +114,19 @@ function Header(props) {
                 >
                   Location
                 </span>
-                <ul className="dropdown-menu" aria-labelledby="locationDropdown">
-                  {["Bengaluru", "Hyderabad", "Gurgaon", "Noida", "Chennai", "Pune", "Remote"].map((city) => (
+                <ul
+                  className="dropdown-menu"
+                  aria-labelledby="locationDropdown"
+                >
+                  {[
+                    "Bengaluru",
+                    "Hyderabad",
+                    "Gurgaon",
+                    "Noida",
+                    "Chennai",
+                    "Pune",
+                    "Remote",
+                  ].map((city) => (
                     <li key={city}>
                       <NavLink className="dropdown-item" to={`/jobs/${city}`}>
                         {city}
@@ -113,44 +148,79 @@ function Header(props) {
                 </span>
                 <ul className="dropdown-menu" aria-labelledby="rolesDropdown">
                   <li>
-                    <NavLink className="dropdown-item" to="/jobsbyrole/software-engineer-jobs">
+                    <NavLink
+                      className="dropdown-item"
+                      to="/jobsbyrole/software-engineer-jobs"
+                    >
                       Software Engineer
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink className="dropdown-item" to="/jobsbyrole/software-developer-jobs">
+                    <NavLink
+                      className="dropdown-item"
+                      to="/jobsbyrole/software-developer-jobs"
+                    >
                       Software Developer
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink className="dropdown-item" to="/jobsbyrole/software-testing-jobs">
+                    <NavLink
+                      className="dropdown-item"
+                      to="/jobsbyrole/software-testing-jobs"
+                    >
                       Software Testing
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink className="dropdown-item" to="/jobsbyrole/cloud-engineeer-jobs">
+                    <NavLink
+                      className="dropdown-item"
+                      to="/jobsbyrole/cloud-engineeer-jobs"
+                    >
                       Cloud Engineer
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink className="dropdown-item" to="/jobsbyrole/analytics-and-data-science-jobs">
+                    <NavLink
+                      className="dropdown-item"
+                      to="/jobsbyrole/analytics-and-data-science-jobs"
+                    >
                       Analytics & Data Science
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink className="dropdown-item" to="/jobsbyrole/devops-engineer-jobs">
+                    <NavLink
+                      className="dropdown-item"
+                      to="/jobsbyrole/devops-engineer-jobs"
+                    >
                       DevOps Engineer
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink className="dropdown-item" to="/jobsbyrole/technical-support-jobs">
+                    <NavLink
+                      className="dropdown-item"
+                      to="/jobsbyrole/technical-support-jobs"
+                    >
                       Technical Support Engineer
                     </NavLink>
                   </li>
                 </ul>
               </li>
+
               <li className="nav-item">
-                <NavLink className="nav-link" to="/real-life-interview-experiences">
+                <NavLink className="nav-link" to="/about">
+                  About
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/contact">
+                  Contact
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink
+                  className="nav-link"
+                  to="/real-life-interview-experiences"
+                >
                   Interviews
                 </NavLink>
               </li>

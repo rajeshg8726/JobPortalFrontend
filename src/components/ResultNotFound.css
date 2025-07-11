@@ -1,0 +1,65 @@
+/* ResultNotFound.css */
+
+.modern-resultnotfound-container {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  padding: 2rem 1rem;
+}
+
+.modern-resultnotfound-card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0,123,255,0.07);
+  padding: 2.5rem 2rem 2rem 2rem;
+  max-width: 420px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.modern-resultnotfound-icon {
+  margin-bottom: 1.2rem;
+  display: block;
+}
+
+.modern-resultnotfound-title {
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: #007bff;
+  margin-bottom: 0.5rem;
+}
+
+.modern-resultnotfound-message {
+  color: #555;
+  font-size: 1.08rem;
+  margin-bottom: 0.5rem;
+}
+
+.modern-resultnotfound-suggestion {
+  color: #888;
+  font-size: 1rem;
+  margin-bottom: 0;
+}
+
+@media (max-width: 600px) {
+  .modern-resultnotfound-card {
+    padding: 1.2rem 0.7rem 1rem 0.7rem;
+    max-width: 98vw;
+  }
+  .modern-resultnotfound-title {
+    font-size: 1.15rem;
+  }
+  .modern-resultnotfound-message,
+  .modern-resultnotfound-suggestion {
+    font-size: 0.97rem;
+  }
+  .modern-resultnotfound-icon {
+    width: 44px;
+    height: 44px;
+  }
+}

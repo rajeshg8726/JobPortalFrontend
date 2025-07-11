@@ -1,16 +1,12 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import logo from "./logo.svg";
 import "./App.css";
 import Slider from "./components/Slider";
-import Header from "./components/Header";
 import Jobcard from "./components/Jobcard";
-import Footer from "./components/Footer";
 import About from "./components/About";
 import Updates from "./components/Updates";
 import Contact from "./components/Contact";
 import JobDetail from "./components/JobDetail";
-import Sidebar from "./components/Sidebar";
 import AdminLayout from "./components/AdminLayout";
 import UserLayout from "./components/UserLayout";
 import AdminJobAdd from "./components/AdminJobAdd";
@@ -39,7 +35,8 @@ import PageNotFound from "./components/PageNotFound";
 
 function App() {
   const [jobs, setJobs] = useState([]);
-  const [searchedJobs, setSearchedJobs] = useState([]);
+  const [searchedJobs, setSearchedJobs] = useState(null); // not []
+  // Use null to indicate no search has been performed yet
   const [loading, setLoading] = useState(false);
 
   const backendURL = process.env.REACT_APP_API_URL;
@@ -84,9 +81,16 @@ function App() {
             index
             element={
               <>
-                <Slider setSearchedJobs={setSearchedJobs} setLoading = {setLoading} />
+                <Slider
+                  setSearchedJobs={setSearchedJobs}
+                  setLoading={setLoading}
+                />
 
-                <Jobcard allJobs={jobs} searchedJobs={searchedJobs} loading = {loading} />
+                <Jobcard
+                  allJobs={jobs}
+                  searchedJobs={searchedJobs}
+                  loading={loading}
+                />
               </>
             }
           />
@@ -109,7 +113,10 @@ function App() {
             path="interview-experience-details/:id"
             element={<InterviewExpDetails />}
           />
-          <Route path="jobsbytype/:jobType" element={<JobsForFullTime />} />
+          <Route
+            path="jobsbytype/:jobType"
+            element={<JobsForFullTime loading={loading} />}
+          />
           <Route path="jobs/:jobTypeOrCity" element={<JobsForBatchOrCity />} />
           <Route path="jobsbyrole/:jobRoles" element={<JobsByRoles />} />
         </Route>

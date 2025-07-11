@@ -28,6 +28,7 @@ const useWindowSize = () => {
   return windowSize;
 };
 
+
 const JobDetail = () => {
   const [jobData, setJobData] = useState(null);
   const [error, setError] = useState(null);
@@ -62,15 +63,15 @@ const JobDetail = () => {
     getJobsToList();
   }, [backendURL]);
 
-
-
   const handleShare = (post) => {
     if (navigator.share) {
       navigator
         .share({
           title: post.title,
           text: `Check out this job: ${post.title} at ${post.location}. Expected Pay: ${post.pay}.`,
-          url: `${window.location.origin}/job/${post.id}/${slugify(post.title)}`,
+          url: `${window.location.origin}/job/${post.id}/${slugify(
+            post.title
+          )}`,
         })
         .catch(() => {});
     } else {
@@ -78,17 +79,23 @@ const JobDetail = () => {
     }
   };
 
+  
+
   const handlePageClick = ({ selected }) => setCurrentPage(selected);
   const offset = currentPage * jobsPerPage;
   const currentJobs = jobListData.slice(offset, offset + jobsPerPage);
   const pageCount = Math.ceil(jobListData.length / jobsPerPage);
 
+  // Check if there's an error fetching job data
   if (error) return <PageNotFound />;
-  if (!jobData) return (
-    <div className="loading-container">
-      <Loading />
-    </div>
-  )
+
+  // Check if jobData is still loading
+  if (!jobData)
+    return (
+      <div className="loading-container">
+        <Loading />
+      </div>
+    );
 
   // Structured Data for SEO
   const structuredData = {
@@ -223,10 +230,12 @@ const JobDetail = () => {
                       <div className="modern-joblist-role">{joblst.role}</div>
                       <div className="modern-joblist-meta">
                         <span>
-                          <FontAwesomeIcon icon={faBriefcase} /> {joblst.batches}
+                          <FontAwesomeIcon icon={faBriefcase} />{" "}
+                          {joblst.batches}
                         </span>
                         <span>
-                          <FontAwesomeIcon icon={faMapMarkerAlt} /> {joblst.location}
+                          <FontAwesomeIcon icon={faMapMarkerAlt} />{" "}
+                          {joblst.location}
                         </span>
                         <span>
                           <FontAwesomeIcon icon={faWallet} /> {joblst.pay}

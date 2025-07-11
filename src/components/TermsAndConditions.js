@@ -46,7 +46,7 @@ const TermsAndConditions = () => {
         <p>
           If you believe your trademark or copyrighted material is being used
           improperly on our site, please contact us immediately at
-          <a href="mailto:rgjobsupdate@gmail.com" className="modern-terms-link"> rgjobsupdate@gmail.com </a>
+          <a href="mailto:support@rgjobs.in" className="modern-terms-link"> support@rgjobs.in </a>
           with relevant details.
         </p>
 
@@ -187,7 +187,7 @@ const TermsAndConditions = () => {
         <ul className="modern-terms-list">
           <li>
             By email:
-            <a href="mailto:rgjobsupdate@gmail.com" className="modern-terms-link"> rgjobsupdate@gmail.com </a>
+            <a href="mailto:support@rgjobs.in" className="modern-terms-link"> support@rgjobs.in </a>
           </li>
         </ul>
       </div>
