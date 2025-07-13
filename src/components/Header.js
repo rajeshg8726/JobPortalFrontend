@@ -17,10 +17,10 @@ function Header(props) {
             onClick={() => props.setSearchedJobs(null)}
             aria-label="Go to homepage"
           >
-            <img
-              src="/rgjobs_logo.webp"
+            <img className="logo"
+              src="/logo.png"
               alt="RGJobs Logo"
-              style={{ maxWidth: "2.8rem", marginRight: "0.5rem" }}
+              
             />
           </Link>
           <button

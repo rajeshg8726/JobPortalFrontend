@@ -28,7 +28,6 @@ const useWindowSize = () => {
   return windowSize;
 };
 
-
 const JobDetail = () => {
   const [jobData, setJobData] = useState(null);
   const [error, setError] = useState(null);
@@ -78,8 +77,6 @@ const JobDetail = () => {
       alert("Web Share API is not supported in your browser.");
     }
   };
-
-  
 
   const handlePageClick = ({ selected }) => setCurrentPage(selected);
   const offset = currentPage * jobsPerPage;
@@ -171,17 +168,73 @@ const JobDetail = () => {
             <div className="modern-jobdetail-role">
               <strong>Role:</strong> {jobData.role}
             </div>
-            <div className="modern-jobdetail-section">
-              <strong>Job Requirements:</strong>
-              <ul>
-                {jobData.description
-                  .split(".")
-                  .map(
-                    (sentence, idx) =>
-                      sentence.trim() && <li key={idx}>{sentence.trim()}.</li>
+
+            {/* Eligibility */}
+            {jobData.eligibility && jobData.eligibility.trim() && (
+              <div className="modern-jobdetail-section">
+                <strong>Eligibility:</strong>
+                <ul>
+                  {jobData.eligibility.split(/[\n\.]/).map((item, idx) =>
+                    item.trim() ? <li key={idx}>{item.trim()}</li> : null
                   )}
-              </ul>
-            </div>
+                </ul>
+              </div>
+            )}
+
+            {/* Roles & Responsibilities */}
+            {jobData.rolesAndResponsibilities &&
+              jobData.rolesAndResponsibilities.trim() && (
+                <div className="modern-jobdetail-section">
+                  <strong>Roles & Responsibilities:</strong>
+                  <ul>
+                    {jobData.rolesAndResponsibilities.split(/[\n\.]/).map(
+                      (item, idx) =>
+                        item.trim() ? <li key={idx}>{item.trim()}</li> : null
+                    )}
+                  </ul>
+                </div>
+              )}
+
+            {/* Requirements */}
+            {jobData.requirements && jobData.requirements.trim() && (
+              <div className="modern-jobdetail-section">
+                <strong>Requirements:</strong>
+                <ul>
+                  {jobData.requirements.split(/[\n\.]/).map((item, idx) =>
+                    item.trim() ? <li key={idx}>{item.trim()}</li> : null
+                  )}
+                </ul>
+              </div>
+            )}
+
+            {/* Nice To Have */}
+            {jobData.niceToHave && jobData.niceToHave.trim() && (
+              <div className="modern-jobdetail-section">
+                <strong>Nice To Have:</strong>
+                <ul>
+                  {jobData.niceToHave.split(/[\n\.]/).map((item, idx) =>
+                    item.trim() ? <li key={idx}>{item.trim()}</li> : null
+                  )}
+                </ul>
+              </div>
+            )}
+
+            {/* Fallback: Job Description as Requirements if nothing else */}
+            {!jobData.eligibility &&
+              !jobData.rolesAndResponsibilities &&
+              !jobData.requirements &&
+              !jobData.niceToHave &&
+              jobData.description && (
+                <div className="modern-jobdetail-section">
+                  <strong>Job Requirements:</strong>
+                  <ul>
+                    {jobData.description.split(/[\n\.]/).map((sentence, idx) =>
+                      sentence.trim() ? <li key={idx}>{sentence.trim()}</li> : null
+                    )}
+                  </ul>
+                </div>
+              )}
+
             <div className="modern-jobdetail-actions">
               <Link
                 to={jobData.joblink}
@@ -198,13 +251,6 @@ const JobDetail = () => {
               >
                 <FontAwesomeIcon icon={faShareAlt} /> Share
               </button>
-            </div>
-            <div className="modern-jobdetail-extra" hidden>
-              <Link to="https://www.dobcalc.com" target="_blank">
-                <button className="modern-jobdetail-blog">
-                  Check Blogs <span className="badge-new">New</span>
-                </button>
-              </Link>
             </div>
           </div>
         </section>

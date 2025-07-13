@@ -15,6 +15,10 @@ const EditJobData = () => {
     pay: '',
     location: '',
     description: '',
+    eligibility: '',
+    rolesAndResponsibilities: '',
+    requirements: '',
+    niceToHave: '',
     joblink: '',
     jobtype: '',
     jobbyrole: '',
@@ -159,7 +163,7 @@ const EditJobData = () => {
         <div className="modern-jobadd-row">
           <div className="modern-jobadd-field">
             <label>Batch One</label>
-            <select name="batch1" value={jobData.batch1} onChange={handleChange} required>
+            <select name="batch1" value={jobData.batch1} onChange={handleChange} >
               <option value="">Select Batch One</option>
               {category && category.length > 0
                 ? category.map((cat) => (
@@ -171,7 +175,7 @@ const EditJobData = () => {
           </div>
           <div className="modern-jobadd-field">
             <label>Batch Two</label>
-            <select name="batch2" value={jobData.batch2} onChange={handleChange} required>
+            <select name="batch2" value={jobData.batch2} onChange={handleChange} >
               <option value="">Select Batch Two</option>
               {category && category.length > 0
                 ? category.map((cat) => (
@@ -185,7 +189,7 @@ const EditJobData = () => {
         <div className="modern-jobadd-row">
           <div className="modern-jobadd-field">
             <label>Batch Three</label>
-            <select name="batch3" value={jobData.batch3} onChange={handleChange} required>
+            <select name="batch3" value={jobData.batch3} onChange={handleChange} >
               <option value="">Select Batch Three</option>
               {category && category.length > 0
                 ? category.map((cat) => (
@@ -203,6 +207,22 @@ const EditJobData = () => {
         <div className="modern-jobadd-field">
           <label>Job Description</label>
           <textarea name="description" value={jobData.description} onChange={handleChange} rows={3} required />
+        </div>
+        <div className="modern-jobadd-field">
+          <label>Job Eligibility</label>
+          <textarea name="eligibility" value={jobData.eligibility} onChange={handleChange} rows={4}  />
+        </div>
+        <div className="modern-jobadd-field">
+          <label>Job Roles & Responsibilities</label>
+          <textarea name="rolesAndResponsibilities" value={jobData.rolesAndResponsibilities} onChange={handleChange} rows={4}  />
+        </div>
+        <div className="modern-jobadd-field">
+          <label>Job Requirements</label>
+          <textarea name="requirements" value={jobData.requirements} onChange={handleChange} rows={4}  />
+        </div>
+        <div className="modern-jobadd-field">
+          <label>Nice To Have/Prefered Qualification</label>
+          <textarea name="niceToHave" value={jobData.niceToHave} onChange={handleChange} rows={4}  />
         </div>
         <div className="modern-jobadd-field">
           <label>Company Logo</label>

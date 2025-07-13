@@ -12,12 +12,22 @@ body.dark-mode {
   transition: background 0.3s, color 0.3s;
 }
 
+.dark-mode .logo{
+  filter: brightness(0) invert(1);
+  /* Makes the logo white for dark backgrounds */
+}
+
 /* Example: dark mode for cards, headers, footers, etc. */
 .dark-mode .modern-jobcard,
 .dark-mode .modern-jobdetail-card,
+.dark-mode .modern-jobdetail-role,
 .dark-mode .modern-joblist-sidebar,
+.dark-mode .modern-jobdetail-section ul,
+.dark-mode .modern-joblist-card,
+.dark-mode .modern-joblist-role,
 .dark-mode .modern-footer,
-.dark-mode .modern-header,
+.dark-mode .navbar-nav,
+.dark-mode .footer-copyright,
 .dark-mode .notfound-container,
 .dark-mode .modern-jobsbyroles-container,
 .dark-mode .modern-jobsbyroles-list,
@@ -48,7 +58,17 @@ body.dark-mode {
 .dark-mode .modern-updates-card,
 .dark-mode .modern-updates-lead,
 .dark-mode .modern-updates-list-item,
-.dark-mode .modern-updates-feature-list {
+.dark-mode .modern-updates-feature-list,
+.dark-mode .dropdown-menu li,
+.dark-mode .slider-content-center,
+.dark-mode .modern-search-bar input,
+.dark-mode .modern-contact-field input,
+.dark-mode .modern-contact-field textarea,
+.dark-mode .modern-invform-field input,
+.dark-mode .modern-invform-field textarea,
+.dark-mode .modern-invexp-filters select,
+.dark-mode .modern-invexpdetails-content
+{
   background: rgb(17, 0, 31) !important;
   color: #e5e7eb !important;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18);

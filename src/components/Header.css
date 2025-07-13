@@ -8,6 +8,12 @@ body.dark-mode .navbar-toggler-icon {
   /* Makes the icon white for dark backgrounds */
 }
 
+.logo {
+  max-width: 250px;
+  margin-right: 0.5rem;
+  max-height: 50px;
+}
+
 .modern-header {
   background: #fff;
   border-bottom: 1px solid #eaeaea;

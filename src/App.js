@@ -19,8 +19,6 @@ import EditJobData from "./components/EditJobData";
 import FeedbackTable from "./components/FeedbackTable";
 import PrivacyPolicy from "./components/PrivacyPolicy";
 import TermsAndConditions from "./components/TermsAndConditions";
-import { getToken } from "firebase/messaging";
-import { messaging } from "./firebase-config";
 import Categories from "./components/Categories";
 import JobsForFullTime from "./components/JobsForFullTime";
 import JobsForBatchOrCity from "./components/JobsForBatchOrCity";
@@ -49,27 +47,7 @@ function App() {
       .catch((error) => console.log("Error In Fetching Jobs Data", error));
   }, []);
 
-  async function requestNotification() {
-    const permission = await Notification.requestPermission();
-
-    if (permission === "granted") {
-      // generate the token for each user to identify
-      const token = await getToken(messaging, {
-        vapidKey:
-          "BNQPegwqYz-5qIG4rS1EczDK8blMyzeuqcyj-m3jiH-7JtLu77AkV5-OjhQD8yJTniNkeIFTm7K-AEYy7oxJIrs",
-      });
-      console.log("Token Generated is", token);
-    } else if (permission === "denied") {
-      alert("You will be missed the latest job updates");
-    }
-  }
-
-  /// call requestNotify function when page loads
-
-  useEffect(() => {
-    requestNotification();
-  }, []);
-
+ 
   return (
     <Router>
       <Routes>

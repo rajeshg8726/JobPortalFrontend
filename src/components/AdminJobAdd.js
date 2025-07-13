@@ -21,6 +21,10 @@ const AdminJobAdd = () => {
     pay: '',
     location: '',
     description: '',
+    eligibility: '',
+    rolesAndResponsibilities: '',
+    requirements: '',
+    niceToHave: '',
     joblink: '',
     jobtype: '',
     jobbyrole: '',
@@ -198,7 +202,23 @@ const AdminJobAdd = () => {
         </div>
         <div className="modern-jobadd-field">
           <label>Job Description</label>
-          <textarea name="description" value={formData.description} onChange={handleChange} rows={3} required />
+          <textarea name="description" value={formData.description} onChange={handleChange} rows={4} />
+        </div>
+        <div className="modern-jobadd-field">
+          <label>Job Eligibility</label>
+          <textarea name="eligibility" value={formData.eligibility} onChange={handleChange} rows={4}  />
+        </div>
+        <div className="modern-jobadd-field">
+          <label>Job Roles & Responsibilities</label>
+          <textarea name="rolesAndResponsibilities" value={formData.rolesAndResponsibilities} onChange={handleChange} rows={4}  />
+        </div>
+        <div className="modern-jobadd-field">
+          <label>Job Requirements</label>
+          <textarea name="requirements" value={formData.requirements} onChange={handleChange} rows={4}  />
+        </div>
+        <div className="modern-jobadd-field">
+          <label>Nice To Have/Prefered Qualification</label>
+          <textarea name="niceToHave" value={formData.niceToHave} onChange={handleChange} rows={4}  />
         </div>
         <div className="modern-jobadd-field">
           <label>Company Logo</label>
