@@ -1,0 +1,81 @@
+.disclaimer-container {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f7fafd;
+  padding: 2rem 1rem;
+}
+
+.disclaimer-card {
+  background: #fff;
+  border-radius: 1.2rem;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+  max-width: 600px;
+  width: 100%;
+  padding: 2.5rem 2rem;
+  color: #222;
+}
+
+.disclaimer-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.2rem;
+  color: #1a73e8;
+  text-align: center;
+}
+
+.disclaimer-card p,
+.disclaimer-card ul {
+  font-size: 1.08rem;
+  margin-bottom: 1.2rem;
+  line-height: 1.7;
+}
+
+.disclaimer-card ul {
+  padding-left: 1.2rem;
+}
+
+.disclaimer-card li {
+  margin-bottom: 0.7rem;
+}
+
+.disclaimer-note {
+  background: #f1f3f4;
+  border-left: 4px solid #1a73e8;
+  padding: 0.8rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  margin-bottom: 1.2rem;
+}
+
+.disclaimer-links {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.disclaimer-links a {
+  color: #1a73e8;
+  text-decoration: none;
+  margin: 0 0.5rem;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.disclaimer-links a:hover {
+  color: #155ab6;
+}
+
+@media (max-width: 600px) {
+  .disclaimer-card {
+    padding: 1.2rem 0.7rem;
+    max-width: 98vw;
+  }
+  .disclaimer-title {
+    font-size: 1.3rem;
+  }
+  .disclaimer-card p,
+  .disclaimer-card ul {
+    font-size: 0.98rem;
+  }
+}

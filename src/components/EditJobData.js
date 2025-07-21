@@ -206,7 +206,7 @@ const EditJobData = () => {
         </div>
         <div className="modern-jobadd-field">
           <label>Job Description</label>
-          <textarea name="description" value={jobData.description} onChange={handleChange} rows={3} required />
+          <textarea name="description" value={jobData.description} onChange={handleChange} rows={4} />
         </div>
         <div className="modern-jobadd-field">
           <label>Job Eligibility</label>

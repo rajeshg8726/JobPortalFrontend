@@ -64,7 +64,7 @@ function Jobcard(props) {
     window.scrollTo(0, 0);
   }, [currentPageJob]); // Scroll to top when currentPageJob (It's act as a dependency array) changes
 
-  if (props.loading) {
+  if (props.loading || props.allJobs.length === 0) {
     return (
       <div className="loading-container">
         <Loading />
@@ -94,6 +94,8 @@ function Jobcard(props) {
                   src={`${process.env.REACT_APP_API_URL}/${post.image}`}
                   className="modern-jobcard-img"
                   alt={post.title}
+              
+                  fetchpriority="high"
                 />
               </div>
               <div className="modern-jobcard-body">
@@ -114,8 +116,9 @@ function Jobcard(props) {
                     className="modern-jobcard-apply"
                     to={`/job/${post.id}/${slugify(post.title)}`}
                     target="_blank"
+                    rel="noopener noreferrer"
                   >
-                    Apply Now
+                    View More
                   </Link>
                   <button
                     type="button"

@@ -125,12 +125,15 @@ function JobsByRoles(props) {
             to={`/job/${post.id}/${slugify(post.title)}`}
           >
             <div className="modern-jobsbyroles-card">
-              <img
-                src={`${backendURL}/${post.image}`}
-                className="modern-jobsbyroles-img"
-                alt={post.title}
-              />
+              <div className="modern-jobsbyroles-card-left">
+                <img
+                  src={`${backendURL}/${post.image}`}
+                  className="modern-jobsbyroles-img"
+                  alt={post.title}
+                />
+              </div>
               <div className="modern-jobsbyroles-card-body">
+                {" "}
                 <h6 className="modern-jobsbyroles-role">{post.role}</h6>
                 <div className="modern-jobsbyroles-meta">
                   <span>
@@ -144,7 +147,7 @@ function JobsByRoles(props) {
                   </span>
                 </div>
                 <div className="modern-jobsbyroles-actions">
-                  <span className="modern-jobsbyroles-apply">Apply Now</span>
+                  <span className="modern-jobsbyroles-apply">View More</span>
                   <button
                     type="button"
                     className="modern-jobsbyroles-share"

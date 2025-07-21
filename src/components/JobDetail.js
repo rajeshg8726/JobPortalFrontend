@@ -84,7 +84,17 @@ const JobDetail = () => {
   const pageCount = Math.ceil(jobListData.length / jobsPerPage);
 
   // Check if there's an error fetching job data
-  if (error) return <PageNotFound />;
+  if (error) {
+    return (
+      <>
+        <Helmet>
+          <title>Job Not Found | RGJobs </title>
+          <meta name="robots" content="noindex, nofollow" />
+        </Helmet>
+        <PageNotFound />
+      </>
+    );
+  }
 
   // Check if jobData is still loading
   if (!jobData)
@@ -94,54 +104,88 @@ const JobDetail = () => {
       </div>
     );
 
-  // Structured Data for SEO
-  const structuredData = {
-    "@context": "https://schema.org/",
-    "@type": "JobPosting",
-    title: jobData.title,
-    description: jobData.description,
-    identifier: {
-      "@type": "PropertyValue",
-      name: "RGJobs",
-      value: jobData.id,
-    },
-    datePosted: new Date().toISOString(),
-    employmentType: "Full-time",
-    hiringOrganization: {
-      "@type": "Organization",
-      name: "RGJobs",
-      sameAs: "https://www.rgjobs.in",
-      logo: `${backendURL}/rglogo.png`,
-    },
-    jobLocation: {
-      "@type": "Place",
-      address: {
-        "@type": "PostalAddress",
-        addressLocality: jobData.location,
-        addressCountry: "IN",
-      },
-    },
-    baseSalary: {
-      "@type": "MonetaryAmount",
-      currency: "INR",
-      value: jobData.pay,
-    },
-    jobBenefits: "Career growth opportunities",
-    url: `https://www.rgjobs.in/job/${slug}`,
-  };
-
   return (
     <>
       <Helmet>
-        <title>{jobData.title} - RGJobs</title>
+        <title>{`${jobData.title} in ${jobData.location} | RGJobs`}</title>
         <meta
           name="description"
-          content={`Apply for ${jobData.title} in ${jobData.location}. Check eligibility, salary, and more details at RGJobs.`}
+          content={`Apply now for ${jobData.title} at ${jobData.location}. Check eligibility, salary, requirements, and job responsibilities. Explore more opportunities at RGJobs.`}
         />
+        <meta
+          name="keywords"
+          content={`${jobData.title}, ${jobData.role}, ${jobData.location}, jobs in ${jobData.location}, IT jobs, fresher jobs, RGJobs`}
+        />
+        <meta
+          property="og:title"
+          content={`${jobData.title} in ${jobData.location} | RGJobs`}
+        />
+        <meta
+          property="og:description"
+          content={`Looking for ${jobData.title}? Discover roles, eligibility, and how to apply.`}
+        />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:url"
+          content={`https://www.rgjobs.in/job/${id}/${slug}`}
+        />
+        <meta property="og:image" content={`${backendURL}/${jobData.image}`} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content={`${jobData.title} - Apply Now | RGJobs`}
+        />
+        <meta
+          name="twitter:description"
+          content={`Don't miss this opportunity for ${jobData.title} at ${jobData.location}.`}
+        />
+        <meta name="twitter:image" content={`${backendURL}/${jobData.image}`} />
+
+        {/* Structured Data for Google */}
         <script type="application/ld+json">
-          {JSON.stringify(structuredData)}
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "JobPosting",
+            title: jobData.title,
+            description:
+              jobData.description ||
+              jobData.requirements ||
+              jobData.rolesAndResponsibilities,
+            identifier: {
+              "@type": "PropertyValue",
+              name: "RGJobs",
+              value: jobData.id,
+            },
+            datePosted: new Date(jobData.created_at).toISOString(),
+            validThrough: new Date(
+              Date.now() + 30 * 24 * 60 * 60 * 1000
+            ).toISOString(),
+            employmentType: "Full-time",
+            hiringOrganization: {
+              "@type": "Organization",
+              name: "RGJobs",
+              sameAs: "https://www.rgjobs.in",
+              logo: `${backendURL}/rglogo.png`,
+            },
+            jobLocation: {
+              "@type": "Place",
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: jobData.location,
+                addressRegion: "India",
+                addressCountry: "IN",
+              },
+            },
+            baseSalary: {
+              "@type": "MonetaryAmount",
+              currency: "INR",
+              value: jobData.pay || "Negotiable",
+              unitText: "YEAR",
+            },
+          })}
         </script>
       </Helmet>
+
       <div className="modern-jobdetail-layout">
         {/* Job Detail Card */}
         <section className="modern-jobdetail-card">
@@ -149,7 +193,7 @@ const JobDetail = () => {
             <img
               src={`${backendURL}/${jobData.image}`}
               alt={jobData.title}
-              className="modern-jobdetail-img"
+              className="modern-jobdetail-img" loading="lazy"
             />
           </div>
           <div className="modern-jobdetail-content">
@@ -174,9 +218,11 @@ const JobDetail = () => {
               <div className="modern-jobdetail-section">
                 <strong>Eligibility:</strong>
                 <ul>
-                  {jobData.eligibility.split(/[\n\.]/).map((item, idx) =>
-                    item.trim() ? <li key={idx}>{item.trim()}</li> : null
-                  )}
+                  {jobData.eligibility
+                    .split(/\n|\. (?=[A-Z0-9])/)
+                    .map((item, idx) =>
+                      item.trim() ? <li key={idx}>{item.trim()}</li> : null
+                    )}
                 </ul>
               </div>
             )}
@@ -187,10 +233,11 @@ const JobDetail = () => {
                 <div className="modern-jobdetail-section">
                   <strong>Roles & Responsibilities:</strong>
                   <ul>
-                    {jobData.rolesAndResponsibilities.split(/[\n\.]/).map(
-                      (item, idx) =>
+                    {jobData.rolesAndResponsibilities
+                      .split(/\n|\. (?=[A-Z0-9])/)
+                      .map((item, idx) =>
                         item.trim() ? <li key={idx}>{item.trim()}</li> : null
-                    )}
+                      )}
                   </ul>
                 </div>
               )}
@@ -200,9 +247,11 @@ const JobDetail = () => {
               <div className="modern-jobdetail-section">
                 <strong>Requirements:</strong>
                 <ul>
-                  {jobData.requirements.split(/[\n\.]/).map((item, idx) =>
-                    item.trim() ? <li key={idx}>{item.trim()}</li> : null
-                  )}
+                  {jobData.requirements
+                    .split(/\n|\. (?=[A-Z0-9])/)
+                    .map((item, idx) =>
+                      item.trim() ? <li key={idx}>{item.trim()}</li> : null
+                    )}
                 </ul>
               </div>
             )}
@@ -210,11 +259,13 @@ const JobDetail = () => {
             {/* Nice To Have */}
             {jobData.niceToHave && jobData.niceToHave.trim() && (
               <div className="modern-jobdetail-section">
-                <strong>Nice To Have:</strong>
+                <strong>More Details:</strong>
                 <ul>
-                  {jobData.niceToHave.split(/[\n\.]/).map((item, idx) =>
-                    item.trim() ? <li key={idx}>{item.trim()}</li> : null
-                  )}
+                  {jobData.niceToHave
+                    .split(/\n|\. (?=[A-Z0-9])/)
+                    .map((item, idx) =>
+                      item.trim() ? <li key={idx}>{item.trim()}</li> : null
+                    )}
                 </ul>
               </div>
             )}
@@ -228,9 +279,13 @@ const JobDetail = () => {
                 <div className="modern-jobdetail-section">
                   <strong>Job Requirements:</strong>
                   <ul>
-                    {jobData.description.split(/[\n\.]/).map((sentence, idx) =>
-                      sentence.trim() ? <li key={idx}>{sentence.trim()}</li> : null
-                    )}
+                    {jobData.description
+                      .split(/\n|\. (?=[A-Z0-9])/)
+                      .map((sentence, idx) =>
+                        sentence.trim() ? (
+                          <li key={idx}>{sentence.trim()}</li>
+                        ) : null
+                      )}
                   </ul>
                 </div>
               )}

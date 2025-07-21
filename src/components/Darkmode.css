@@ -1,23 +1,23 @@
-/* Dark Mode toggle button css */
-
-/* Modern dark mode styles for the whole portal */
-body.light-mode {
-  background: #f8fafc;
-  color: #222;
-  transition: background 0.3s, color 0.3s;
-}
-body.dark-mode {
- background: rgb(17, 0, 31);
-  color: #e5e7eb;
-  transition: background 0.3s, color 0.3s;
-}
-
-.dark-mode .logo{
-  filter: brightness(0) invert(1);
-  /* Makes the logo white for dark backgrounds */
+.modern-dark-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--toggle-bg);
+  border: 1px solid #d1d5db;
+  padding: 0.5rem;
+  border-radius: 50px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  cursor: pointer;
 }
 
-/* Example: dark mode for cards, headers, footers, etc. */
+.modern-dark-toggle:hover {
+  border-color: #3b82f6;
+  background-color: #f3f4f6;
+}
+
+.dark-mode .navbar,
+
 .dark-mode .modern-jobcard,
 .dark-mode .modern-jobdetail-card,
 .dark-mode .modern-jobdetail-role,
@@ -29,9 +29,11 @@ body.dark-mode {
 .dark-mode .navbar-nav,
 .dark-mode .footer-copyright,
 .dark-mode .notfound-container,
-.dark-mode .modern-jobsbyroles-container,
-.dark-mode .modern-jobsbyroles-list,
 .dark-mode .modern-jobsbyroles-card,
+.dark-mode .modern-jobsbyroles-role,
+.dark-mode .modern-jobsbyroles-meta,
+.dark-mode .modern-jobsbyroles-action,
+.dark-mode .modern-jobsbyroles-container,
 .dark-mode .modern-invexp-container,
 .dark-mode .modern-invexp-card,
 .dark-mode .modern-invexpdetails-container,
@@ -67,76 +69,48 @@ body.dark-mode {
 .dark-mode .modern-invform-field input,
 .dark-mode .modern-invform-field textarea,
 .dark-mode .modern-invexp-filters select,
-.dark-mode .modern-invexpdetails-content
+.dark-mode .modern-invexpdetails-content,
+.dark-mode .modern-jobcard-row,
+.dark-mode .modern-jobcard,
+.dark-mode .modern-jobcard-title,
+.dark-mode .modern-jobcard-details,
+.dark-mode .footer,
+.dark-mode .footer-bottom,
+.dark-mode .modern-jobdetail-layout,
+.dark-mode .modern-jobdetail-card,
+.dark-mode .modern-joblist-sidebar,
+.dark-mode .modern-joblist-item
 {
-  background: rgb(17, 0, 31) !important;
-  color: #e5e7eb !important;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18);
+   background-color: #0f172a;
+  color: #f8fafc;
+}
+.dark-mode .logo{
+  filter: brightness(0) invert(1);
+  /* Makes the logo white for dark backgrounds */
+}
+body.dark-mode {
+  --toggle-bg: #1e293b;
+  background-color: #0f172a;
+  color: #f8fafc;
 }
 
-.dark-mode .modern-jobcard-apply,
-.dark-mode .modern-jobdetail-apply {
-  background: #2563eb;
-  color: #fff;
-}
-.dark-mode .modern-jobcard-apply:hover,
-.dark-mode .modern-jobdetail-apply:hover {
-  background: #1e40af;
+
+body.light-mode {
+  --toggle-bg: #f9fafb;
+  background-color: #ffffff;
+  color: #1f2937;
 }
 
-.dark-mode .modern-jobcard-share,
-.dark-mode .modern-jobdetail-share .dark-mode .modern-jobsbyroles-share {
-  background: #23283a;
-  color: #fbbf24;
-}
-.dark-mode .modern-jobcard-share:hover,
-.dark-mode .modern-jobdetail-share:hover {
-  background: #2563eb;
-  color: #fff;
+body.dark-mode .modern-loading-container {
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  color: #f1f5f9;
 }
 
-.dark-mode .modern-pagination-link {
-  background: #23283a;
-  color: #fbbf24;
-}
-.dark-mode .modern-pagination-link--active {
-  background: #2563eb;
-  color: #fff;
+body.dark-mode .modern-spinner {
+  border-top: 4px solid #fbbf24; /* Amber tone */
 }
 
-.dark-mode .footer-brand {
-  color: #fbbf24;
-}
-.dark-mode .footer-head {
-  color: #fbbf24;
-}
-.dark-mode .footer-list a:hover {
-  color: #fbbf24;
+body.dark-mode .modern-loading-text {
+  color: #e2e8f0;
 }
 
-.dark-mode .navbar,
-.dark-mode .navbar.bg-white {
-  background: #23283a !important;
-}
-.dark-mode .navbar .nav-link,
-.dark-mode .navbar .dropdown-item {
-  color: #e5e7eb !important;
-}
-.dark-mode .navbar .nav-link.active,
-.dark-mode .navbar .nav-link:hover,
-.dark-mode .navbar .dropdown-item:hover {
-  color: #fbbf24 !important;
-  background: #181c24 !important;
-}
-
-/* Toggle button styling */
-.dark-mode-toggle {
-  display: flex;
-  align-items: center;
-  margin-left: 0.5rem;
-}
-
-/* Smooth transition for all */
-* {
-  transition: background 0.3s, color 0.3s;
-}

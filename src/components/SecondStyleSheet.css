@@ -1,267 +1,239 @@
 /* Contact page css code */
 
-/* Add to Stylesheet.css or your main CSS file */
-/* Modern Contact Page Styles */
-
-.modern-contact-email {
-  margin-bottom: 1rem;
-  color: #444;
-  font-size: 1.05rem;
-}
-.modern-contact-link {
-  color: #007bff;
-  text-decoration: underline;
-  font-weight: 500;
-}
-.modern-contact-link:hover {
-  color: #0056b3;
-}
-
 .modern-contact-container {
-  min-height: 80vh;
   display: flex;
-  align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #f8fafc 0%, #e0e7ef 100%);
-  padding: 2rem 1rem;
+  padding: 60px 20px;
+  background: linear-gradient(135deg, #f4f7fa, #ffffff);
+  min-height: 100vh;
 }
 
 .modern-contact-card {
-  background: #fff;
-  border-radius: 18px;
-  box-shadow: 0 4px 24px rgba(0,123,255,0.07);
-  max-width: 420px;
+  background: #ffffff;
+  max-width: 600px;
   width: 100%;
-  padding: 2.5rem 2rem 2rem 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease-in-out;
+}
+
+.modern-contact-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.1);
 }
 
 .modern-contact-title {
-  font-size: 2rem;
+  font-size: 32px;
   font-weight: 700;
-  color: #007bff;
-  margin-bottom: 0.5rem;
-  text-align: center;
+  margin-bottom: 10px;
+  color: #222;
 }
 
 .modern-contact-desc {
+  font-size: 16px;
   color: #555;
-  font-size: 1.05rem;
-  margin-bottom: 1.5rem;
-  text-align: center;
+  margin-bottom: 10px;
 }
 
-.modern-contact-message {
-  width: 100%;
-  text-align: center;
-  margin-bottom: 1rem;
-  padding: 0.7rem 1rem;
-  border-radius: 8px;
-  background: #f1f7ff;
+.modern-contact-email {
+  font-size: 14px;
+  margin-bottom: 25px;
+}
+
+.modern-contact-link {
   color: #007bff;
-  font-weight: 500;
-  font-size: 1rem;
+  text-decoration: underline;
 }
 
 .modern-contact-form {
-  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 20px;
 }
 
 .modern-contact-field {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
 }
 
 .modern-contact-field label {
-  font-weight: 500;
-  color: #222;
-  margin-bottom: 0.1rem;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #333;
 }
 
 .modern-contact-field input,
 .modern-contact-field textarea {
-  padding: 0.7rem 1rem;
-  border: 1px solid #cce0ff;
+  padding: 12px 14px;
+  font-size: 15px;
+  border: 1px solid #ccc;
   border-radius: 8px;
-  font-size: 1rem;
-  background: #f8fafc;
-  transition: border 0.2s;
-  outline: none;
-  resize: none;
+  transition: border 0.3s, box-shadow 0.3s;
 }
 
 .modern-contact-field input:focus,
 .modern-contact-field textarea:focus {
+  outline: none;
   border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
 }
 
 .modern-contact-btn {
-  padding: 0.8rem 0;
-  background: #007bff;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 600;
   color: #fff;
+  background: linear-gradient(to right, #007bff, #0056b3);
   border: none;
   border-radius: 8px;
-  font-size: 1.1rem;
-  font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
-  margin-top: 0.5rem;
+  transition: background 0.3s;
 }
 
-.modern-contact-btn:disabled {
-  background: #b6d4fe;
-  cursor: not-allowed;
+.modern-contact-btn:hover {
+  background: linear-gradient(to right, #0056b3, #003a80);
 }
 
-.modern-contact-btn:hover:not(:disabled),
-.modern-contact-btn:focus:not(:disabled) {
-  background: #0056b3;
+.modern-contact-message {
+  margin-bottom: 15px;
+  font-weight: 500;
+  color: #155724;
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  padding: 10px 15px;
+  border-radius: 6px;
 }
 
-/* Responsive styles */
-@media (max-width: 600px) {
+@media screen and (max-width: 576px) {
   .modern-contact-card {
-    padding: 1.2rem 0.5rem 1rem 0.5rem;
-    max-width: 98vw;
+    padding: 25px;
   }
+
   .modern-contact-title {
-    font-size: 1.3rem;
-  }
-  .modern-contact-desc {
-    font-size: 0.97rem;
-  }
-  .modern-contact-btn {
-    font-size: 1rem;
-    padding: 0.7rem 0;
+    font-size: 26px;
   }
 }
-
+.modern-contact-desc
 
 /* About Us page css code */
-/* Add to Stylesheet.css or your main CSS file */
-/* Modern About Page Styles */
+/* About Page Styles */
+
 .modern-about-container {
-  min-height: 80vh;
   display: flex;
-  align-items: flex-start;
   justify-content: center;
-  background: linear-gradient(135deg, #f8fafc 0%, #e0e7ef 100%);
-  padding: 2.5rem 1rem 2rem 1rem;
+  padding: 60px 20px;
+  background: linear-gradient(135deg, #f4f7fa, #ffffff);
+  min-height: 100vh;
 }
 
 .modern-about-card {
-  background: #fff;
-  border-radius: 18px;
-  box-shadow: 0 4px 24px rgba(0,123,255,0.07);
-  max-width: 700px;
+  background: #ffffff;
+  max-width: 800px;
   width: 100%;
-  padding: 2.5rem 2.2rem 2rem 2.2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  color: #333;
+  font-family: 'Montserrat', 'Poppins',;
+  line-height: 1.7;
+  transition: all 0.3s ease-in-out;
+  margin: 0 auto;
+}
+
+.modern-about-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.1);
 }
 
 .modern-about-title {
-  font-size: 2.2rem;
-  font-weight: 800;
-  color: #007bff;
-  margin-bottom: 0.3rem;
-  letter-spacing: 1px;
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #222;
 }
 
 .modern-about-highlight {
-  color: #2563eb;
-  font-weight: 800;
+  color: #007bff;
 }
 
 .modern-about-lead {
-  font-size: 1.2rem;
-  color: #555;
-  margin-bottom: 1.2rem;
-  font-weight: 500;
-}
-
-.modern-about-card p {
-  color: #333;
-  font-size: 1.08rem;
-  margin-bottom: 1.1rem;
-  line-height: 1.7;
+  font-size: 20px;
+  color: #444;
+  margin-bottom: 24px;
+  font-weight: 600;
 }
 
 .modern-about-list-section {
-  margin: 1.2rem 0 1.2rem 0;
-  width: 100%;
+  margin-top: 24px;
 }
 
 .modern-about-subtitle {
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: #007bff;
-  margin-bottom: 0.5rem;
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #222;
 }
 
 .modern-about-list {
-  list-style: disc inside;
-  padding-left: 1.2rem;
-  color: #444;
-  font-size: 1.05rem;
-  margin-bottom: 0.7rem;
+  list-style: disc;
+  padding-left: 24px;
+  color: #555;
+}
+
+.modern-about-list li {
+  margin-bottom: 8px;
+  font-size: 15.5px;
 }
 
 .modern-about-values {
-  display: flex;
-  gap: 1.5rem;
-  margin: 1.2rem 0 1.2rem 0;
-  flex-wrap: wrap;
+  margin: 30px 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
 }
 
 .modern-about-value-title {
   display: block;
   font-weight: 700;
+  font-size: 16px;
   color: #007bff;
-  margin-bottom: 0.2rem;
+  margin-bottom: 5px;
 }
 
 .modern-about-value-desc {
+  font-size: 14.5px;
   color: #555;
-  font-size: 0.97rem;
 }
 
 .modern-about-link {
   color: #007bff;
-  text-decoration: underline;
-  font-weight: 600;
-  transition: color 0.2s;
-}
-.modern-about-link:hover {
-  color: #2563eb;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: all 0.25s;
 }
 
-/* Responsive styles */
-@media (max-width: 700px) {
+.modern-about-link:hover {
+  border-bottom: 1px solid #007bff;
+  color: #0056b3;
+}
+
+@media (max-width: 768px) {
   .modern-about-card {
-    padding: 1.2rem 0.7rem 1rem 0.7rem;
-    max-width: 98vw;
+    padding: 25px;
   }
+
   .modern-about-title {
-    font-size: 1.3rem;
+    font-size: 28px;
   }
+
   .modern-about-lead {
-    font-size: 1rem;
+    font-size: 18px;
   }
-  .modern-about-list,
-  .modern-about-card p {
-    font-size: 0.97rem;
-  }
+
   .modern-about-values {
-    flex-direction: column;
-    gap: 0.7rem;
+    grid-template-columns: 1fr;
   }
 }
 

@@ -30,6 +30,7 @@ import AdminAddInvExp from "./components/AdminAddInvExp";
 import InvUsersExpList from "./components/InvUsersExpList";
 import Sitemap from "./components/Sitemap";
 import PageNotFound from "./components/PageNotFound";
+import Disclaimer from "./components/Disclaimer";
 
 function App() {
   const [jobs, setJobs] = useState([]);
@@ -75,6 +76,7 @@ function App() {
           <Route path="about" element={<About />} />
           <Route path="updates" element={<Updates />} />
           <Route path="contact" element={<Contact />} />
+          <Route path='disclaimer' element={<Disclaimer />} />
           <Route path="jobExpired" element={<PageNotFound />} />
           <Route path="job/:id/:slug" element={<JobDetail />} />
           <Route path="privacy-policy" element={<PrivacyPolicy />} />

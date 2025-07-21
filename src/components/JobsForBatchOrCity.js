@@ -156,7 +156,7 @@ function JobsForBatchOrCity() {
                   </span>
                 </div>
                 <div className="modern-jobsbyroles-actions">
-                  <span className="modern-jobsbyroles-apply">Apply Now</span>
+                  <span className="modern-jobsbyroles-apply">View More</span>
                   <button
                     type="button"
                     className="modern-jobsbyroles-share"
