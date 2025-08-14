@@ -193,7 +193,8 @@ const JobDetail = () => {
             <img
               src={`${backendURL}/${jobData.image}`}
               alt={jobData.title}
-              className="modern-jobdetail-img" loading="lazy"
+              className="modern-jobdetail-img"
+              loading="lazy"
             />
           </div>
           <div className="modern-jobdetail-content">
@@ -212,6 +213,22 @@ const JobDetail = () => {
             <div className="modern-jobdetail-role">
               <strong>Role:</strong> {jobData.role}
             </div>
+
+            {/* Fallback: Job Description as Job Role  if nothing else */}
+            {jobData.description && (
+              <div className="modern-jobdetail-section">
+                <strong>About Company/Role :</strong>
+                <ul>
+                  {jobData.description
+                    .split(/\n|\. (?=[A-Z0-9])/)
+                    .map((sentence, idx) =>
+                      sentence.trim() ? (
+                        <li key={idx}>{sentence.trim()}</li>
+                      ) : null
+                    )}
+                </ul>
+              </div>
+            )}
 
             {/* Eligibility */}
             {jobData.eligibility && jobData.eligibility.trim() && (
@@ -269,26 +286,6 @@ const JobDetail = () => {
                 </ul>
               </div>
             )}
-
-            {/* Fallback: Job Description as Requirements if nothing else */}
-            {!jobData.eligibility &&
-              !jobData.rolesAndResponsibilities &&
-              !jobData.requirements &&
-              !jobData.niceToHave &&
-              jobData.description && (
-                <div className="modern-jobdetail-section">
-                  <strong>Job Requirements:</strong>
-                  <ul>
-                    {jobData.description
-                      .split(/\n|\. (?=[A-Z0-9])/)
-                      .map((sentence, idx) =>
-                        sentence.trim() ? (
-                          <li key={idx}>{sentence.trim()}</li>
-                        ) : null
-                      )}
-                  </ul>
-                </div>
-              )}
 
             <div className="modern-jobdetail-actions">
               <Link

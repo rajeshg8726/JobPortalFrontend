@@ -23,8 +23,34 @@ function JobsForFullTime() {
   useEffect(() => {
     const getJobsByType = async () => {
       try {
-        const endpoint =
-          jobType === "Internship-jobs" ? "getInternJobs" : "getFullTimeJobs";
+        let endpoint = "";
+        switch (jobType) {
+          case "Internship-jobs":
+            endpoint = "getInternJobs";
+            break;
+          case "Freshers-jobs":
+            endpoint = "getFreshersJobs";
+            break;
+          case "0-1-year-experience-jobs":
+            endpoint = "get01YearsJobs";
+            break;
+          case "1-3-years-experience-jobs":
+            endpoint = "get13YearsJobs";
+            break;
+          case "3-5-years-experience-jobs":
+            endpoint = "get35YearsJobs";
+            break;
+          case "senior-roles-jobs":
+            endpoint = "getSeniorRolesJobs";
+            break;
+          case "Managerial-roles-jobs":
+            endpoint = "getMagerialOrLeadershipJobs";
+            break;
+          default:
+            console.log("Invalid Route"); // Default case for full-time jobs
+        }
+        // Fetch jobs from the backend based on the job type
+          
         const response = await axios.get(`${backendURL}/api/${endpoint}`);
         setJobs(response.data.jobs);
       } catch (error) {
@@ -81,7 +107,10 @@ function JobsForFullTime() {
   return (
     <div className="modern-jobsbyroles-container">
       <h1 className="modern-jobsbyroles-title">
-        {jobType === "Internship-jobs" ? "Internship Jobs" : "Full Time Jobs"}
+        {
+          jobType.replace(/-/g, "-").replace(/jobs$/, "").toLocaleUpperCase() + "Jobs"
+
+        }
       </h1>
       <div className="modern-jobsbyroles-list">
         {currentPageJob.length === 0 && (

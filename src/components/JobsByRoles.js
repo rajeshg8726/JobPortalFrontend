@@ -26,26 +26,44 @@ function JobsByRoles(props) {
       try {
         let endpoint = "";
         switch (jobRoles) {
-          case "software-engineer-jobs":
-            endpoint = "getSWEJobs";
+          case "software-developer-engineer-role":
+            endpoint = "getSoftwareEngineerOrDeveloperJobs";
             break;
-          case "software-developer-jobs":
-            endpoint = "getSDEJobs";
+          case "frontend-developer-role":
+            endpoint = "getFrontendDeveloperJobs";
             break;
-          case "software-testing-jobs":
-            endpoint = "getSWETestingJobs";
+          case "backend-developer-role":
+            endpoint = "getBackendDeveloperJobs";
             break;
-          case "cloud-engineeer-jobs":
-            endpoint = "getCloudJobs";
+          case "full-stack-developer-role":
+            endpoint = "getFullStackDeveloperJobs"; 
             break;
-          case "analytics-and-data-science-jobs":
-            endpoint = "getAnalyticsJobs";
+          case "data-scientist-role":
+            endpoint = "getDataScientistJobs";
             break;
-          case "devops-engineer-jobs":
-            endpoint = "getDevOpsJobs";
+          case "data-analyst-role":
+            endpoint = "getDataAnalystJobs"; 
             break;
-          case "technical-support-jobs":
+          case "machine-learning-engineer-role":
+            endpoint = "getMachineLearningEngineerJobs";
+            break;
+          case "devops-engineer-role":
+            endpoint = "getDevOpsEngineerJobs";
+            break;
+          case "ui-ux-designer-role":
+            endpoint = "getUIUXDesignerJobs";
+            break;  
+          case "qa-automation-tester-role":
+            endpoint = "getQAAutomationTesterJobs";
+            break;
+            case "technical-support-engineer-role":
             endpoint = "getTechnicalSupportJobs";
+            break;
+            case "cybersecurity-analyst-role":
+            endpoint = "getCyberSecurityJobs";
+            break;
+          case "cloud-engineer-role":
+            endpoint = "getCloudEngineerJobs";
             break;
           default:
             console.log("Invalid route");

@@ -1,9 +1,32 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import DarkModeToggle from "./DarkModeToggle";
 import "./Header.css";
+import axios from "axios";
 
 function Header({ setSearchedJobs }) {
+  const [batch, setBatch] = useState([]);
+  const [domains, setDomains] = useState([]);
+  const [roles, setRoles] = useState([]);
+
+  const backendURL = process.env.REACT_APP_API_URL;
+
+  useEffect(() => {
+    const fetchBatchData = async () => {
+      try {
+        const response1 = await axios.get(`${backendURL}/api/getAllBatches`);
+        const response2 = await axios.get(`${backendURL}/api/getAllDomains`);
+        const response3 = await axios.get(`${backendURL}/api/getAllRoles`);
+        setBatch(response1.data.batches);
+        setDomains(response2.data.domains);
+        setRoles(response3.data.roles);
+      } catch (error) {
+        console.error("Error fetching batch data:", error);
+      }
+    };
+    fetchBatchData();
+  }, [backendURL]);
+
   return (
     <header className="modern-header" role="banner">
       <nav className="navbar navbar-expand-lg shadow-sm py-3 modern-navbar">
@@ -21,7 +44,9 @@ function Header({ setSearchedJobs }) {
               height="40"
               width="40"
             />
-            <span className="brand-text fw-semibold" hidden>RGJobs</span>
+            <span className="brand-text fw-semibold" hidden>
+              RGJobs
+            </span>
           </Link>
 
           <button
@@ -39,7 +64,12 @@ function Header({ setSearchedJobs }) {
           <div className="collapse navbar-collapse" id="navbarModern">
             <ul className="navbar-nav ms-auto align-items-lg-center gap-lg-2 modern-nav">
               <li className="nav-item">
-                <NavLink className="nav-link" to="/" onClick={() => setSearchedJobs(null)} end>
+                <NavLink
+                  className="nav-link"
+                  to="/"
+                  onClick={() => setSearchedJobs(null)}
+                  end
+                >
                   Home
                 </NavLink>
               </li>
@@ -49,49 +79,69 @@ function Header({ setSearchedJobs }) {
                 {
                   title: "Batches",
                   id: "batchesDropdown",
-                  items: ["2023", "2024", "2025", "2026"].map((batch) => ({
-                    to: `/jobs/${batch}-batch`,
-                    label: `${batch} Batch`,
+                  items: batch.map((batch) => ({
+                    to: `/jobs/${batch.name}-batch`,
+                    label: `${batch.name} Batch`,
                   })),
                 },
                 {
-                  title: "Work Type",
+                  title: "Experiences Level",
                   id: "workTypeDropdown",
                   items: [
                     { to: "/jobsbytype/Internship-jobs", label: "Internships" },
-                    { to: "/jobsbytype/full-time-jobs", label: "Full Time" },
+                    { to: "/jobsbytype/Freshers-jobs", label: "Freshers" },
+                    {
+                      to: "/jobsbytype/0-1-year-experience-jobs",
+                      label: "0-1 Year Experience",
+                    },
+                    {
+                      to: "/jobsbytype/1-3-years-experience-jobs",
+                      label: "1-3 Years Experience",
+                    },
+                    {
+                      to: "/jobsbytype/3-5-years-experience-jobs",
+                      label: "3-5 Years Experience",
+                    },
+                    {
+                      to: "/jobsbytype/senior-roles-jobs",
+                      label: "Senior Roles",
+                    },
+                    {
+                      to: "/jobsbytype/Managerial-roles-jobs",
+                      label: "Managerial Roles",
+                    },
                   ],
                 },
                 {
-                  title: "Location",
+                  title: "Domains",
                   id: "locationDropdown",
-                  items: [
-                    "Bengaluru",
-                    "Hyderabad",
-                    "Gurgaon",
-                    "Noida",
-                    "Chennai",
-                    "Pune",
-                    "Remote",
-                  ].map((city) => ({
-                    to: `/jobs/${city}`,
-                    label: city,
+                  items: domains.map((it) => ({
+                    to: `/jobs/${
+                      it.name
+                        .toLowerCase()
+                        .replace(/\//g, "-")      // replace all slashes with hyphens
+                        .replace(/\s+/g, "-") // spaces to hyphens
+                        .replace(/-+/g, "-") // multiple hyphens to single
+                        .replace(/^-+|-+$/g, "") // trim leading/trailing hyphens
+                    }-domain`,
+                    label: it.name
+                      .replace(/-/g, " ")
+                      .replace(/\b\w/g, (c) => c.toUpperCase()),
                   })),
                 },
                 {
-                  title: "Roles",
+                  title: "Job Roles",
                   id: "rolesDropdown",
-                  items: [
-                    "software-engineer",
-                    "software-developer",
-                    "software-testing",
-                    "cloud-engineeer",
-                    "analytics-and-data-science",
-                    "devops-engineer",
-                    "technical-support",
-                  ].map((role) => ({
-                    to: `/jobsbyrole/${role}-jobs`,
-                    label: role.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase()),
+                  items: roles.map((it) => ({
+                    to: `/jobsbyrole/${it.name
+                      .toLowerCase()
+                      .replace(/\//g, "-")      // replace all slashes with hyphens
+                      .replace(/\s+/g, "-")
+                      .replace(/-+/g, "-")
+                      .replace(/^-+|-+$/g, "")}-role`,
+                    label: it.name
+                      .replace(/-/g, " ")
+                      .replace(/\b\w/g, (c) => c.toUpperCase()),
                   })),
                 },
               ].map(({ title, id, items }) => (
@@ -106,7 +156,10 @@ function Header({ setSearchedJobs }) {
                   >
                     {title}
                   </span>
-                  <ul className="dropdown-menu rounded-3 shadow-sm" aria-labelledby={id}>
+                  <ul
+                    className="dropdown-menu rounded-3 shadow-sm"
+                    aria-labelledby={id}
+                  >
                     {items.map((item, idx) => (
                       <li key={idx}>
                         <NavLink className="dropdown-item" to={item.to}>
@@ -119,7 +172,10 @@ function Header({ setSearchedJobs }) {
               ))}
 
               <li className="nav-item">
-                <NavLink className="nav-link" to="/real-life-interview-experiences">
+                <NavLink
+                  className="nav-link"
+                  to="/real-life-interview-experiences"
+                >
                   Interviews
                 </NavLink>
               </li>

@@ -1,78 +1,140 @@
-import React, { useState } from 'react';
-import './adminSide.css'; // Assuming you have a CSS file for styling
-import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import "./adminSide.css";
+import axios from "axios";
 
 const Categories = () => {
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
+  const [category, setCategory] = useState([]);
   const [formData, setFormData] = useState({
-    name: '',
+    name: "",
+    catid: "",
   });
 
   const backendURL = process.env.REACT_APP_API_URL;
-  const { categoryType } = useParams();
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(`${backendURL}/api/getCategories`);
+        if (response.data.CategoryData) {
+          setCategory(response.data.CategoryData);
+        }
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+        setMessage("Failed to fetch categories. Please try again later.");
+      }
+    };
+    fetchCategories();
+  }, [backendURL]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value,
     });
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setMessage("");
     try {
-      let endpoint = '';
-      switch (categoryType) {
-        case 'add-category':
-          endpoint = 'insertCategory';
+      let response;
+      switch (formData.catid) {
+        case "1":
+          response = await axios.post(
+            `${backendURL}/api/insertCompanyCat`,
+            formData
+          );
           break;
-        case 'add-company-category':
-          endpoint = 'insertCompanyCat';
+        case "2":
+          response = await axios.post(
+            `${backendURL}/api/insertBatchCat`,
+            formData
+          );
           break;
-        case 'add-role-category':
-          endpoint = 'insertRoleCat';
+        case "3":
+          response = await axios.post(
+            `${backendURL}/api/insertDomainCat`,
+            formData
+          );
           break;
-        case 'add-work-category':
-          endpoint = 'insertWorkCat';
+        case "4":
+          response = await axios.post(
+            `${backendURL}/api/insertExpLevelCat`,
+            formData
+          );
+          break;
+        case "5":
+          response = await axios.post(
+            `${backendURL}/api/insertLocationCat`,
+            formData
+          );
+          break;
+        case "6":
+          response = await axios.post(
+            `${backendURL}/api/insertPayCat`,
+            formData
+          );
+          break;
+        case "7":
+          response = await axios.post(
+            `${backendURL}/api/insertRoleCat`,
+            formData
+          );
           break;
         default:
-          console.log("Invalid route");
+          setMessage("Please select a valid category.");
+          return;
       }
-      if (endpoint) {
-        await axios.post(`${backendURL}/api/${endpoint}`, formData, {
-          headers: { 'Content-Type': 'application/json' }
-        });
-        setMessage('Category Added Successfully!');
-        setFormData({ name: '' });
-      }
+      setMessage(response.data.message || "Category added successfully!");
+      setFormData({ name: "" });
     } catch (error) {
-      setMessage('Failed to add category. Please try again.');
-    }
-  };
-
-  // Dynamic title based on route
-  const getTitle = () => {
-    switch (categoryType) {
-      case 'add-category': return 'Add Job Category';
-      case 'add-company-category': return 'Add Company Category';
-      case 'add-role-category': return 'Add Role Category';
-      case 'add-work-category': return 'Add Work Category';
-      default: return 'Add Category';
+      console.error("Error adding category:", error);
+      setMessage("Failed to add category. Please try again.");
     }
   };
 
   return (
     <div className="modern-category-container">
-      <form className="modern-category-form" onSubmit={handleSubmit} autoComplete="off">
-        <h1 className="modern-category-title">{getTitle()}</h1>
+      <form
+        className="modern-category-form"
+        onSubmit={handleSubmit}
+        autoComplete="off"
+      >
+        <h1 className="modern-category-title">Add New Category</h1>
         {message && (
-          <div className={`modern-category-message ${message.includes('Successfully') ? 'success' : 'error'}`}>
+          <div
+            className={`modern-category-message ${
+              message.toLowerCase().includes("success") ? "success" : "error"
+            }`}
+          >
             {message}
           </div>
         )}
         <div className="modern-category-field">
+          <label htmlFor="catid">Select Category Type</label>
+          <select
+            id="catid"
+            name="catid"
+            value={formData.catid}
+            onChange={handleChange}
+            required
+          >
+            <option value="" disabled>
+              Select Category
+            </option>
+            {category && category.length > 0 ? (
+              category.map((cat) => (
+                <option key={cat._id} value={cat.id}>
+                  {cat.name}
+                </option>
+              ))
+            ) : (
+              <option disabled>Loading Categories...</option>
+            )}
+            <option value="other">Other</option>
+          </select>
           <label htmlFor="name">Category Name</label>
           <input
             type="text"
@@ -85,7 +147,9 @@ const Categories = () => {
             autoComplete="off"
           />
         </div>
-        <button type="submit" className="modern-category-btn">Add</button>
+        <button type="submit" className="modern-category-btn">
+          Add
+        </button>
       </form>
     </div>
   );

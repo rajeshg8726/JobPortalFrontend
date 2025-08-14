@@ -59,23 +59,25 @@ function Footer() {
             <div className="footer-column">
               <h5>Location</h5>
               <ul>
-                <li><Link to="/jobs/Remote">Remote</Link></li>
-                <li><Link to="/jobs/Bengaluru">Bengaluru</Link></li>
-                <li><Link to="/jobs/Hyderabad">Hyderabad</Link></li>
-                <li><Link to="/jobs/Gurgaon">Gurgaon</Link></li>
-                <li><Link to="/jobs/Chennai">Chennai</Link></li>
+                <li><Link to="/jobs/Remote-Jobs">Remote</Link></li>
+                <li><Link to="/jobs/Bengaluru-Jobs">Bengaluru</Link></li>
+                <li><Link to="/jobs/Hyderabad-Jobs">Hyderabad</Link></li>
+                <li><Link to="/jobs/Gurgaon-Jobs">Gurgaon</Link></li>
+                <li><Link to="/jobs/Chennai-Jobs">Chennai</Link></li>
+                <li><Link to="/jobs/Pune-Jobs">Pune</Link></li>
+                <li><Link to="/jobs/Outside-india-Jobs">OutSide India</Link></li>
               </ul>
             </div>
 
             {/* Role Links */}
             <div className="footer-column">
-              <h5>Roles</h5>
+              <h5>Industries Types</h5>
               <ul>
-                <li><Link to="/jobsbyrole/software-developer-jobs">Backend Developer</Link></li>
-                <li><Link to="/jobsbyrole/software-engineer-jobs">Frontend Developer</Link></li>
-                <li><Link to="/jobsbyrole/analytics-and-data-science-jobs">Analytics & Data Science</Link></li>
-                <li><Link to="/jobsbyrole/software-testing-jobs">Testing</Link></li>
-                <li><Link to="/jobsbyrole/technical-support-jobs">Technical Support</Link></li>
+                <li><Link to="/jobs/product-based-jobs">Product-Based Companies</Link></li>
+                <li><Link to="/jobs/service-based-jobs">Service-Based Companies</Link></li>
+                <li><Link to="/jobs/startups-based-jobs">Start-ups</Link></li>
+                <li><Link to="/jobs/mnc-based-jobs">MNCs</Link></li>
+                <li><Link to="/jobs/remote-based-jobs">Remote-first Companies</Link></li>
               </ul>
             </div>
           </div>

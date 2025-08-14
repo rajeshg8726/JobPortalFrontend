@@ -27,37 +27,91 @@ function JobsForBatchOrCity() {
         let endpoint = "";
         switch (jobTypeOrCity) {
           case "2023-batch":
-            endpoint = "get2023BatchJobs";
+            endpoint = "get13YearsJobs";
             break;
           case "2024-batch":
-            endpoint = "get2024BatchJobs";
+            endpoint = "get01YearsJobs";
             break;
           case "2025-batch":
-            endpoint = "get2025BatchJobs";
+            endpoint = "getFreshersJobs";
             break;
           case "2026-batch":
-            endpoint = "get2026BatchJobs";
+            endpoint = "getInternJobs";
             break;
-          case "Bengaluru":
+          case "2027-batch":
+            endpoint = "getInternJobs";
+            break;
+          case "2028-batch":
+            endpoint = "getInternJobs";
+            break;
+          case "ai-ml-nlp-domain":
+            endpoint = "getAIMLNLPJobs";
+            break;
+          case "big-data-domain":
+            endpoint = "getBigDataJobs";
+            break;
+          case "blockchain-domain":
+            endpoint = "getBlockchainJobs";
+            break;
+          case "cloud-computing-domain":
+            endpoint = "getCloudComputingJobs";
+            break;
+          case "cyber-security-domain":
+            endpoint = "getCyberSecurityJobs";
+            break;
+          case "game-development-domain":
+            endpoint = "getGameDevelopmentJobs";
+            break;
+          case "web-development-domain":
+            endpoint = "getWebDevelopmentJobs";
+            break;
+          case "ar-vr-domain":
+            endpoint = "getARVRJobs";
+            break;
+          case "open-source-projects/hackathons-domain":
+            endpoint = "getOpenSourceHackathonJobs";
+            break;
+          case "app-development-domain":
+            endpoint = "getAppDevelopmentJobs";
+            break;
+          case "Bengaluru-Jobs":
             endpoint = "getBengaluruJobs";
             break;
-          case "Hyderabad":
+          case "Hyderabad-Jobs":
             endpoint = "getHyderabadJobs";
             break;
-          case "Noida":
+          case "Noida-Jobs":
             endpoint = "getNoidaJobs";
             break;
-          case "Chennai":
+          case "Chennai-Jobs":
             endpoint = "getChennaiJobs";
             break;
-          case "Gurgaon":
+          case "Gurgaon-Jobs":
             endpoint = "getGurgaonJobs";
             break;
-          case "Pune":
+          case "Pune-Jobs":
             endpoint = "getPuneJobs";
             break;
-          case "Remote":
+          case "Remote-Jobs":
             endpoint = "getRemoteJobs";
+            break;
+          case "Outside-india-Jobs":
+            endpoint = "getOutsideIndiaJobs";
+            break;
+          case "product-based-jobs":
+            endpoint = "getProductBasedJobs";
+            break;
+          case "service-based-jobs":
+            endpoint = "getServiceBasedJobs";
+            break;
+          case "startups-based-jobs":
+            endpoint = "getStartupsBasedJobs";
+            break;
+          case "mnc-based-jobs":
+            endpoint = "getMNCBasedJobs";
+            break;
+          case "remote-based-jobs":
+            endpoint = "getRemoteBasedJobs";
             break;
           default:
             console.log("Invalid route");

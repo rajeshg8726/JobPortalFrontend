@@ -115,7 +115,6 @@
     font-size: 26px;
   }
 }
-.modern-contact-desc
 
 /* About Us page css code */
 /* About Page Styles */
@@ -776,3 +775,75 @@
     padding: 0.5rem 1rem;
   }
 }
+
+
+/* Page Not Found Css */
+/* Page Not Found - Premium & Modern */
+
+.modern-notfound-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  background-color: var(--bg-color, #f9fafb);
+  padding: 2rem;
+  text-align: center;
+}
+
+.modern-notfound-card {
+  background-color: var(--card-bg, #ffffff);
+  padding: 3rem 2rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+  max-width: 500px;
+  width: 100%;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.modern-notfound-title {
+  font-size: 5rem;
+  font-weight: 700;
+  color: #ef4444; /* Tailwind red-500 */
+  margin-bottom: 0.5rem;
+}
+
+.modern-notfound-subtitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #111827; /* Tailwind gray-900 */
+  margin-bottom: 1rem;
+}
+
+.modern-notfound-message {
+  font-size: 1rem;
+  color: #6b7280; /* Tailwind gray-500 */
+  margin-bottom: 2rem;
+}
+
+.modern-notfound-btn {
+  background-color: #2563eb; /* Tailwind blue-600 */
+  color: #ffffff;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modern-notfound-btn:hover {
+  background-color: #1d4ed8; /* blue-700 */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+

@@ -84,10 +84,7 @@
    background-color: #0f172a;
   color: #f8fafc;
 }
-.dark-mode .logo{
-  filter: brightness(0) invert(1);
-  /* Makes the logo white for dark backgrounds */
-}
+
 body.dark-mode {
   --toggle-bg: #1e293b;
   background-color: #0f172a;
@@ -114,3 +111,27 @@ body.dark-mode .modern-loading-text {
   color: #e2e8f0;
 }
 
+
+
+/* page not found */
+body.dark-mode {
+  --bg-color: #111827;
+  --card-bg: #1f2937;
+}
+
+body.dark-mode .modern-notfound-title {
+  color: #f87171;
+}
+
+body.dark-mode .modern-notfound-subtitle,
+body.dark-mode .modern-notfound-message {
+  color: #e5e7eb;
+}
+
+body.dark-mode .modern-notfound-btn {
+  background-color: #3b82f6;
+}
+
+body.dark-mode .modern-notfound-btn:hover {
+  background-color: #2563eb;
+}
