@@ -68,7 +68,7 @@ function JobsForBatchOrCity() {
           case "ar-vr-domain":
             endpoint = "getARVRJobs";
             break;
-          case "open-source-projects/hackathons-domain":
+          case "open-source-hackathons-domain":
             endpoint = "getOpenSourceHackathonJobs";
             break;
           case "app-development-domain":

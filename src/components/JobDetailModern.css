@@ -21,7 +21,6 @@ body {
   flex-direction: row;
   gap: 2rem;
   padding: 2rem 5%;
-  background-color: var(--secondary-color);
 }
 
 a{

@@ -17,7 +17,6 @@
 }
 
 .dark-mode .navbar,
-
 .dark-mode .modern-jobcard,
 .dark-mode .modern-jobdetail-card,
 .dark-mode .modern-jobdetail-role,
@@ -85,11 +84,7 @@
   color: #f8fafc;
 }
 
-body.dark-mode {
-  --toggle-bg: #1e293b;
-  background-color: #0f172a;
-  color: #f8fafc;
-}
+
 
 
 body.light-mode {

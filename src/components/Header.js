@@ -174,9 +174,9 @@ function Header({ setSearchedJobs }) {
               <li className="nav-item">
                 <NavLink
                   className="nav-link"
-                  to="/real-life-interview-experiences"
+                  to="/real-life-interviews-blog-posts"
                 >
-                  Interviews
+                  Tech Hub
                 </NavLink>
               </li>
               <li className="nav-item">

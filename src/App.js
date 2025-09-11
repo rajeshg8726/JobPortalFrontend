@@ -70,6 +70,8 @@ function App() {
                   searchedJobs={searchedJobs}
                   loading={loading}
                 />
+                
+
               </>
             }
           />
@@ -82,15 +84,15 @@ function App() {
           <Route path="privacy-policy" element={<PrivacyPolicy />} />
           <Route path="terms-and-conditions" element={<TermsAndConditions />} />
           <Route
-            path="real-life-interview-experiences"
+            path="real-life-interviews-blog-posts"
             element={<InterviewExperience />}
           />
           <Route
-            path="add-interview-experiences"
+            path="share-blog-posts"
             element={<InterviewFormExp />}
           />
           <Route
-            path="interview-experience-details/:id"
+            path="blog-posts-details/:id/:slug"
             element={<InterviewExpDetails />}
           />
           <Route

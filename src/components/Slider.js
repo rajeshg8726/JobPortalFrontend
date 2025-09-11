@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useMemo, memo } from "react";
-import "./searchBar.css";
+import "./Slider.css";
 import axios from "axios";
 
 // Modern reusable Search Form
