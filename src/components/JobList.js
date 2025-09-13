@@ -8,7 +8,7 @@ import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 const PER_PAGE = 10;
 
-const Tables = () => {
+const JobList = () => {
   const [jobPost, setJobPost] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -99,22 +99,97 @@ const Tables = () => {
             </tbody>
           </table>
         </div>
-        {pageCount > 1 && (
-          <ReactPaginate
-            previousLabel={"←"}
-            nextLabel={"→"}
-            pageCount={pageCount}
-            onPageChange={handlePageClick}
-            containerClassName={"modern-pagination"}
-            previousLinkClassName={"modern-pagination-link"}
-            nextLinkClassName={"modern-pagination-link"}
-            disabledClassName={"modern-pagination-link--disabled"}
-            activeClassName={"modern-pagination-link--active"}
-          />
+               {/* Pagination */}
+        {jobPost.length > 0 && (
+          <div className="inv-pagination-row">
+            <div className="inv-pagination-summary">
+              Showing {Math.min(jobPost.length, offset + 1)}–{Math.min(jobPost.length, offset + currentPageData.length)} of {jobPost.length}
+            </div>
+
+            <div className="inv-pagination-controls" role="navigation" aria-label="Pagination">
+              <button
+                className="inv-pg-btn"
+                onClick={() => setCurrentPage(0)}
+                disabled={currentPage === 0}
+                aria-label="Go to first page"
+              >
+                « First
+              </button>
+
+              <button
+                className="inv-pg-btn"
+                onClick={() => setCurrentPage((p) => Math.max(0, p - 1))}
+                disabled={currentPage === 0}
+                aria-label="Previous page"
+              >
+                ‹ Prev
+              </button>
+
+              <div className="inv-pg-pages">
+                {Array.from({ length: pageCount }).map((_, i) => {
+                  const page = i;
+                  const show = page === 0 || page === pageCount - 1 || Math.abs(page - currentPage) <= 2;
+                  if (!show) {
+                    const nearLeftEllipsis = page === Math.max(1, currentPage - 3);
+                    const nearRightEllipsis = page === Math.min(pageCount - 2, currentPage + 3);
+                    if (nearLeftEllipsis || nearRightEllipsis) {
+                      return <span key={`el-${page}`} className="inv-pg-ellipsis">…</span>;
+                    }
+                    return null;
+                  }
+                  return (
+                    <button
+                      key={page}
+                      className={`inv-pg-page ${page === currentPage ? "active" : ""}`}
+                      onClick={() => setCurrentPage(page)}
+                      aria-current={page === currentPage ? "page" : undefined}
+                      aria-label={`Go to page ${page + 1}`}
+                    >
+                      {page + 1}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <button
+                className="inv-pg-btn"
+                onClick={() => setCurrentPage((p) => Math.min(pageCount - 1, p + 1))}
+                disabled={currentPage >= pageCount - 1}
+                aria-label="Next page"
+              >
+                Next ›
+              </button>
+
+              <button
+                className="inv-pg-btn"
+                onClick={() => setCurrentPage(pageCount - 1)}
+                disabled={currentPage >= pageCount - 1}
+                aria-label="Go to last page"
+              >
+                Last »
+              </button>
+
+              <div className="inv-pg-jump">
+                <label htmlFor="inv-jump" className="sr-only">Jump to page</label>
+                <input
+                  id="inv-jump"
+                  type="number"
+                  min={1}
+                  max={pageCount}
+                  value={Math.min(pageCount, currentPage + 1)}
+                  onChange={(e) => {
+                    const v = Number(e.target.value || 1);
+                    if (v >= 1 && v <= pageCount) setCurrentPage(v - 1);
+                  }}
+                  aria-label="Jump to page number"
+                />
+              </div>
+            </div>
+          </div>
         )}
       </div>
     </div>
   );
 };
 
-export default Tables;
+export default JobList;

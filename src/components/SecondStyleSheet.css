@@ -709,41 +709,6 @@
 }
 
 /* Pagination styles (reuse from previous modern-pagination) */
-.modern-pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.4rem;
-  margin-bottom: 1.5rem;
-  flex-wrap: wrap;
-}
-
-.modern-pagination-link {
-  background: #f1f7ff;
-  color: #007bff;
-  border: none;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.1rem;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s;
-  margin: 0 2px;
-}
-
-.modern-pagination-link--active,
-.modern-pagination-link:focus {
-  background: #007bff;
-  color: #fff;
-}
-
-.modern-pagination-link--disabled {
-  opacity: 0.5;
-  pointer-events: none;
-}
 
 /* Responsive styles */
 @media (max-width: 900px) {

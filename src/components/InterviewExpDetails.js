@@ -321,7 +321,7 @@ const BlogDetail = ({ postId }) => {
                 <div className="blog-detail-meta-items">
                   <div className="blog-detail-meta-item"><Calendar className="blog-detail-meta-icon" /><span>{formatDate(post.date)}</span></div>
                   <div className="blog-detail-meta-item"><Clock className="blog-detail-meta-icon" /><span>{post.readTime} min read</span></div>
-                  <div className="blog-detail-meta-item"><Eye className="blog-detail-meta-icon" /><span>{(post.views || 0).toLocaleString()} views</span></div>
+                  <div className="blog-detail-meta-item" hidden><Eye className="blog-detail-meta-icon" /><span>{(post.views || 0).toLocaleString()} views</span></div>
                 </div>
               </div>
             </div>
@@ -348,8 +348,8 @@ const BlogDetail = ({ postId }) => {
             <img src={post.authorImage} alt={post.author} className="blog-detail-author-bio-image" />
             <div className="blog-detail-author-bio-content">
               <h4>{post.author}</h4>
-              <p>Software engineer with 5+ years of experience in full-stack development. Passionate about sharing knowledge and helping others break into tech.</p>
-              <div className="blog-detail-author-bio-stats"><span>47 articles</span><span>12.5k followers</span><span>2.3k likes</span></div>
+              {/* <p>Software engineer with 5+ years of experience in full-stack development. Passionate about sharing knowledge and helping others break into tech.</p>
+              <div className="blog-detail-author-bio-stats"><span>47 articles</span><span>12.5k followers</span><span>2.3k likes</span></div> */}
             </div>
           </div>
         </article>
@@ -364,7 +364,7 @@ const BlogDetail = ({ postId }) => {
                   ? relatedPost.image
                   : `${backendURL}/${relatedPost.image || ""}`;
                 return (
-                  <a key={rid} href={`/blog-posts-details//${rid}/${slugify(relatedPost.title)}`} onClick={(e) => { e.preventDefault(); handleNavigation(`/blog/${rid}`); }} className="blog-detail-related-post">
+                  <a key={rid} href={`/blog-posts-details/${rid}/${slugify(relatedPost.title)}`} onClick={(e) => { e.preventDefault(); handleNavigation(`/blog-posts-details/${rid}/${slugify(relatedPost.title)}`); }} className="blog-detail-related-post">
                     <img src={imageSrc} alt={relatedPost.title} className="blog-detail-related-image" />
                     <div className="blog-detail-related-content">
                       <span className="blog-detail-related-category">{(relatedPost.category || "").replace("-", " ")}</span>

@@ -121,34 +121,6 @@
   background-color: #e5e7eb;
 }
 
-.modern-pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  list-style: none;
-  gap: 10px;
-  margin-top: 2rem;
-  flex-wrap: wrap;
-}
-
-.modern-pagination-link {
-  padding: 0.5rem 0.75rem;
-  background-color: #f3f4f6;
-  color: #374151;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
-}
-
-.modern-pagination-link--active {
-  background-color: #2563eb;
-  color: #fff;
-}
-
-.modern-pagination-link--disabled {
-  opacity: 0.5;
-  pointer-events: none;
-}
 
 .loading-container {
   display: flex;

@@ -10,7 +10,7 @@ import JobDetail from "./components/JobDetail";
 import AdminLayout from "./components/AdminLayout";
 import UserLayout from "./components/UserLayout";
 import AdminJobAdd from "./components/AdminJobAdd";
-import Tables from "./components/Tables";
+import JobList from "./components/JobList";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import { useState, useEffect } from "react";
@@ -108,7 +108,7 @@ function App() {
 
         <Route path="/admin/*" element={<AdminLayout />}>
           <Route path="add-new-job" element={<AdminJobAdd />} />
-          <Route path="job-list" element={<Tables />} />
+          <Route path="job-list" element={<JobList />} />
           <Route path="interviews/:listURL" element={<InvUsersExpList />} />
           <Route path="user-feedback-list" element={<FeedbackTable />} />
           <Route path="edit-job/:id" element={<EditJobData />} />

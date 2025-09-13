@@ -424,7 +424,7 @@ const CreateBlogPost = () => {
                       <div className="create-blog-upload-placeholder">
                         <Upload className="create-blog-upload-icon" />
                         <h3>Drop your image here or click to browse of Default Size 1200X630 or 1200X900 </h3>
-                        <p>Supports JPG, PNG, GIF up to 2MB</p>
+                        <p>Supports JPG, PNG, GIF and WEBP up to 2MB</p>
                       </div>
                     )}
                     <input

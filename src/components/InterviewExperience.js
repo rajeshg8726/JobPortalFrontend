@@ -36,7 +36,7 @@ const ModernBlogPage = () => {
 
   // Mock data - replace with your API calls
   const categories = [
-    { id: "all", name: "All Topics", count: 124 },
+    { id: "all", name: "All Topics", count: 0 },
     { id: "interview", name: "Interview Experience", count: 45 },
     { id: "system-design", name: "System Design", count: 32 },
     { id: "problem-solving", name: "Problem Solving", count: 28 },
@@ -388,7 +388,7 @@ const ModernBlogPage = () => {
                   >
                     {categories.map((cat) => (
                       <option key={cat.id} value={cat.id}>
-                        {cat.name} ({cat.count})
+                        {cat.name} 
                       </option>
                     ))}
                   </select>
@@ -481,7 +481,7 @@ const ModernBlogPage = () => {
                           <Clock className="modern-blog-meta-icon" />
                           <span>{post.readTime} min read</span>
                         </div>
-                        <div className="modern-blog-meta-item">
+                        <div className="modern-blog-meta-item" hidden>
                           <Eye className="modern-blog-meta-icon" />
                           <span>
                             {Number(post.views || 0).toLocaleString()}
