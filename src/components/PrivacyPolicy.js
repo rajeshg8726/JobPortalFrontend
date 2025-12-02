@@ -106,7 +106,7 @@ const PrivacyPolicy = () => {
         </ul>
         <p>
           To exercise any of these rights, please contact us at
-          <a href="mailto:support@rgjobs.in" className="modern-privacy-link"> support@rgjobs.in </a>.
+          <a href="mailto:rgjobsupdate@gmail.com" className="modern-privacy-link"> rgjobsupdate@gmail.com </a>.
         </p>
 
         <h2 className="modern-privacy-section-title">7. Children's Privacy</h2>
@@ -131,7 +131,7 @@ const PrivacyPolicy = () => {
         <ul className="modern-privacy-list">
           <li>
             By email:
-            <a href="mailto:support@rgjobs.in" className="modern-privacy-link"> support@rgjobs.in </a>
+            <a href="mailto:rgjobsupdate@gmail.com" className="modern-privacy-link"> rgjobsupdate@gmail.com </a>
           </li>
         </ul>
       </div>

@@ -1,7 +1,8 @@
 .modern-dark-toggle {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: right;
+  justify-content: right;
+  margin-left: auto;
   background-color: var(--toggle-bg);
   border: 1px solid #d1d5db;
   padding: 0.5rem;

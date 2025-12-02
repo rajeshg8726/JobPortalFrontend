@@ -1,21 +1,26 @@
 import React, { useState, useEffect } from "react";
-import "./adminSide.css";
+import "./sidebar.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Home, Layers, User, Clipboard, LogOut, Menu } from "lucide-react";
-
-/*
-  Modern premium Sidebar
-  - Responsive: collapses to icons-only on narrow widths
-  - Collapsible via toggle
-  - Active link highlighting using location.pathname
-  - Accessible buttons/aria labels
-*/
+import { 
+  Home, 
+  Layers, 
+  User, 
+  Clipboard, 
+  LogOut, 
+  Menu,
+  ChevronDown,
+  Briefcase,
+  MessageSquare,
+  Bell,
+  Settings
+} from "lucide-react";
 
 const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [openDropdown, setOpenDropdown] = useState(null);
   const [collapsed, setCollapsed] = useState(false);
+  const [activeSubmenu, setActiveSubmenu] = useState(null);
 
   useEffect(() => {
     // auto-collapse on small screens
@@ -27,100 +32,176 @@ const Sidebar = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Auto-open relevant dropdown based on current path
+  useEffect(() => {
+    if (location.pathname.includes("/admin/job")) {
+      setOpenDropdown("jobs");
+    } else if (location.pathname.includes("/admin/aboutusers")) {
+      setOpenDropdown("users");
+    } else if (location.pathname.includes("/admin/interviews")) {
+      setOpenDropdown("interviews");
+    }
+  }, [location.pathname]);
+
   const toggleDropdown = (menu) => {
     setOpenDropdown(openDropdown === menu ? null : menu);
   };
 
   const logout = () => {
-    localStorage.removeItem("token");
-    navigate("/admin/login");
+    if (window.confirm("Are you sure you want to sign out?")) {
+      localStorage.removeItem("token");
+      navigate("/admin/login");
+    }
   };
 
   const isActive = (path) => location.pathname.startsWith(path);
+  const isSubmenuActive = (path) => location.pathname.includes(path);
+
+  const menuItems = [
+    {
+      id: "dashboard",
+      label: "Dashboard",
+      icon: Home,
+      path: "/admin/dashboard",
+      badge: null
+    },
+    {
+      id: "jobs",
+      label: "Jobs",
+      icon: Briefcase,
+      dropdown: true,
+      submenu: [
+        { label: "Add Job", path: "/admin/add-new-job" },
+        { label: "Job List", path: "/admin/job-list" }
+      ]
+    },
+    {
+      id: "categories",
+      label: "Categories",
+      icon: Layers,
+      path: "/admin/category/add-category"
+    },
+    {
+      id: "users",
+      label: "About Users",
+      icon: User,
+      dropdown: true,
+      submenu: [
+        { label: "User Feedback", path: "/admin/aboutusers/user-feedback-list" },
+        { label: "Email Subscribers", path: "/admin/aboutusers/user-emailsubscriber-list" }
+      ]
+    },
+    {
+      id: "interviews",
+      label: "Interview Experiences",
+      icon: MessageSquare,
+      dropdown: true,
+      submenu: [
+        { label: "All Blog Posts", path: "/admin/interviews/users-added-blog-posts-list" }
+      ]
+    }
+  ];
 
   return (
-    <aside className={`modern-admin-sidebar ${collapsed ? "collapsed" : ""}`} aria-hidden={false}>
+    <aside 
+      className={`modern-admin-sidebar ${collapsed ? "collapsed" : ""}`} 
+      aria-hidden={false}
+    >
+      {/* Sidebar Header */}
       <div className="sidebar-top">
         <button
           className="sidebar-collapse-btn"
           onClick={() => setCollapsed((c) => !c)}
           aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+          title={collapsed ? "Expand" : "Collapse"}
         >
           <Menu size={18} />
         </button>
 
-        <Link to="/admin/dashboard" className="sidebar-brand" aria-label="RG Jobs Admin">
-          <div className="brand-mark">RG</div>
-          {!collapsed && <div className="brand-text">RG Jobs Admin</div>}
+        <Link 
+          to="/admin/dashboard" 
+          className="sidebar-brand" 
+          aria-label="RG Jobs Admin"
+        >
+          <div className="brand-mark">
+            <Briefcase size={20} />
+          </div>
+          {!collapsed && <div className="brand-text">RG Jobs</div>}
         </Link>
       </div>
 
+      {/* Main Navigation */}
       <nav className="sidebar-nav" role="navigation" aria-label="Main navigation">
-        <ul>
-          <li className={isActive("/admin/dashboard") ? "active" : ""}>
-            <Link to="/admin/dashboard" className="sidebar-link">
-              <Home size={16} />
-              {!collapsed && <span>Dashboard</span>}
-            </Link>
-          </li>
-
-          <li className={isActive("/admin/add-new-job") || isActive("/admin/job-list") ? "active has-sub" : "has-sub"}>
-            <button
-              className="sidebar-link sidebar-toggle"
-              onClick={() => toggleDropdown("jobs")}
-              aria-expanded={openDropdown === "jobs"}
+        <ul className="nav-menu">
+          {menuItems.map((item) => (
+            <li 
+              key={item.id}
+              className={`nav-item ${
+                item.dropdown 
+                  ? (item.submenu?.some(sub => isSubmenuActive(sub.path)) ? "active has-sub" : "has-sub")
+                  : (isActive(item.path) ? "active" : "")
+              }`}
             >
-              <Layers size={16} />
-              {!collapsed && <span>Jobs</span>}
-              {!collapsed && <svg className={`chev ${openDropdown === "jobs" ? "open" : ""}`} width="12" height="12" viewBox="0 0 24 24"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>}
-            </button>
+              {item.dropdown ? (
+                <button
+                  className={`sidebar-link sidebar-toggle ${
+                    openDropdown === item.id ? "open" : ""
+                  }`}
+                  onClick={() => toggleDropdown(item.id)}
+                  aria-expanded={openDropdown === item.id}
+                >
+                  <item.icon size={16} className="nav-icon" />
+                  {!collapsed && (
+                    <>
+                      <span className="nav-label">{item.label}</span>
+                      <ChevronDown 
+                        size={14} 
+                        className={`chevron ${openDropdown === item.id ? "open" : ""}`}
+                      />
+                    </>
+                  )}
+                </button>
+              ) : (
+                <Link to={item.path} className="sidebar-link">
+                  <item.icon size={16} className="nav-icon" />
+                  {!collapsed && <span className="nav-label">{item.label}</span>}
+                  {item.badge && !collapsed && (
+                    <span className="nav-badge">{item.badge}</span>
+                  )}
+                </Link>
+              )}
 
-            {openDropdown === "jobs" && !collapsed && (
-              <ul className="sidebar-sub">
-                <li><Link to="/admin/add-new-job">Add Job</Link></li>
-                <li><Link to="/admin/job-list">Job List</Link></li>
-              </ul>
-            )}
-          </li>
-
-          <li className={isActive("/admin/category") ? "active" : ""}>
-            <Link to="/admin/category/add-category" className="sidebar-link">
-              <Clipboard size={16} />
-              {!collapsed && <span>Categories</span>}
-            </Link>
-          </li>
-
-          <li className={isActive("/admin/user-feedback-list") ? "active" : ""}>
-            <Link to="/admin/user-feedback-list" className="sidebar-link">
-              <User size={16} />
-              {!collapsed && <span>User Feedback</span>}
-            </Link>
-          </li>
-
-          <li className={isActive("/admin/interviews") ? "active has-sub" : "has-sub"}>
-            <button
-              className="sidebar-link sidebar-toggle"
-              onClick={() => toggleDropdown("interviews")}
-              aria-expanded={openDropdown === "interviews"}
-            >
-              <Clipboard size={16} />
-              {!collapsed && <span>Interview Experiences</span>}
-              {!collapsed && <svg className={`chev ${openDropdown === "interviews" ? "open" : ""}`} width="12" height="12" viewBox="0 0 24 24"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>}
-            </button>
-
-            {openDropdown === "interviews" && !collapsed && (
-              <ul className="sidebar-sub">
-                <li><Link to="/admin/interviews/users-added-blog-posts-list">All Blog Posts</Link></li>
-                {/* add more links as needed */}
-              </ul>
-            )}
-          </li>
+              {/* Submenu */}
+              {item.dropdown && openDropdown === item.id && !collapsed && (
+                <ul className="sidebar-sub">
+                  {item.submenu?.map((subitem, idx) => (
+                    <li key={idx}>
+                      <Link 
+                        to={subitem.path}
+                        className={`submenu-link ${
+                          isSubmenuActive(subitem.path) ? "active" : ""
+                        }`}
+                      >
+                        <span className="submenu-dot"></span>
+                        {subitem.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          ))}
         </ul>
       </nav>
 
+      {/* Sidebar Footer */}
       <div className="sidebar-footer">
-        <div className="profile">
-          <img className="profile-avatar" src="https://github.com/mdo.png" alt="Admin avatar" />
+        <div className="footer-divider"></div>
+        
+        <div className="profile-section">
+          <div className="profile-avatar">
+            <User size={20} />
+          </div>
           {!collapsed && (
             <div className="profile-meta">
               <div className="profile-name">RG Admin</div>
@@ -130,7 +211,21 @@ const Sidebar = () => {
         </div>
 
         <div className="sidebar-actions">
-          <button className="logout-btn" onClick={logout} aria-label="Sign out">
+          <button 
+            className="action-btn settings-btn" 
+            title="Settings"
+            aria-label="Settings"
+          >
+            <Settings size={16} />
+            {!collapsed && <span>Settings</span>}
+          </button>
+          
+          <button 
+            className="action-btn logout-btn" 
+            onClick={logout}
+            title="Sign out"
+            aria-label="Sign out"
+          >
             <LogOut size={16} />
             {!collapsed && <span>Sign out</span>}
           </button>

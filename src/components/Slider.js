@@ -1,50 +1,125 @@
-import React, { useState, useCallback, useMemo, memo } from "react";
+import React, { useState, useCallback, useMemo, memo, useEffect } from "react";
 import "./Slider.css";
 import axios from "axios";
+import { Search, MapPin, Briefcase, TrendingUp, Filter, X } from "lucide-react";
 
 // Modern reusable Search Form
-const SearchForm = memo(({ onSubmit, searchTerm, setSearchTerm, location, setLocation, role, setRole, placeholders }) => (
-  <form className="modern-search-form" onSubmit={onSubmit}>
-    <input
-      type="text"
-      placeholder={placeholders.role}
-      value={role}
-      onChange={(e) => setRole(e.target.value)}
-      className="modern-input"
-    />
-    <input
-      type="text"
-      placeholder={placeholders.location}
-      value={location}
-      onChange={(e) => setLocation(e.target.value)}
-      className="modern-input"
-    />
-    <input
-      type="text"
-      placeholder="Title, Skills, Company"
-      value={searchTerm}
-      onChange={(e) => setSearchTerm(e.target.value)}
-      className="modern-input"
-    />
-    <button type="submit" className="modern-search-btn">🔍 Search</button>
-  </form>
-));
+const SearchForm = memo(({ onSubmit, searchTerm, setSearchTerm, location, setLocation, role, setRole, placeholders, onAdvancedClick }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  return (
+    <form className="modern-search-form" onSubmit={onSubmit}>
+      <div className={`search-form-wrapper ${isExpanded ? 'expanded' : ''}`}>
+        {/* Primary Inputs */}
+        <div className="search-inputs-primary">
+          <div className="search-input-group">
+            <Briefcase size={18} className="input-icon" />
+            <input
+              type="text"
+              placeholder={placeholders.role}
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              className="modern-input"
+              onFocus={() => setIsExpanded(true)}
+            />
+          </div>
+          
+          <div className="search-input-group">
+            <MapPin size={18} className="input-icon" />
+            <input
+              type="text"
+              placeholder={placeholders.location}
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              className="modern-input"
+              onFocus={() => setIsExpanded(true)}
+            />
+          </div>
+
+          <div className="search-input-group flex-1">
+            <Search size={18} className="input-icon" />
+            <input
+              type="text"
+              placeholder="Skills, Company, Keywords..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="modern-input"
+              onFocus={() => setIsExpanded(true)}
+            />
+          </div>
+
+          <button type="submit" className="modern-search-btn">
+            <Search size={18} />
+            <span>Search</span>
+          </button>
+        </div>
+
+        {/* Advanced Filters (Expanded) */}
+        {isExpanded && (
+          <div className="search-advanced-filters">
+            <button 
+              type="button" 
+              className="filter-tag active"
+              onClick={() => setIsExpanded(false)}
+            >
+              <Filter size={14} />
+              Show Filters
+            </button>
+            <button 
+              type="button" 
+              className="filter-close-btn"
+              onClick={() => setIsExpanded(false)}
+            >
+              <X size={16} />
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Quick Tips */}
+      <div className="search-quick-tips">
+        <span className="tip-item">💡 Tip: Use specific keywords for better results</span>
+      </div>
+    </form>
+  );
+});
 
 // Carousel Item
-const CarouselItem = memo(({ isActive, backgroundImage, title, subtitle, searchForm, interval = "20000" }) => (
-  <div className={`carousel-item ${isActive ? "active" : ""}`} data-bs-interval={interval}>
+const CarouselItem = memo(({ isActive, backgroundImage, title, subtitle, description, searchForm, icon: Icon }) => (
+  <div className={`carousel-item-modern ${isActive ? "active" : ""}`}>
     <div
       className="carousel-bg-modern"
       style={{
-        backgroundImage: `linear-gradient(120deg, rgba(0,0,0,0.6), rgba(0,0,0,0.3)), url(${backgroundImage})`,
+        backgroundImage: `linear-gradient(135deg, rgba(15, 23, 42, 0.75) 0%, rgba(30, 41, 59, 0.6) 100%), url(${backgroundImage})`,
       }}
     >
       <div className="slider-overlay-content">
+        <div className="slider-badge">
+          <Icon size={16} />
+          Popular
+        </div>
         <h1 className="slider-title">{title}</h1>
         <p className="slider-subtitle">{subtitle}</p>
+        {description && <p className="slider-description">{description}</p>}
         {searchForm}
       </div>
     </div>
+  </div>
+));
+
+
+// Carousel Indicators
+const CarouselIndicators = memo(({ totalItems, activeIndex, onIndicatorClick }) => (
+  <div className="carousel-indicators-modern">
+    {Array.from({ length: totalItems }).map((_, index) => (
+      <button
+        key={index}
+        type="button"
+        className={`indicator-dot ${index === activeIndex ? "active" : ""}`}
+        onClick={() => onIndicatorClick(index)}
+        aria-label={`Slide ${index + 1}`}
+      />
+    ))}
   </div>
 ));
 
@@ -53,20 +128,55 @@ const Slider = memo((props) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [location, setLocation] = useState("");
   const [role, setRole] = useState("");
+  const [activeSlide, setActiveSlide] = useState(0);
+  const [isSearching, setIsSearching] = useState(false);
 
   const backendURL = process.env.REACT_APP_API_URL;
 
+  // Auto-rotate carousel
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveSlide((prev) => (prev + 1) % 2);
+    }, 8000);
+    return () => clearInterval(timer);
+  }, []);
+
   const handleSearch = useCallback(async (e) => {
     e.preventDefault();
+    
+    // Validate search inputs
+    if (!role && !location && !searchTerm) {
+      alert("Please enter at least one search criteria");
+      return;
+    }
+
+    setIsSearching(true);
     if (props.setLoading) props.setLoading(true);
+
     try {
       const res = await axios.get(`${backendURL}/api/jobs-search`, {
-        params: { searchTerm, location, role },
+        params: { 
+          searchTerm: searchTerm.trim(), 
+          location: location.trim(), 
+          role: role.trim() 
+        },
       });
-      if (props.setSearchedJobs) props.setSearchedJobs(res.data);
+      
+      if (res.data && res.data.length > 0) {
+        if (props.setSearchedJobs) props.setSearchedJobs(res.data);
+        // Scroll to results
+        const jobsSection = document.querySelector('.premium-jobcard-container');
+        if (jobsSection) {
+          jobsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      } else {
+        if (props.setSearchedJobs) props.setSearchedJobs([]);
+      }
     } catch (err) {
       console.error("Error fetching jobs:", err);
+      alert("Error searching jobs. Please try again.");
     } finally {
+      setIsSearching(false);
       if (props.setLoading) props.setLoading(false);
     }
   }, [searchTerm, location, role, backendURL, props]);
@@ -106,58 +216,75 @@ const Slider = memo((props) => {
   const carouselItems = useMemo(() => [
     {
       backgroundImage: `${process.env.PUBLIC_URL}/images/t1.webp`,
-      title: "Find Your Dream Job",
-      subtitle: "Search jobs by role, location, or skills",
-      searchForm: searchForm
+      title: "Find Your Perfect Job",
+      subtitle: "Explore thousands of opportunities from top companies",
+      description: "Search by role, location, or skills and land your dream job",
+      searchForm: searchForm,
+      icon: TrendingUp
     },
     {
       backgroundImage: `${process.env.PUBLIC_URL}/images/t2.webp`,
-      title: "Explore Top Companies",
-      subtitle: "Apply to the latest openings and internships",
-      searchForm: searchForm2
+      title: "Discover Top Companies",
+      subtitle: "Apply to exciting roles at leading tech companies",
+      description: "Latest internships, entry-level, and senior positions",
+      searchForm: searchForm2,
+      icon: Briefcase
     }
   ], [searchForm, searchForm2]);
 
   return (
     <div className="slider-modern-container">
-      <div id="carouselExampleIndicators" className="carousel slide modern-carousel">
-        <div className="carousel-indicators">
-          {carouselItems.map((_, index) => (
-            <button
-              key={index}
-              type="button"
-              data-bs-target="#carouselExampleIndicators"
-              data-bs-slide-to={index}
-              className={index === 0 ? "active" : ""}
-              aria-current={index === 0 ? "true" : undefined}
-              aria-label={`Slide ${index + 1}`}
-            />
-          ))}
-        </div>
-
-        <div className="carousel-inner">
+      {/* Main Carousel */}
+      <div className="modern-carousel-wrapper">
+        <div className="carousel-inner-modern">
           {carouselItems.map((item, index) => (
             <CarouselItem
               key={index}
-              isActive={index === 0}
+              isActive={index === activeSlide}
               backgroundImage={item.backgroundImage}
               title={item.title}
               subtitle={item.subtitle}
+              description={item.description}
               searchForm={item.searchForm}
+              icon={item.icon}
             />
           ))}
         </div>
 
-        <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-          <span className="carousel-control-prev-icon" aria-hidden="true" />
-          <span className="visually-hidden">Previous</span>
+        {/* Navigation Controls */}
+        <button 
+          className="carousel-nav-btn prev" 
+          onClick={() => setActiveSlide((prev) => (prev - 1 + 2) % 2)}
+          aria-label="Previous slide"
+        >
+          ‹
+        </button>
+        <button 
+          className="carousel-nav-btn next" 
+          onClick={() => setActiveSlide((prev) => (prev + 1) % 2)}
+          aria-label="Next slide"
+        >
+          ›
         </button>
 
-        <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-          <span className="carousel-control-next-icon" aria-hidden="true" />
-          <span className="visually-hidden">Next</span>
-        </button>
+        {/* Indicators */}
+        <CarouselIndicators 
+          totalItems={carouselItems.length}
+          activeIndex={activeSlide}
+          onIndicatorClick={setActiveSlide}
+        />
       </div>
+
+      {/* Stats Section */}
+      
+
+      {/* Loading Indicator */}
+      {isSearching && (
+        <div className="search-loading-indicator">
+          <div className="loading-spinner-mini"></div>
+          <span>Searching jobs...</span>
+        </div>
+      )}
     </div>
   );
 });
@@ -165,5 +292,6 @@ const Slider = memo((props) => {
 Slider.displayName = "Slider";
 SearchForm.displayName = "SearchForm";
 CarouselItem.displayName = "CarouselItem";
+CarouselIndicators.displayName = "CarouselIndicators";
 
 export default Slider;

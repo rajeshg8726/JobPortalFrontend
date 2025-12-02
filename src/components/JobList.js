@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import axios from 'axios';
-import './adminSide.css'; // Assuming you have a CSS file for styling
-import ReactPaginate from 'react-paginate';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrashAlt, faSearch } from '@fortawesome/free-solid-svg-icons';
 
 const PER_PAGE = 10;
 
@@ -12,6 +10,7 @@ const JobList = () => {
   const [jobPost, setJobPost] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
   const backendURL = process.env.REACT_APP_API_URL;
 
@@ -34,6 +33,15 @@ const JobList = () => {
     getJobs();
   }, [backendURL]);
 
+  const filteredJobs = useMemo(() => {
+    return jobPost.filter((job) =>
+      job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      job.role.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      job.batches.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      job.pay.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [jobPost, searchTerm]);
+
   const handlePageClick = ({ selected }) => setCurrentPage(selected);
 
   const handleDelete = async (id) => {
@@ -41,6 +49,7 @@ const JobList = () => {
     try {
       await axios.delete(`${backendURL}/api/deletejob/${id}`);
       setJobPost((prev) => prev.filter((job) => job.id !== id));
+      setCurrentPage(0);
     } catch (error) {
       alert('An error occurred. Please try again.');
     }
@@ -49,13 +58,35 @@ const JobList = () => {
   const handleEdit = (id) => navigate(`/admin/edit-job/${id}`);
 
   const offset = currentPage * PER_PAGE;
-  const currentPageData = jobPost.slice(offset, offset + PER_PAGE);
-  const pageCount = Math.ceil(jobPost.length / PER_PAGE);
+  const currentPageData = filteredJobs.slice(offset, offset + PER_PAGE);
+  const pageCount = Math.ceil(filteredJobs.length / PER_PAGE);
 
   return (
     <div className="modern-table-container">
       <div className="modern-table-card">
-        <h1 className="modern-table-title">Jobs List</h1>
+        {/* Search Bar */}
+        <div className="modern-search-wrapper">
+          <div className="modern-search-container">
+            <FontAwesomeIcon icon={faSearch} className="modern-search-icon" />
+            <input
+              type="text"
+              placeholder="Search by company, role, batch, or pay..."
+              value={searchTerm}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setCurrentPage(0);
+              }}
+              className="modern-search-input"
+            />
+          </div>
+          {searchTerm && (
+            <p className="modern-search-results">
+              Found {filteredJobs.length} result{filteredJobs.length !== 1 ? 's' : ''}
+            </p>
+          )}
+        </div>
+
+        {/* Table */}
         <div className="modern-table-responsive">
           <table className="modern-table">
             <thead>
@@ -65,33 +96,48 @@ const JobList = () => {
                 <th>Job Role</th>
                 <th>Batches</th>
                 <th>Expected Pay</th>
-                <th>Edit / Delete</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={6} className="modern-table-loading">Loading...</td>
+                  <td colSpan={6} className="modern-table-loading">
+                    <div className="loading-spinner"></div>
+                    Loading...
+                  </td>
                 </tr>
               ) : currentPageData.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="modern-table-empty">No jobs found.</td>
+                  <td colSpan={6} className="modern-table-empty">
+                    {searchTerm ? '🔍 No jobs found matching your search' : 'No jobs found.'}
+                  </td>
                 </tr>
               ) : (
                 currentPageData.map((post, index) => (
-                  <tr key={post.id}>
+                  <tr key={post.id} className="modern-table-row">
                     <td>{offset + index + 1}</td>
-                    <td>{post.title}</td>
+                    <td className="modern-table-company">{post.title}</td>
                     <td>{post.role}</td>
                     <td>{post.batches}</td>
-                    <td>{post.pay}</td>
+                    <td className="modern-table-pay">{post.pay}</td>
                     <td>
-                      <button className="modern-table-action edit" onClick={() => handleEdit(post.id)} title="Edit">
-                        <FontAwesomeIcon icon={faEdit} />
-                      </button>
-                      <button className="modern-table-action delete" onClick={() => handleDelete(post.id)} title="Delete">
-                        <FontAwesomeIcon icon={faTrashAlt} />
-                      </button>
+                      <div className="modern-table-actions">
+                        <button
+                          className="modern-table-action edit"
+                          onClick={() => handleEdit(post.id)}
+                          title="Edit"
+                        >
+                          <FontAwesomeIcon icon={faEdit} />
+                        </button>
+                        <button
+                          className="modern-table-action delete"
+                          onClick={() => handleDelete(post.id)}
+                          title="Delete"
+                        >
+                          <FontAwesomeIcon icon={faTrashAlt} />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))
@@ -99,11 +145,12 @@ const JobList = () => {
             </tbody>
           </table>
         </div>
-               {/* Pagination */}
-        {jobPost.length > 0 && (
+
+        {/* Pagination */}
+        {filteredJobs.length > 0 && (
           <div className="inv-pagination-row">
             <div className="inv-pagination-summary">
-              Showing {Math.min(jobPost.length, offset + 1)}–{Math.min(jobPost.length, offset + currentPageData.length)} of {jobPost.length}
+              Showing {Math.min(filteredJobs.length, offset + 1)}–{Math.min(filteredJobs.length, offset + currentPageData.length)} of {filteredJobs.length}
             </div>
 
             <div className="inv-pagination-controls" role="navigation" aria-label="Pagination">
@@ -133,16 +180,20 @@ const JobList = () => {
                     const nearLeftEllipsis = page === Math.max(1, currentPage - 3);
                     const nearRightEllipsis = page === Math.min(pageCount - 2, currentPage + 3);
                     if (nearLeftEllipsis || nearRightEllipsis) {
-                      return <span key={`el-${page}`} className="inv-pg-ellipsis">…</span>;
+                      return (
+                        <span key={`el-${page}`} className="inv-pg-ellipsis">
+                          …
+                        </span>
+                      );
                     }
                     return null;
                   }
                   return (
                     <button
                       key={page}
-                      className={`inv-pg-page ${page === currentPage ? "active" : ""}`}
+                      className={`inv-pg-page ${page === currentPage ? 'active' : ''}`}
                       onClick={() => setCurrentPage(page)}
-                      aria-current={page === currentPage ? "page" : undefined}
+                      aria-current={page === currentPage ? 'page' : undefined}
                       aria-label={`Go to page ${page + 1}`}
                     >
                       {page + 1}
@@ -170,7 +221,9 @@ const JobList = () => {
               </button>
 
               <div className="inv-pg-jump">
-                <label htmlFor="inv-jump" className="sr-only">Jump to page</label>
+                <label htmlFor="inv-jump" className="sr-only">
+                  Jump to page
+                </label>
                 <input
                   id="inv-jump"
                   type="number"

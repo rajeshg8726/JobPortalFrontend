@@ -1,368 +1,350 @@
-import React, { useState, useEffect } from "react";
-import "./JobDetailModern.css";
-import axios from "axios";
-import { useParams, Link } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import {
-  faMapMarkerAlt,
-  faWallet,
-  faBriefcase,
-  faShareAlt,
-} from "@fortawesome/free-solid-svg-icons";
-import slugify from "react-slugify";
-import ReactPaginate from "react-paginate";
-import PageNotFound from "./PageNotFound";
-import Loading from "./Loading";
+  ArrowLeft,
+  MapPin,
+  Briefcase,
+  DollarSign,
+  Calendar,
+  Users,
+  Share2,
+  Bookmark,
+  ExternalLink,
+  CheckCircle,
+  AlertCircle,
+  Clock,
+  Building2,
+  GraduationCap,
+  FileText,
+  Zap,
+} from 'lucide-react';
+import './JobDetailModern.css';
 
-// ...useWindowSize hook remains unchanged...
-
-const useWindowSize = () => {
-  const [windowSize, setWindowSize] = useState({ width: undefined });
-  useEffect(() => {
-    const handleResize = () => setWindowSize({ width: window.innerWidth });
-    window.addEventListener("resize", handleResize);
-    handleResize();
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-  return windowSize;
-};
-
-const JobDetail = () => {
-  const [jobData, setJobData] = useState(null);
-  const [error, setError] = useState(null);
+const JobDetailPage = () => {
   const { id, slug } = useParams();
+  const navigate = useNavigate();
+  const [job, setJob] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isSaved, setIsSaved] = useState(false);
   const backendURL = process.env.REACT_APP_API_URL;
-  const [jobListData, setJobListData] = useState([]);
-  const size = useWindowSize();
-  const [currentPage, setCurrentPage] = useState(0);
-  const jobsPerPage = 5;
 
   useEffect(() => {
-    const getDataFromApi = async () => {
-      try {
-        const response = await axios.get(`${backendURL}/api/job/${id}`);
-        setJobData(response.data.job);
-      } catch (error) {
-        setError(error);
-      }
-    };
-    getDataFromApi();
-  }, [id, backendURL]);
+    fetchJobDetails();
+  }, [id]);
 
   useEffect(() => {
-    const getJobsToList = async () => {
-      try {
-        const resData = await axios.get(`${backendURL}/api/getAllJobs`);
-        setJobListData(resData.data.JobsData);
-      } catch (error) {
-        setError(error);
-      }
-    };
-    getJobsToList();
-  }, [backendURL]);
+    const saved = localStorage.getItem('savedJobs');
+    if (saved) {
+      const savedJobs = JSON.parse(saved);
+      setIsSaved(savedJobs.includes(parseInt(id)));
+    }
+  }, [id]);
 
-  const handleShare = (post) => {
-    if (navigator.share) {
-      navigator
-        .share({
-          title: post.title,
-          text: `Check out this job: ${post.title} at ${post.location}. Expected Pay: ${post.pay}.`,
-          url: `${window.location.origin}/job/${post.id}/${slugify(
-            post.title
-          )}`,
-        })
-        .catch(() => {});
-    } else {
-      alert("Web Share API is not supported in your browser.");
+  const fetchJobDetails = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(`${backendURL}/api/job/${id}`);
+      setJob(response.data.job || response.data);
+    } catch (err) {
+      console.error('Error fetching job:', err);
+      setError('Failed to load job details');
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handlePageClick = ({ selected }) => setCurrentPage(selected);
-  const offset = currentPage * jobsPerPage;
-  const currentJobs = jobListData.slice(offset, offset + jobsPerPage);
-  const pageCount = Math.ceil(jobListData.length / jobsPerPage);
+  const handleSaveJob = () => {
+    const saved = localStorage.getItem('savedJobs');
+    const savedJobs = saved ? JSON.parse(saved) : [];
+    
+    if (isSaved) {
+      const updated = savedJobs.filter(jobId => jobId !== parseInt(id));
+      localStorage.setItem('savedJobs', JSON.stringify(updated));
+    } else {
+      savedJobs.push(parseInt(id));
+      localStorage.setItem('savedJobs', JSON.stringify(savedJobs));
+    }
+    
+    setIsSaved(!isSaved);
+  };
 
-  // Check if there's an error fetching job data
-  if (error) {
+  const handleShare = () => {
+    const shareUrl = window.location.href;
+    if (navigator.share) {
+      navigator.share({
+        title: job?.role,
+        text: `Check out this job: ${job?.role} at ${job?.title}`,
+        url: shareUrl,
+      });
+    } else {
+      navigator.clipboard.writeText(shareUrl);
+      alert('Job link copied to clipboard!');
+    }
+  };
+
+  const handleApply = () => {
+    if (job?.joblink) {
+      window.open(job.joblink, '_blank');
+    }
+  };
+
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
+  };
+
+  const parseDescription = (text) => {
+    if (!text) return '';
+    return text.split('\r\n').filter(line => line.trim());
+  };
+
+  if (loading) {
     return (
-      <>
-        <Helmet>
-          <title>Job Not Found | RGJobs </title>
-          <meta name="robots" content="noindex, nofollow" />
-        </Helmet>
-        <PageNotFound />
-      </>
+      <div className="job-detail-container">
+        <div className="loading-state">
+          <div className="spinner"></div>
+          <p>Loading job details...</p>
+        </div>
+      </div>
     );
   }
 
-  // Check if jobData is still loading
-  if (!jobData)
+  if (error || !job) {
     return (
-      <div className="loading-container">
-        <Loading />
+      <div className="job-detail-container">
+        <div className="error-state">
+          <AlertCircle size={48} />
+          <p>{error || 'Job not found'}</p>
+          <button onClick={() => navigate(-1)} className="back-btn">
+            Go Back
+          </button>
+        </div>
       </div>
     );
+  }
 
   return (
-    <>
-      <Helmet>
-        <title>{`${jobData.title} in ${jobData.location} | RGJobs`}</title>
-        <meta
-          name="description"
-          content={`Apply now for ${jobData.title} at ${jobData.location}. Check eligibility, salary, requirements, and job responsibilities. Explore more opportunities at RGJobs.`}
-        />
-        <meta
-          name="keywords"
-          content={`${jobData.title}, ${jobData.role}, ${jobData.location}, jobs in ${jobData.location}, IT jobs, fresher jobs, RGJobs`}
-        />
-        <meta
-          property="og:title"
-          content={`${jobData.title} in ${jobData.location} | RGJobs`}
-        />
-        <meta
-          property="og:description"
-          content={`Looking for ${jobData.title}? Discover roles, eligibility, and how to apply.`}
-        />
-        <meta property="og:type" content="website" />
-        <meta
-          property="og:url"
-          content={`https://www.rgjobs.in/job/${id}/${slug}`}
-        />
-        <meta property="og:image" content={`${backendURL}/${jobData.image}`} />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta
-          name="twitter:title"
-          content={`${jobData.title} - Apply Now | RGJobs`}
-        />
-        <meta
-          name="twitter:description"
-          content={`Don't miss this opportunity for ${jobData.title} at ${jobData.location}.`}
-        />
-        <meta name="twitter:image" content={`${backendURL}/${jobData.image}`} />
+    <div className="job-detail-container">
+      {/* Header */}
+      <div className="job-detail-header">
+        <button onClick={() => navigate(-1)} className="back-button">
+          <ArrowLeft size={20} />
+          Back
+        </button>
 
-        {/* Structured Data for Google */}
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "JobPosting",
-            title: jobData.title,
-            description:
-              jobData.description ||
-              jobData.requirements ||
-              jobData.rolesAndResponsibilities,
-            identifier: {
-              "@type": "PropertyValue",
-              name: "RGJobs",
-              value: jobData.id,
-            },
-            datePosted: new Date(jobData.created_at).toISOString(),
-            validThrough: new Date(
-              Date.now() + 30 * 24 * 60 * 60 * 1000
-            ).toISOString(),
-            employmentType: "Full-time",
-            hiringOrganization: {
-              "@type": "Organization",
-              name: "RGJobs",
-              sameAs: "https://www.rgjobs.in",
-              logo: `${backendURL}/rglogo.png`,
-            },
-            jobLocation: {
-              "@type": "Place",
-              address: {
-                "@type": "PostalAddress",
-                addressLocality: jobData.location,
-                addressRegion: "India",
-                addressCountry: "IN",
-              },
-            },
-            baseSalary: {
-              "@type": "MonetaryAmount",
-              currency: "INR",
-              value: jobData.pay || "Negotiable",
-              unitText: "YEAR",
-            },
-          })}
-        </script>
-      </Helmet>
-
-      <div className="modern-jobdetail-layout">
-        {/* Job Detail Card */}
-        <section className="modern-jobdetail-card">
-          <div className="modern-jobdetail-img-wrap">
-            <img
-              src={`${backendURL}/${jobData.image}`}
-              alt={jobData.title}
-              className="modern-jobdetail-img"
-              loading="lazy"
-            />
-          </div>
-          <div className="modern-jobdetail-content">
-            <h1 className="modern-jobdetail-title">{jobData.title}</h1>
-            <div className="modern-jobdetail-meta">
-              <span>
-                <FontAwesomeIcon icon={faBriefcase} /> {jobData.batches}
-              </span>
-              <span>
-                <FontAwesomeIcon icon={faMapMarkerAlt} /> {jobData.location}
-              </span>
-              <span>
-                <FontAwesomeIcon icon={faWallet} /> {jobData.pay}
-              </span>
-            </div>
-            <div className="modern-jobdetail-role">
-              <strong>Role:</strong> {jobData.role}
-            </div>
-
-            {/* Fallback: Job Description as Job Role  if nothing else */}
-            {jobData.description && (
-              <div className="modern-jobdetail-section">
-                <strong>About Company/Role :</strong>
-                <ul>
-                  {jobData.description
-                    .split(/\n|\. (?=[A-Z0-9])/)
-                    .map((sentence, idx) =>
-                      sentence.trim() ? (
-                        <li key={idx}>{sentence.trim()}</li>
-                      ) : null
-                    )}
-                </ul>
-              </div>
-            )}
-
-            {/* Eligibility */}
-            {jobData.eligibility && jobData.eligibility.trim() && (
-              <div className="modern-jobdetail-section">
-                <strong>Eligibility:</strong>
-                <ul>
-                  {jobData.eligibility
-                    .split(/\n|\. (?=[A-Z0-9])/)
-                    .map((item, idx) =>
-                      item.trim() ? <li key={idx}>{item.trim()}</li> : null
-                    )}
-                </ul>
-              </div>
-            )}
-
-            {/* Roles & Responsibilities */}
-            {jobData.rolesAndResponsibilities &&
-              jobData.rolesAndResponsibilities.trim() && (
-                <div className="modern-jobdetail-section">
-                  <strong>Roles & Responsibilities:</strong>
-                  <ul>
-                    {jobData.rolesAndResponsibilities
-                      .split(/\n|\. (?=[A-Z0-9])/)
-                      .map((item, idx) =>
-                        item.trim() ? <li key={idx}>{item.trim()}</li> : null
-                      )}
-                  </ul>
-                </div>
-              )}
-
-            {/* Requirements */}
-            {jobData.requirements && jobData.requirements.trim() && (
-              <div className="modern-jobdetail-section">
-                <strong>Requirements:</strong>
-                <ul>
-                  {jobData.requirements
-                    .split(/\n|\. (?=[A-Z0-9])/)
-                    .map((item, idx) =>
-                      item.trim() ? <li key={idx}>{item.trim()}</li> : null
-                    )}
-                </ul>
-              </div>
-            )}
-
-            {/* Nice To Have */}
-            {jobData.niceToHave && jobData.niceToHave.trim() && (
-              <div className="modern-jobdetail-section">
-                <strong>More Details:</strong>
-                <ul>
-                  {jobData.niceToHave
-                    .split(/\n|\. (?=[A-Z0-9])/)
-                    .map((item, idx) =>
-                      item.trim() ? <li key={idx}>{item.trim()}</li> : null
-                    )}
-                </ul>
-              </div>
-            )}
-
-            <div className="modern-jobdetail-actions">
-              <Link
-                to={jobData.joblink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="modern-jobdetail-apply"
-              >
-                Apply for this Job
-              </Link>
-              <button
-                className="modern-jobdetail-share"
-                onClick={() => handleShare(jobData)}
-                aria-label="Share job"
-              >
-                <FontAwesomeIcon icon={faShareAlt} /> Share
-              </button>
-            </div>
-          </div>
-        </section>
-
-        {/* Job List Sidebar */}
-        <aside className="modern-joblist-sidebar">
-          <h2 className="modern-joblist-title">More Jobs</h2>
-          <ul className="modern-joblist-list">
-            {currentJobs.map((joblst) => (
-              <li key={joblst.id} className="modern-joblist-item">
-                <Link
-                  to={`/job/${joblst.id}/${slugify(joblst.title)}`}
-                  target="_blank"
-                  className="modern-joblist-link"
-                >
-                  <div className="modern-joblist-card">
-                    <img
-                      src={`${backendURL}/${joblst.image}`}
-                      alt={joblst.title}
-                      className="modern-joblist-img"
-                    />
-                    <div>
-                      <div className="modern-joblist-role">{joblst.role}</div>
-                      <div className="modern-joblist-meta">
-                        <span>
-                          <FontAwesomeIcon icon={faBriefcase} />{" "}
-                          {joblst.batches}
-                        </span>
-                        <span>
-                          <FontAwesomeIcon icon={faMapMarkerAlt} />{" "}
-                          {joblst.location}
-                        </span>
-                        <span>
-                          <FontAwesomeIcon icon={faWallet} /> {joblst.pay}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              </li>
-            ))}
-          </ul>
-          <ReactPaginate
-            previousLabel={"←"}
-            nextLabel={"→"}
-            breakLabel={"..."}
-            pageCount={pageCount}
-            marginPagesDisplayed={1}
-            pageRangeDisplayed={2}
-            onPageChange={handlePageClick}
-            containerClassName={"modern-pagination"}
-            previousLinkClassName={"modern-pagination-link"}
-            nextLinkClassName={"modern-pagination-link"}
-            disabledClassName={"modern-pagination-link--disabled"}
-            activeClassName={"modern-pagination-link--active"}
-          />
-        </aside>
+        <div className="header-actions">
+          <button
+            className={`action-btn save-btn ${isSaved ? 'saved' : ''}`}
+            onClick={handleSaveJob}
+            title={isSaved ? 'Remove from saved' : 'Save job'}
+          >
+            <Bookmark size={20} fill={isSaved ? 'currentColor' : 'none'} />
+          </button>
+          <button className="action-btn share-btn" onClick={handleShare}>
+            <Share2 size={20} />
+          </button>
+        </div>
       </div>
-    </>
+
+      <div className="job-detail-content">
+        {/* Left Column */}
+        <div className="job-detail-main">
+          {/* Company Header */}
+          <div className="company-header">
+            <div className="company-logo">
+              <img
+                src={`${backendURL}/${job.image}`}
+                alt={job.title}
+                onError={(e) => (e.target.src = '/logo.webp')}
+              />
+            </div>
+            <div className="company-info">
+              <h1 className="job-title">{job.role}</h1>
+              <p className="company-name">{job.title}</p>
+              <div className="job-meta-row">
+                <span className="meta-item">
+                  <MapPin size={16} />
+                  {job.location || 'Location TBD'}
+                </span>
+                <span className="meta-item">
+                  <Briefcase size={16} />
+                  {job.jobtype === '1' ? 'Full-Time' : 'Part-Time'}
+                </span>
+                <span className="meta-item">
+                  <Calendar size={16} />
+                  {formatDate(job.created_at)}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Stats */}
+          <div className="quick-stats">
+            <div className="stat-box">
+              <DollarSign size={20} />
+              <div>
+                <p className="stat-label">Expected Pay</p>
+                <p className="stat-value1">{job.pay}</p>
+              </div>
+            </div>
+            <div className="stat-box">
+              <GraduationCap size={20} />
+              <div>
+                <p className="stat-label">Batches</p>
+                <p className="stat-value1">{job.batches}</p>
+              </div>
+            </div>
+            <div className="stat-box">
+              <Clock size={20} />
+              <div>
+                <p className="stat-label">Posted</p>
+                <p className="stat-value1">
+                  {Math.floor((Date.now() - new Date(job.created_at)) / (1000 * 60 * 60 * 24))} days ago
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* About Section */}
+          <section className="detail-section">
+            <h2 className="section-title">
+              <Zap size={20} />
+              About the Opportunity
+            </h2>
+            <div className="section-content formatted-text">
+              {parseDescription(job.description).map((para, idx) => (
+                <p key={idx}>{para}</p>
+              ))}
+            </div>
+          </section>
+
+          {/* Roles & Responsibilities */}
+          {job.rolesAndResponsibilities && (
+            <section className="detail-section">
+              <h2 className="section-title">
+                <CheckCircle size={20} />
+                Roles & Responsibilities
+              </h2>
+              <ul className="bullet-list">
+                {parseDescription(job.rolesAndResponsibilities).map((item, idx) => (
+                  <li key={idx}>{item}</li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {/* Requirements */}
+          {job.requirements && (
+            <section className="detail-section">
+              <h2 className="section-title">
+                <FileText size={20} />
+                Requirements
+              </h2>
+              <ul className="bullet-list">
+                {parseDescription(job.requirements).map((item, idx) => (
+                  <li key={idx}>{item}</li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {/* Nice to Have */}
+          {job.niceToHave && (
+            <section className="detail-section">
+              <h2 className="section-title">
+                <Zap size={20} />
+                Nice to Have
+              </h2>
+              <ul className="bullet-list light">
+                {parseDescription(job.niceToHave).map((item, idx) => (
+                  <li key={idx}>{item}</li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {/* Eligibility */}
+          {job.eligibility && (
+            <section className="detail-section">
+              <h2 className="section-title">
+                <Users size={20} />
+                Eligibility
+              </h2>
+              <div className="section-content formatted-text">
+                {parseDescription(job.eligibility).map((para, idx) => (
+                  <p key={idx}>{para}</p>
+                ))}
+              </div>
+            </section>
+          )}
+        </div>
+
+        {/* Right Sidebar */}
+        <div className="job-detail-sidebar">
+          {/* Apply Card */}
+          <div className="apply-card">
+            <h3>Ready to Apply?</h3>
+            <p>Submit your application for this exciting opportunity</p>
+            <button className="apply-btn" onClick={handleApply}>
+              Apply Now
+              <ExternalLink size={16} />
+            </button>
+            <p className="apply-note">You'll be directed to the application portal</p>
+          </div>
+
+          {/* Job Details Card */}
+          <div className="info-card">
+            <h3>Job Details</h3>
+            <div className="info-item">
+              <span className="info-label">Position</span>
+              <span className="info-value">{job.role}</span>
+            </div>
+            <div className="info-item">
+              <span className="info-label">Company</span>
+              <span className="info-value">{job.title}</span>
+            </div>
+            <div className="info-item">
+              <span className="info-label">Location</span>
+              <span className="info-value">{job.location}</span>
+            </div>
+            <div className="info-item">
+              <span className="info-label">Job Type</span>
+              <span className="info-value">
+                {job.jobtype === '1' ? 'Full-Time' : 'Part-Time'}
+              </span>
+            </div>
+            <div className="info-item">
+              <span className="info-label">Salary</span>
+              <span className="info-value">{job.pay}</span>
+            </div>
+            <div className="info-item">
+              <span className="info-label">Batches</span>
+              <span className="info-value">{job.batches}</span>
+            </div>
+            <div className="info-item">
+              <span className="info-label">Posted On</span>
+              <span className="info-value">{formatDate(job.created_at)}</span>
+            </div>
+          </div>
+
+          {/* Share Card */}
+          <div className="share-card">
+            <h3>Share This Job</h3>
+            <p>Help others discover this opportunity</p>
+            <button className="share-card-btn" onClick={handleShare}>
+              <Share2 size={16} />
+              Share Job
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
-export default JobDetail;
+export default JobDetailPage;

@@ -1,0 +1,625 @@
+/* ============================================
+   NEWSLETTER WRAPPER - PREMIUM DESIGN
+   ============================================ */
+.newsletter-wrapper {
+  position: relative;
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(102, 126, 234, 0.15);
+  transition: all 0.3s ease;
+}
+
+.newsletter-wrapper:hover {
+  box-shadow: 0 15px 50px rgba(102, 126, 234, 0.25);
+  transform: translateY(-2px);
+}
+
+/* ============================================
+   BACKGROUND & GRADIENT
+   ============================================ */
+.newsletter-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.newsletter-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, 
+    #667eea 0%, 
+    #764ba2 50%, 
+    #f093fb 100%
+  );
+  animation: gradientShift 8s ease infinite;
+}
+
+@keyframes gradientShift {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.05);
+  }
+}
+
+.newsletter-pattern {
+  position: absolute;
+  inset: 0;
+  opacity: 0.1;
+  background-image: 
+    radial-gradient(circle at 20% 50%, white 1px, transparent 1px),
+    radial-gradient(circle at 80% 80%, white 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: patternMove 20s linear infinite;
+}
+
+@keyframes patternMove {
+  0% {
+    background-position: 0 0, 25px 25px;
+  }
+  100% {
+    background-position: 50px 50px, 75px 75px;
+  }
+}
+
+/* ============================================
+   NEWSLETTER CONTENT
+   ============================================ */
+.newsletter-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  position: relative;
+  z-index: 1;
+  padding: 2.5rem;
+}
+
+/* ============================================
+   HEADER SECTION
+   ============================================ */
+.newsletter-header-section {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.newsletter-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 30px;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  animation: fadeInDown 0.6s ease;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.newsletter-badge svg {
+  animation: sparkle 2s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.2);
+  }
+}
+
+.newsletter-heading {
+  font-size: 2rem;
+  font-weight: 800;
+  color: white;
+  margin: 0 0 1rem 0;
+  line-height: 1.2;
+  animation: fadeInUp 0.6s ease 0.1s backwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.newsletter-subheading {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.95);
+  line-height: 1.6;
+  margin: 0;
+  animation: fadeInUp 0.6s ease 0.2s backwards;
+}
+
+.newsletter-subheading strong {
+  color: white;
+  font-weight: 700;
+}
+
+/* ============================================
+   FORM SECTION
+   ============================================ */
+.newsletter-form-section {
+  margin-bottom: 1.5rem;
+  animation: fadeInUp 0.6s ease 0.3s backwards;
+}
+
+.newsletter-input-group {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  display: flex;
+  gap: 0.5rem;
+  background: white;
+  border-radius: 14px;
+  padding: 0.4rem;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+
+.newsletter-input-group:focus-within {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.input-icon-nw {
+  position: absolute;
+  left: 1.25rem;
+  top: 26%;
+  transform: translateY(-50%);
+  color: #999;
+  pointer-events: none;
+  transition: color 0.3s ease;
+  z-index: 2;
+}
+
+.newsletter-input-group:focus-within .input-icon-nw {
+  color: #667eea;
+}
+
+.newsletter-email-input {
+  flex: 1;
+  padding: 1rem 1.25rem 1rem 3rem;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  font-size: 1rem;
+  background: white;
+  color: #333;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.newsletter-email-input::placeholder {
+  color: #999;
+}
+
+.newsletter-email-input:focus {
+  border-color: #667eea;
+}
+
+.newsletter-email-input.input-error {
+  border-color: #ff6b6b;
+  animation: shake 0.4s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  75% { transform: translateX(8px); }
+}
+
+.newsletter-email-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.newsletter-submit-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.newsletter-submit-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(102, 126, 234, 0.6);
+}
+
+.newsletter-submit-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.newsletter-submit-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.button-loader {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================
+   ERROR MESSAGE
+   ============================================ */
+.newsletter-error-message {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 107, 107, 0.15);
+  border: 1px solid rgba(255, 107, 107, 0.3);
+  border-radius: 10px;
+  color: white;
+  font-size: 0.9rem;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.error-icon {
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+/* ============================================
+   BENEFITS SECTION
+   ============================================ */
+.newsletter-benefits {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  animation: fadeInUp 0.6s ease 0.4s backwards;
+}
+
+.benefit-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.benefit-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ============================================
+   TRUST SECTION
+   ============================================ */
+.newsletter-trust {
+  text-align: center;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  animation: fadeInUp 0.6s ease 0.5s backwards;
+}
+
+.trust-avatars {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.trust-avatars img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 3px solid white;
+  margin-left: -12px;
+  transition: transform 0.3s ease;
+}
+
+.trust-avatars img:first-child {
+  margin-left: 0;
+}
+
+.trust-avatars img:hover {
+  transform: scale(1.15) translateY(-2px);
+  z-index: 10;
+}
+
+.trust-count {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: white;
+  color: #667eea;
+  font-weight: 700;
+  font-size: 0.75rem;
+  border-radius: 50%;
+  margin-left: -12px;
+  border: 3px solid white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.trust-text {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.85rem;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ============================================
+   SUCCESS STATE
+   ============================================ */
+.newsletter-success-state {
+  position: relative;
+  z-index: 1;
+  padding: 3rem 2.5rem;
+  text-align: center;
+}
+
+.success-animation {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 2rem;
+}
+
+.success-circle {
+  width: 100px;
+  height: 100px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  animation: successPulse 1s ease;
+}
+
+@keyframes successPulse {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.success-icon {
+  width: 50px;
+  height: 50px;
+  color: #667eea;
+  animation: successIconScale 0.6s ease 0.3s backwards;
+}
+
+@keyframes successIconScale {
+  0% {
+    transform: scale(0) rotate(-180deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+.success-particles {
+  position: absolute;
+  inset: -20px;
+}
+
+.success-particles span {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: white;
+  border-radius: 50%;
+  animation: particleFloat 1.5s ease-out forwards;
+}
+
+.success-particles span:nth-child(1) {
+  top: 0;
+  left: 50%;
+  animation-delay: 0.3s;
+}
+
+.success-particles span:nth-child(2) {
+  top: 50%;
+  right: 0;
+  animation-delay: 0.4s;
+}
+
+.success-particles span:nth-child(3) {
+  bottom: 0;
+  left: 50%;
+  animation-delay: 0.5s;
+}
+
+.success-particles span:nth-child(4) {
+  top: 50%;
+  left: 0;
+  animation-delay: 0.6s;
+}
+
+@keyframes particleFloat {
+  0% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--x, 0), var(--y, -50px));
+    opacity: 0;
+  }
+}
+
+.success-particles span:nth-child(1) { --x: 0; --y: -60px; }
+.success-particles span:nth-child(2) { --x: 60px; --y: 0; }
+.success-particles span:nth-child(3) { --x: 0; --y: 60px; }
+.success-particles span:nth-child(4) { --x: -60px; --y: 0; }
+
+.success-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: white;
+  margin: 0 0 1rem 0;
+  animation: fadeInUp 0.6s ease 0.5s backwards;
+}
+
+.success-message {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.95);
+  line-height: 1.6;
+  margin: 0 0 2rem 0;
+  animation: fadeInUp 0.6s ease 0.6s backwards;
+}
+
+.success-back-button {
+  padding: 1rem 2rem;
+  background: white;
+  color: #667eea;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  animation: fadeInUp 0.6s ease 0.7s backwards;
+}
+
+.success-back-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.25);
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+@media (max-width: 768px) {
+  .newsletter-content {
+    padding: 2rem 1.5rem;
+  }
+
+  .newsletter-heading {
+    font-size: 1.6rem;
+  }
+
+  .newsletter-subheading {
+    font-size: 0.95rem;
+  }
+
+  .newsletter-input-group {
+    flex-direction: column;
+    padding: 0.5rem;
+  }
+
+  .newsletter-email-input {
+    padding: 1rem 1rem 1rem 3rem;
+  }
+
+  .newsletter-submit-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .newsletter-benefits {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .success-title {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .newsletter-content {
+    padding: 1.5rem 1rem;
+  }
+
+  .newsletter-heading {
+    font-size: 1.4rem;
+  }
+
+  .newsletter-subheading {
+    font-size: 0.9rem;
+  }
+
+  .newsletter-badge {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .newsletter-submit-button {
+    padding: 0.9rem 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  .success-circle {
+    width: 80px;
+    height: 80px;
+  }
+
+  .success-icon {
+    width: 40px;
+    height: 40px;
+  }
+}

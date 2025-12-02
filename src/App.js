@@ -23,14 +23,15 @@ import Categories from "./components/Categories";
 import JobsForFullTime from "./components/JobsForFullTime";
 import JobsForBatchOrCity from "./components/JobsForBatchOrCity";
 import JobsByRoles from "./components/JobsByRoles";
-import InterviewExperience from "./components/InterviewExperience";
-import InterviewFormExp from "./components/InterviewFormExp";
-import InterviewExpDetails from "./components/InterviewExpDetails";
+import BlogPage from "./components/BlogPage";
+import CreateBlog from "./components/CreateBlog";
+import BlogDetails from "./components/BlogDetails";
 import AdminAddInvExp from "./components/AdminAddInvExp";
-import InvUsersExpList from "./components/InvUsersExpList";
+import AdminBlogList from "./components/AdminBlogList";
 import Sitemap from "./components/Sitemap";
 import PageNotFound from "./components/PageNotFound";
 import Disclaimer from "./components/Disclaimer";
+import AdminDashboard from "./components/AdminDashboard";
 
 function App() {
   const [jobs, setJobs] = useState([]);
@@ -85,15 +86,15 @@ function App() {
           <Route path="terms-and-conditions" element={<TermsAndConditions />} />
           <Route
             path="real-life-interviews-blog-posts"
-            element={<InterviewExperience />}
+            element={<BlogPage />}
           />
           <Route
             path="share-blog-posts"
-            element={<InterviewFormExp />}
+            element={<CreateBlog />}
           />
           <Route
             path="blog-posts-details/:id/:slug"
-            element={<InterviewExpDetails />}
+            element={<BlogDetails />}
           />
           <Route
             path="jobsbytype/:jobType"
@@ -107,10 +108,11 @@ function App() {
         <Route path="/sitemap.xml" element={<Sitemap />} />
 
         <Route path="/admin/*" element={<AdminLayout />}>
+          <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="add-new-job" element={<AdminJobAdd />} />
           <Route path="job-list" element={<JobList />} />
-          <Route path="interviews/:listURL" element={<InvUsersExpList />} />
-          <Route path="user-feedback-list" element={<FeedbackTable />} />
+          <Route path="interviews/:listURL" element={<AdminBlogList />} />
+          <Route path="aboutusers/:userFeedbackAndEmails" element={<FeedbackTable />} />
           <Route path="edit-job/:id" element={<EditJobData />} />
           <Route path="category/:categoryType" element={<Categories />} />
           <Route path="add-work-category" element={<Categories />} />

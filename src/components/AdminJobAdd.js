@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './adminSide.css';
+import './AdminJobAdd.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 

@@ -12,23 +12,38 @@ import {
   faClock,
   faBuilding,
   faStar,
-  faSparkles,
   faExternalLinkAlt,
   faSearch,
+  faBookmark,
+  faCheckCircle,
+  faArrowTrendUp,
+  faFilter,
+  faGraduationCap,
 } from "@fortawesome/free-solid-svg-icons";
 import slugify from "react-slugify";
 
-const PER_PAGE = 6; // Optimized for better layout
+const PER_PAGE = 6;
 
 function Jobcard(props) {
   const [currentPage, setCurrentPage] = useState(0);
   const [hoveredCard, setHoveredCard] = useState(null);
+  const [savedJobs, setSavedJobs] = useState([]);
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState("all");
   const [jobStats, setJobStats] = useState({
     total: 0,
     newToday: 0,
     companies: 0,
     remote: 0
   });
+
+  // Load saved jobs from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem('savedJobs');
+    if (saved) {
+      setSavedJobs(JSON.parse(saved));
+    }
+  }, []);
 
   const handlePageClick = ({ selected }) => {
     setCurrentPage(selected);
@@ -39,7 +54,6 @@ function Jobcard(props) {
   let pageCount = Math.ceil(props.allJobs.length / PER_PAGE);
   let jobsToDisplay = props.allJobs;
 
-  // Handle search results
   if (props.searchedJobs && props.searchedJobs.length > 0) {
     offset = currentPage * PER_PAGE;
     currentPageJob = props.searchedJobs.slice(offset, offset + PER_PAGE);
@@ -47,7 +61,42 @@ function Jobcard(props) {
     jobsToDisplay = props.searchedJobs;
   }
 
-  // Calculate job statistics
+   const isFeatured = (post) => {
+    return post.featured || post.is_featured || post.premium || false;
+  };
+
+  const isUrgentHiring = (post) => {
+    return post.urgent_hiring || post.is_urgent || post.urgent || 
+           (post.created_at && isWithinDays(post.created_at, 2));
+  };
+
+  const isRemote = (job) => {
+    return job.location && (
+      job.location.toLowerCase().includes('remote') ||
+      job.location.toLowerCase().includes('work from home') ||
+      job.location.toLowerCase().includes('wfh')
+    );
+  };
+
+  const isWithinDays = (dateString, days) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffTime = Math.abs(now - date);
+    const diffDays = diffTime / (1000 * 60 * 60 * 24);
+    return diffDays <= days;
+  };
+
+  // Apply filter
+  if (selectedFilter !== "all") {
+    const filtered = currentPageJob.filter(job => {
+      if (selectedFilter === "featured") return isFeatured(job);
+      if (selectedFilter === "urgent") return isUrgentHiring(job);
+      if (selectedFilter === "remote") return isRemote(job);
+      return true;
+    });
+    currentPageJob = filtered;
+  }
+
   useEffect(() => {
     if (jobsToDisplay && jobsToDisplay.length > 0) {
       const today = new Date();
@@ -60,13 +109,7 @@ function Jobcard(props) {
 
       const uniqueCompanies = [...new Set(jobsToDisplay.map(job => job.title))].length;
       
-      const remoteJobs = jobsToDisplay.filter(job => 
-        job.location && (
-          job.location.toLowerCase().includes('remote') ||
-          job.location.toLowerCase().includes('work from home') ||
-          job.location.toLowerCase().includes('wfh')
-        )
-      ).length;
+      const remoteJobs = jobsToDisplay.filter(job => isRemote(job)).length;
 
       setJobStats({
         total: jobsToDisplay.length,
@@ -77,40 +120,52 @@ function Jobcard(props) {
     }
   }, [jobsToDisplay]);
 
+  
+
+  const toggleSaveJob = (jobId) => {
+    setSavedJobs(prev => {
+      const updated = prev.includes(jobId) 
+        ? prev.filter(id => id !== jobId)
+        : [...prev, jobId];
+      localStorage.setItem('savedJobs', JSON.stringify(updated));
+      showNotification(
+        prev.includes(jobId) ? 'Job removed from saved' : 'Job saved successfully!',
+        'success'
+      );
+      return updated;
+    });
+  };
+
   const handleShare = (post) => {
     const jobTitle = post.title || "Job Opportunity";
     const jobLocation = post.location || "Unknown Location";
     const jobPay = post.pay || "Salary not disclosed";
-    const jobURL = `${window.location.origin}/job/${post.id}/${slugify(
-      jobTitle
-    )}`;
+    const jobURL = `${window.location.origin}/job/${post.id}/${slugify(jobTitle)}`;
 
     if (navigator.share) {
       navigator
         .share({
-          title: `Job Opportunity at ${jobTitle}`,
-          text: `Check out this job: ${post.role} at ${jobTitle}, ${jobLocation}. Expected Pay: ${jobPay}.`,
+          title: `${post.role} at ${jobTitle}`,
+          text: `Check out this opportunity: ${post.role} at ${jobTitle}, ${jobLocation}. Pay: ${jobPay}.`,
           url: jobURL,
         })
-        .then(() => console.log("Successful share"))
+        .then(() => showNotification('Job shared successfully!', 'success'))
         .catch((error) => console.log("Error sharing", error));
     } else {
-      navigator.clipboard.writeText(jobURL).then(() => {
-        showNotification("Job link copied to clipboard!");
-      }).catch(() => {
-        // Fallback for older browsers
-        const textArea = document.createElement("textarea");
-        textArea.value = jobURL;
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textArea);
-        showNotification("Job link copied to clipboard!");
-      });
+      navigator.clipboard.writeText(jobURL)
+        .then(() => showNotification('Job link copied to clipboard!', 'success'))
+        .catch(() => {
+          const textArea = document.createElement("textarea");
+          textArea.value = jobURL;
+          document.body.appendChild(textArea);
+          textArea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textArea);
+          showNotification('Job link copied!', 'success');
+        });
     }
   };
 
-  // Enhanced notification system
   const showNotification = (message, type = 'success') => {
     const existingNotification = document.querySelector('.premium-notification');
     if (existingNotification) {
@@ -148,7 +203,6 @@ function Jobcard(props) {
     
     document.body.appendChild(notification);
     
-    // Add animation styles if not already present
     if (!document.querySelector('#notification-styles')) {
       const style = document.createElement('style');
       style.id = 'notification-styles';
@@ -177,10 +231,9 @@ function Jobcard(props) {
       document.head.appendChild(style);
     }
     
-    // Remove after 4 seconds with animation
     setTimeout(() => {
       if (notification.parentNode) {
-        notification.firstChild.style.animation = 'slideOutNotification 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+        notification.firstChild.style = 'slideOutNotification 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
         setTimeout(() => {
           if (notification.parentNode) {
             notification.remove();
@@ -190,7 +243,6 @@ function Jobcard(props) {
     }, 4000);
   };
 
-  // Enhanced date formatting with more granular time differences
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const now = new Date();
@@ -208,33 +260,16 @@ function Jobcard(props) {
     return `${Math.floor(diffDays / 365)}y ago`;
   };
 
-  // Enhanced job classification
-  const isFeatured = (post) => {
-    return post.featured || post.is_featured || post.premium || false;
-  };
+ 
 
-  const isUrgentHiring = (post) => {
-    return post.urgent_hiring || post.is_urgent || post.urgent || 
-           (post.created_at && isWithinDays(post.created_at, 2));
-  };
+  
 
-  const isWithinDays = (dateString, days) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffTime = Math.abs(now - date);
-    const diffDays = diffTime / (1000 * 60 * 60 * 24);
-    return diffDays <= days;
-  };
-
-  // Format salary for better display
   const formatSalary = (salary) => {
     if (!salary) return "Not disclosed";
     return salary.replace(/(-|to|TO)/g, "–").trim();
   };
 
-  // Remove the problematic scroll to top on page change
   useEffect(() => {
-    // Only scroll when pagination changes, not on hover
     if (currentPage > 0) {
       const jobsSection = document.querySelector('.premium-jobcard-container');
       if (jobsSection) {
@@ -244,20 +279,19 @@ function Jobcard(props) {
         });
       }
     }
-  }, [currentPage]); // Only depend on currentPage, not currentPageJob
+  }, [currentPage]);
 
-  // Loading state with enhanced UI
   if (props.loading) {
     return (
       <div className="premium-jobcard-container">
         <div className="loading-container">
           <div className="loading-spinner"></div>
+          <p>Loading opportunities...</p>
         </div>
       </div>
     );
   }
 
-  // No jobs available state
   if (!props.allJobs || props.allJobs.length === 0) {
     return (
       <div className="premium-jobcard-container">
@@ -272,7 +306,6 @@ function Jobcard(props) {
     );
   }
 
-  // Search results empty state
   if (Array.isArray(props.searchedJobs) && props.searchedJobs.length === 0) {
     return (
       <div className="premium-jobcard-container">
@@ -281,7 +314,7 @@ function Jobcard(props) {
             <FontAwesomeIcon icon={faSearch} size="2x" />
           </div>
           <h3 className="not-found-title">No Results Found</h3>
-          <p className="not-found-subtitle">Try adjusting your search criteria or explore all jobs</p>
+          <p className="not-found-subtitle">Try adjusting your search criteria</p>
         </div>
       </div>
     );
@@ -289,32 +322,82 @@ function Jobcard(props) {
 
   return (
     <div className="premium-jobcard-container">
-      {/* Job Statistics Banner */}
+      {/* Enhanced Stats Banner */}
       <div className="job-stats-banner">
-        <div className="stat-item">
-          <div className="stat-number">{jobStats.total.toLocaleString()}</div>
-          <div className="stat-label">Total Jobs</div>
+        <div className="stats-banner-inner">
+          <div className="stat-item">
+            <div className="stat-icon trending">
+              <FontAwesomeIcon icon={faArrowTrendUp} />
+            </div>
+            <div>
+              <div className="stat-number">{jobStats.total.toLocaleString()}</div>
+              <div className="stat-label">Total Opportunities</div>
+            </div>
+          </div>
+          <div className="stat-item">
+            <div className="stat-icon new">
+              <FontAwesomeIcon icon={faCheckCircle} />
+            </div>
+            <div>
+              <div className="stat-number">{jobStats.newToday}</div>
+              <div className="stat-label">Posted Today</div>
+            </div>
+          </div>
+          <div className="stat-item">
+            <div className="stat-icon company">
+              <FontAwesomeIcon icon={faBuilding} />
+            </div>
+            <div>
+              <div className="stat-number">{jobStats.companies}</div>
+              <div className="stat-label">Top Companies</div>
+            </div>
+          </div>
+          <div className="stat-item">
+            <div className="stat-icon remote">
+              <FontAwesomeIcon icon={faMapMarkerAlt} />
+            </div>
+            <div>
+              <div className="stat-number">{jobStats.remote}</div>
+              <div className="stat-label">Remote Jobs</div>
+            </div>
+          </div>
         </div>
-        <div className="stat-item">
-          <div className="stat-number">{jobStats.newToday}</div>
-          <div className="stat-label">New Today</div>
-        </div>
-        <div className="stat-item">
-          <div className="stat-number">{jobStats.companies}</div>
-          <div className="stat-label">Companies</div>
-        </div>
-        <div className="stat-item">
-          <div className="stat-number">{jobStats.remote}</div>
-          <div className="stat-label">Remote Jobs</div>
+
+        {/* Filter Bar */}
+        <div className="filter-bar">
+          <button 
+            className={`filter-btn ${selectedFilter === 'all' ? 'active' : ''}`}
+            onClick={() => setSelectedFilter('all')}
+          >
+            All Jobs
+          </button>
+          <button 
+            className={`filter-btn ${selectedFilter === 'featured' ? 'active' : ''}`}
+            onClick={() => setSelectedFilter('featured')}
+          >
+            <FontAwesomeIcon icon={faStar} /> Featured
+          </button>
+          <button 
+            className={`filter-btn ${selectedFilter === 'urgent' ? 'active' : ''}`}
+            onClick={() => setSelectedFilter('urgent')}
+          >
+            <FontAwesomeIcon icon={faClock} /> Urgent
+          </button>
+          <button 
+            className={`filter-btn ${selectedFilter === 'remote' ? 'active' : ''}`}
+            onClick={() => setSelectedFilter('remote')}
+          >
+            <FontAwesomeIcon icon={faMapMarkerAlt} /> Remote
+          </button>
         </div>
       </div>
 
       {/* Job Cards Grid */}
       <div className="premium-jobcard-grid">
-        {currentPageJob.length === 0 && Array.isArray(props.searchedJobs) && props.searchedJobs.length === 0 ? (
+        {currentPageJob.length === 0 ? (
           <div className="no-jobs-message">
             <FontAwesomeIcon icon={faBriefcase} size="2x" style={{marginBottom: '1rem', opacity: 0.5}} />
-            <span>No jobs found for the current page.</span>
+            <span>No jobs found for this filter.</span>
           </div>
         ) : (
           currentPageJob.map((post) => (
@@ -324,7 +407,7 @@ function Jobcard(props) {
               onMouseEnter={() => setHoveredCard(post.id)}
               onMouseLeave={() => setHoveredCard(null)}
             >
-              {/* Badges Container */}
+              {/* Badges */}
               <div className="premium-badge-container">
                 {isFeatured(post) && (
                   <div className="featured-badge">
@@ -340,6 +423,15 @@ function Jobcard(props) {
                 )}
               </div>
 
+              {/* Save Button */}
+              <button 
+                className={`save-job-btn ${savedJobs.includes(post.id) ? 'saved' : ''}`}
+                onClick={() => toggleSaveJob(post.id)}
+                title={savedJobs.includes(post.id) ? 'Remove from saved' : 'Save job'}
+              >
+                <FontAwesomeIcon icon={faBookmark} />
+              </button>
+
               {/* Card Header */}
               <div className="premium-jobcard-header">
                 <div className="premium-jobcard-company-logo">
@@ -348,7 +440,7 @@ function Jobcard(props) {
                     alt={`${post.title} logo`}
                     loading="lazy"
                     onError={(e) => {
-                      e.target.src = '/logo.webp'; // Fallback to default logo
+                      e.target.src = '/logo.webp';
                     }}
                   />
                 </div>
@@ -366,7 +458,7 @@ function Jobcard(props) {
               <div className="premium-jobcard-details">
                 <div className="premium-jobcard-tag">
                   <div className="tag-icon building">
-                    <FontAwesomeIcon icon={faBuilding} />
+                    <FontAwesomeIcon icon={faGraduationCap} />
                   </div>
                   <span className="tag-text" title={post.batches}>
                     {post.batches || "Not specified"}
@@ -377,7 +469,11 @@ function Jobcard(props) {
                     <FontAwesomeIcon icon={faMapMarkerAlt} />
                   </div>
                   <span className="tag-text" title={post.location}>
-                    {post.location || "Location TBD"}
+                    {isRemote(post) ? (
+                      <span className="remote-badge">🌍 Remote</span>
+                    ) : (
+                      post.location || "Location TBD"
+                    )}
                   </span>
                 </div>
                 <div className="premium-jobcard-tag">
@@ -396,8 +492,6 @@ function Jobcard(props) {
                   year: 'numeric', 
                   month: 'long', 
                   day: 'numeric',
-                  hour: '2-digit',
-                  minute: '2-digit'
                 })}>
                   <FontAwesomeIcon icon={faCalendar} />
                   <span>{formatDate(post.created_at)}</span>
@@ -406,9 +500,8 @@ function Jobcard(props) {
                   <Link
                     className="premium-jobcard-view-btn"
                     to={`/job/${post.id}/${slugify(post.title)}`}
+                    aria-label={`View details for ${post.role}`}
                     target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`View details for ${post.role} at ${post.title}`}
                   >
                     <span>View Details</span>
                     <FontAwesomeIcon icon={faExternalLinkAlt} />
@@ -417,7 +510,7 @@ function Jobcard(props) {
                     type="button"
                     className="premium-jobcard-share-btn"
                     onClick={() => handleShare(post)}
-                    aria-label={`Share ${post.role} job posting`}
+                    aria-label={`Share ${post.role}`}
                     title="Share this job"
                   >
                     <FontAwesomeIcon icon={faShareAlt} />
@@ -429,7 +522,7 @@ function Jobcard(props) {
         )}
       </div>
 
-      {/* Enhanced Pagination */}
+      {/* Pagination */}
       {pageCount > 1 && (
         <ReactPaginate
           previousLabel={

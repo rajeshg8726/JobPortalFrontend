@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import ReactPaginate from 'react-paginate';
-import { useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-import './adminSide.css';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import "./adminSide.css";
+import { useParams } from "react-router-dom";
 
 const PER_PAGE = 10;
 
@@ -14,35 +14,73 @@ const FeedbackTable = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const backendURL = process.env.REACT_APP_API_URL;
-
+  const { userFeedbackAndEmails } = useParams();
+  
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) navigate('/admin/login');
+    const token = localStorage.getItem("token");
+    if (!token) navigate("/admin/login");
   }, [navigate]);
 
+
   useEffect(() => {
-    const getFeedbacks = async () => {
+    const getUserFeedbackAndEmails = async () => {
       setLoading(true);
+      let endpoint = "";
       try {
-        const res = await axios.get(`${backendURL}/api/getContacts`);
-        setFeedbacks(res.data.feedbackData);
+        switch (userFeedbackAndEmails) {
+          case "user-feedback-list":
+            endpoint = "getContacts";
+            break;
+          case "user-emailsubscriber-list":
+            endpoint = "getAllUserSubscriberForEmailNotify";
+            break;
+          default:
+            endpoint = "getContacts";
+        }
+          const res = await axios.get(`${backendURL}/api/${endpoint}`);
+          // normalize response payloads — different endpoints return different shapes
+          let items = [];
+          if (Array.isArray(res.data)) items = res.data;
+          else if (Array.isArray(res.data.feedbackData)) items = res.data.feedbackData;
+          else if (Array.isArray(res.data.subscribers)) items = res.data.subscribers;
+          else if (res.data?.data && Array.isArray(res.data.data)) items = res.data.data;
+          else if (res.data?.rows && Array.isArray(res.data.rows)) items = res.data.rows;
+          else items = [];
+
+          const normalized = items.map((it) => ({
+            id: it.id || it._id || it.feedbackId || null,
+            name: it.name || it.fullName || it.username || it.contactName || "",
+            email: it.email || it.email || it.email || "",
+            message: it.message || it.msg || it.content || it.note || "",
+            raw: it,
+          }));
+
+          setFeedbacks(normalized);
       } catch (error) {
         console.log(error);
       }
       setLoading(false);
     };
-    getFeedbacks();
-  }, [backendURL]);
+    getUserFeedbackAndEmails();
+  }, [backendURL, userFeedbackAndEmails]);
+
 
   const handlePageClick = ({ selected }) => setCurrentPage(selected);
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this feedback?')) return;
+    if (!window.confirm("Are you sure you want to delete this feedback?"))
+      return;
     try {
       await axios.delete(`${backendURL}/api/deleteFeedback/${id}`);
-      setFeedbacks((prev) => prev.filter((item) => item.id !== id));
+      setFeedbacks((prev) => {
+        const next = prev.filter((item) => String(item.id) !== String(id));
+        // clamp current page in case deletion made current page empty
+        const nextPageCount = Math.max(1, Math.ceil(next.length / PER_PAGE));
+        if (currentPage >= nextPageCount) setCurrentPage(nextPageCount - 1);
+        return next;
+      });
     } catch (error) {
-      alert('An error occurred. Please try again.');
+      alert("An error occurred. Please try again.");
     }
   };
 
@@ -52,7 +90,7 @@ const FeedbackTable = () => {
 
   const offset = currentPage * PER_PAGE;
   const currentPageData = feedbacks.slice(offset, offset + PER_PAGE);
-  const pageCount = Math.ceil(feedbacks.length / PER_PAGE);
+  const pageCount = Math.max(0, Math.ceil(feedbacks.length / PER_PAGE));
 
   return (
     <div className="modern-table-container">
@@ -72,11 +110,15 @@ const FeedbackTable = () => {
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={5} className="modern-table-loading">Loading...</td>
+                  <td colSpan={5} className="modern-table-loading">
+                    Loading...
+                  </td>
                 </tr>
               ) : currentPageData.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="modern-table-empty">No feedback found.</td>
+                  <td colSpan={5} className="modern-table-empty">
+                    No feedback found.
+                  </td>
                 </tr>
               ) : (
                 currentPageData.map((post, index) => (
@@ -86,10 +128,18 @@ const FeedbackTable = () => {
                     <td>{post.email}</td>
                     <td>{post.message}</td>
                     <td>
-                      <button className="modern-table-action edit" onClick={() => handleEdit(post.id)} title="Edit">
+                      <button
+                        className="modern-table-action edit"
+                        onClick={() => handleEdit(post.id)}
+                        title="Edit"
+                      >
                         <FontAwesomeIcon icon={faEdit} />
                       </button>
-                      <button className="modern-table-action delete" onClick={() => handleDelete(post.id)} title="Delete">
+                      <button
+                        className="modern-table-action delete"
+                        onClick={() => handleDelete(post.id)}
+                        title="Delete"
+                      >
                         <FontAwesomeIcon icon={faTrashAlt} />
                       </button>
                     </td>
@@ -99,19 +149,96 @@ const FeedbackTable = () => {
             </tbody>
           </table>
         </div>
-        {pageCount > 1 && (
-          <ReactPaginate
-            previousLabel={"←"}
-            nextLabel={"→"}
-            pageCount={pageCount}
-            onPageChange={handlePageClick}
-            containerClassName={"modern-pagination"}
-            previousLinkClassName={"modern-pagination-link"}
-            nextLinkClassName={"modern-pagination-link"}
-            disabledClassName={"modern-pagination-link--disabled"}
-            activeClassName={"modern-pagination-link--active"}
-          />
+       
+              {/* Pagination */}
+        {pageCount > 0 && (
+          <div className="inv-pagination-row">
+            <div className="inv-pagination-summary">
+              Showing {feedbacks.length === 0 ? 0 : offset + 1}–{offset + currentPageData.length} of {feedbacks.length}
+            </div>
+
+            <div className="inv-pagination-controls" role="navigation" aria-label="Pagination">
+              <button
+                className="inv-pg-btn"
+                onClick={() => setCurrentPage(0)}
+                disabled={currentPage === 0}
+                aria-label="Go to first page"
+              >
+                « First
+              </button>
+
+              <button
+                className="inv-pg-btn"
+                onClick={() => setCurrentPage((p) => Math.max(0, p - 1))}
+                disabled={currentPage === 0}
+                aria-label="Previous page"
+              >
+                ‹ Prev
+              </button>
+
+              <div className="inv-pg-pages">
+                {Array.from({ length: pageCount }).map((_, i) => {
+                  const page = i;
+                  const show = page === 0 || page === pageCount - 1 || Math.abs(page - currentPage) <= 2;
+                  if (!show) {
+                    const nearLeftEllipsis = page === Math.max(1, currentPage - 3);
+                    const nearRightEllipsis = page === Math.min(pageCount - 2, currentPage + 3);
+                    if (nearLeftEllipsis || nearRightEllipsis) {
+                      return <span key={`el-${page}`} className="inv-pg-ellipsis">…</span>;
+                    }
+                    return null;
+                  }
+                  return (
+                    <button
+                      key={page}
+                      className={`inv-pg-page ${page === currentPage ? "active" : ""}`}
+                      onClick={() => setCurrentPage(page)}
+                      aria-current={page === currentPage ? "page" : undefined}
+                      aria-label={`Go to page ${page + 1}`}
+                    >
+                      {page + 1}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <button
+                className="inv-pg-btn"
+                onClick={() => setCurrentPage((p) => Math.min(pageCount - 1, p + 1))}
+                disabled={currentPage >= pageCount - 1}
+                aria-label="Next page"
+              >
+                Next ›
+              </button>
+
+              <button
+                className="inv-pg-btn"
+                onClick={() => setCurrentPage(pageCount - 1)}
+                disabled={currentPage >= pageCount - 1}
+                aria-label="Go to last page"
+              >
+                Last »
+              </button>
+
+              <div className="inv-pg-jump">
+                <label htmlFor="inv-jump" className="sr-only">Jump to page</label>
+                <input
+                  id="inv-jump"
+                  type="number"
+                  min={1}
+                  max={pageCount}
+                  value={Math.min(pageCount, currentPage + 1)}
+                  onChange={(e) => {
+                    const v = Number(e.target.value || 1);
+                    if (v >= 1 && v <= pageCount) setCurrentPage(v - 1);
+                  }}
+                  aria-label="Jump to page number"
+                />
+              </div>
+            </div>
+          </div>
         )}
+
       </div>
     </div>
   );

@@ -12,13 +12,16 @@ import {
   Heart,
   MessageCircle,
   TrendingUp,
-  Link,
+  X,
+  Share2,
+  ChevronLeft,
+  ChevronRight,
+  Sparkles,
 } from "lucide-react";
-import "./ModernBlog.css"; // Import the CSS file
+import "./ModernBlog.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import slugify from "react-slugify";
-
 
 const ModernBlogPage = () => {
   const [blogData, setBlogData] = useState([]);
@@ -26,15 +29,13 @@ const ModernBlogPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedType, setSelectedType] = useState("all");
+  const [selectedSort, setSelectedSort] = useState("latest");
   const [currentPage, setCurrentPage] = useState(1);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const navigate = useNavigate();
+  const [savedPosts, setSavedPosts] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
+  const navigate = useNavigate();
 
-  
-
-
-  // Mock data - replace with your API calls
   const categories = [
     { id: "all", name: "All Topics", count: 0 },
     { id: "interview", name: "Interview Experience", count: 45 },
@@ -53,32 +54,30 @@ const ModernBlogPage = () => {
 
   const backendURL = process.env.REACT_APP_API_URL;
 
-  const [formData, setFormData] = useState({
-    email: "",
-  });
+  const [formData, setFormData] = useState({ email: "" });
+
+  useEffect(() => {
+    const saved = localStorage.getItem("savedBlogPosts");
+    if (saved) setSavedPosts(JSON.parse(saved));
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission logic here
-
-    const response = async () => {
+    const submitResponse = async () => {
       try {
         const res = await axios.post(
           `${backendURL}/api/subscribeNewsletter`,
           formData
         );
         if (res.data.status) {
-          // Show success message or perform any other actions
           setShowPopup(true);
           setFormData({ email: "" });
+          setTimeout(() => setShowPopup(false), 3000);
         } else {
           alert(res.data.message);
         }
@@ -86,10 +85,9 @@ const ModernBlogPage = () => {
         alert("An error occurred. Please try again later.");
       }
     };
-    response();
+    submitResponse();
   };
 
-  // Mock blog posts data
   useEffect(() => {
     const mockData = [
       {
@@ -184,16 +182,13 @@ const ModernBlogPage = () => {
       },
     ];
 
-    const response = async () => {
+    const fetchBlogs = async () => {
       try {
         const res = await axios.get(`${backendURL}/api/getAllBlogPosts`);
-
-        // Resiliently extract list from various API shapes
         const list = res?.data?.blogs || res?.data?.data || res?.data || [];
+        
         if (Array.isArray(list) && list.length > 0) {
-          // Normalize backend blog object to UI shape
           const normalized = list.map((b) => {
-            // parse tags if string
             let tags = b.tags || [];
             try {
               if (typeof tags === "string") tags = JSON.parse(tags);
@@ -204,7 +199,6 @@ const ModernBlogPage = () => {
                 .map((s) => s.replace(/["']/g, "").trim())
                 .filter(Boolean);
             }
-            // image handling (relative path -> full url)
             const image =
               b.image && String(b.image).startsWith("http")
                 ? b.image
@@ -227,26 +221,23 @@ const ModernBlogPage = () => {
               image,
               tags: Array.isArray(tags) ? tags : [],
               featured: !!b.featured,
-              raw: b,
             };
           });
           setBlogData(normalized);
           setFilteredData(normalized);
         } else {
-          // fallback to mock if API returns nothing
           setBlogData(mockData);
           setFilteredData(mockData);
         }
       } catch (error) {
-        console.log("Error in fetching blogs data", error);
+        console.log("Error fetching blogs:", error);
         setBlogData(mockData);
         setFilteredData(mockData);
       }
     };
-    response();
+    fetchBlogs();
   }, [backendURL]);
 
-  // Filter and search logic
   useEffect(() => {
     let filtered = blogData;
 
@@ -269,9 +260,28 @@ const ModernBlogPage = () => {
       );
     }
 
+    // Sort posts
+    if (selectedSort === "popular") {
+      filtered.sort((a, b) => b.views - a.views);
+    } else if (selectedSort === "trending") {
+      filtered.sort((a, b) => b.likes - a.likes);
+    } else if (selectedSort === "most-liked") {
+      filtered.sort((a, b) => b.likes - a.likes);
+    } else {
+      filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+    }
+
     setFilteredData(filtered);
     setCurrentPage(1);
-  }, [selectedCategory, selectedType, searchQuery, blogData]);
+  }, [selectedCategory, selectedType, searchQuery, blogData, selectedSort]);
+
+  const toggleSavePost = (postId) => {
+    const updated = savedPosts.includes(postId)
+      ? savedPosts.filter((id) => id !== postId)
+      : [...savedPosts, postId];
+    setSavedPosts(updated);
+    localStorage.setItem("savedBlogPosts", JSON.stringify(updated));
+  };
 
   const handleAddPostClick = () => {
     navigate("/share-blog-posts");
@@ -290,39 +300,34 @@ const ModernBlogPage = () => {
     });
   };
 
-  const featuredPosts =
-    filteredData.length > 0
-      ? filteredData.slice(0, 2) // ✅ take first two as featured
-      : [];
+  const featuredPosts = filteredData.filter(p => p.featured).slice(0, 2);
+  const regularPosts = filteredData.filter(p => !p.featured);
 
-  const regularPosts =
-    filteredData.length > 2
-      ? filteredData.slice(2) // ✅ remaining as regular
-      : [];
+  const postsPerPage = 6;
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = regularPosts.slice(indexOfFirstPost, indexOfLastPost);
+  const totalPages = Math.ceil(regularPosts.length / postsPerPage);
 
-      // Pagination setup
-    const postsPerPage = 6;
-    const indexOfLastPost = currentPage * postsPerPage;
-    const indexOfFirstPost = indexOfLastPost - postsPerPage;
-    const currentPosts = regularPosts.slice(indexOfFirstPost, indexOfLastPost);
-
-    const totalPages = Math.ceil(regularPosts.length / postsPerPage);
-
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-    
-    // scroll to top on mount when page changes
-    useEffect(() => {
-      window.scrollTo(0, 0);
-    }, [regularPosts]);
-
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <>
       <div className="modern-blog-container">
-        {/* Hero Section */}
+        {/* Enhanced Hero Section */}
         <div className="modern-blog-hero">
+          <div className="modern-blog-hero-background">
+            <div className="hero-gradient-1"></div>
+            <div className="hero-gradient-2"></div>
+          </div>
           <div className="modern-blog-hero-content">
+            <div className="hero-badge">
+              <Sparkles size={14} />
+              Explore & Learn
+            </div>
             <h1>
               Tech <span className="modern-blog-hero-highlight">Insights</span>{" "}
               Hub
@@ -336,11 +341,11 @@ const ModernBlogPage = () => {
                 onClick={handleAddPostClick}
                 className="modern-blog-btn-primary"
               >
-                <Plus className="modern-blog-btn-icon" />
+                <Plus size={16} />
                 Share Your Story
               </button>
               <button className="modern-blog-btn-secondary">
-                <TrendingUp className="modern-blog-btn-icon" />
+                <TrendingUp size={16} />
                 Trending Posts
               </button>
             </div>
@@ -351,7 +356,6 @@ const ModernBlogPage = () => {
           {/* Search and Filters */}
           <div className="modern-blog-search-section">
             <div className="modern-blog-search-header">
-              {/* Search Bar */}
               <div className="modern-blog-search-container">
                 <Search className="modern-blog-search-icon" />
                 <input
@@ -363,80 +367,68 @@ const ModernBlogPage = () => {
                 />
               </div>
 
-              {/* Filter Toggle */}
               <button
                 onClick={() => setIsFilterOpen(!isFilterOpen)}
                 className="modern-blog-filter-toggle"
+                title="Toggle filters"
               >
-                <Filter className="modern-blog-filter-icon" />
-                Filters
+                <Filter size={16} />
+                <span>Filters</span>
+                {isFilterOpen && <X size={14} />}
               </button>
             </div>
 
-            {/* Filter Options */}
-            <div
-              className={`modern-blog-filters ${isFilterOpen ? "" : "hidden"}`}
-            >
-              <div className="modern-blog-filter-grid">
-                {/* Categories */}
-                <div className="modern-blog-filter-group">
-                  <label className="modern-blog-filter-label">Category</label>
-                  <select
-                    value={selectedCategory}
-                    onChange={(e) => setSelectedCategory(e.target.value)}
-                    className="modern-blog-filter-select"
-                  >
-                    {categories.map((cat) => (
-                      <option key={cat.id} value={cat.id}>
-                        {cat.name} 
-                      </option>
-                    ))}
-                  </select>
-                </div>
+            {isFilterOpen && (
+              <div className="modern-blog-filters active">
+                <div className="modern-blog-filter-grid">
+                  <div className="modern-blog-filter-group">
+                    <label className="modern-blog-filter-label">Category</label>
+                    <select
+                      value={selectedCategory}
+                      onChange={(e) => setSelectedCategory(e.target.value)}
+                      className="modern-blog-filter-select"
+                    >
+                      {categories.map((cat) => (
+                        <option key={cat.id} value={cat.id}>
+                          {cat.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
 
-                {/* Content Type */}
-                <div className="modern-blog-filter-group">
-                  <label className="modern-blog-filter-label">
-                    Content Type
-                  </label>
-                  <select
-                    value={selectedType}
-                    onChange={(e) => setSelectedType(e.target.value)}
-                    className="modern-blog-filter-select"
-                  >
-                    {contentTypes.map((type) => (
-                      <option key={type.id} value={type.id}>
-                        {type.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                  <div className="modern-blog-filter-group">
+                    <label className="modern-blog-filter-label">
+                      Content Type
+                    </label>
+                    <select
+                      value={selectedType}
+                      onChange={(e) => setSelectedType(e.target.value)}
+                      className="modern-blog-filter-select"
+                    >
+                      {contentTypes.map((type) => (
+                        <option key={type.id} value={type.id}>
+                          {type.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
 
-                {/* Sort Options */}
-                <div className="modern-blog-filter-group">
-                  <label className="modern-blog-filter-label">Sort By</label>
-                  <select className="modern-blog-filter-select">
-                    <option value="latest">Latest Posts</option>
-                    <option value="popular">Most Popular</option>
-                    <option value="trending">Trending</option>
-                    <option value="most-liked">Most Liked</option>
-                  </select>
-                </div>
-
-                {/* Time Filter */}
-                <div className="modern-blog-filter-group">
-                  <label className="modern-blog-filter-label">
-                    Time Period
-                  </label>
-                  <select className="modern-blog-filter-select">
-                    <option value="all">All Time</option>
-                    <option value="week">This Week</option>
-                    <option value="month">This Month</option>
-                    <option value="year">This Year</option>
-                  </select>
+                  <div className="modern-blog-filter-group">
+                    <label className="modern-blog-filter-label">Sort By</label>
+                    <select
+                      value={selectedSort}
+                      onChange={(e) => setSelectedSort(e.target.value)}
+                      className="modern-blog-filter-select"
+                    >
+                      <option value="latest">Latest Posts</option>
+                      <option value="popular">Most Popular</option>
+                      <option value="trending">Trending</option>
+                      <option value="most-liked">Most Liked</option>
+                    </select>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
 
           {/* Featured Posts */}
@@ -444,33 +436,48 @@ const ModernBlogPage = () => {
             <div className="modern-blog-featured">
               <div className="modern-blog-section-header">
                 <h2 className="modern-blog-section-title">
-                  <TrendingUp className="modern-blog-section-icon" />
+                  <TrendingUp size={18} />
                   Featured Posts
                 </h2>
               </div>
               <div className="modern-blog-featured-grid">
-                {featuredPosts.slice(0, 2).map((post) => (
-                  <a
+                {featuredPosts.map((post) => (
+                  <div
                     key={post.id}
-                    href={`/blog-posts-details/${post.id}/${slugify(
-                      post.title
-                    )}`}
-                    onClick={(e) => {
-                      e.preventDefault();
+                    className="modern-blog-featured-card"
+                    onClick={() =>
                       handleNavigation(
                         `/blog-posts-details/${post.id}/${slugify(post.title)}`
-                      );
-                    }}
-                    className="modern-blog-featured-card"
+                      )
+                    }
+                    role="button"
+                    tabIndex={0}
                   >
                     <div className="modern-blog-featured-image-container">
                       <img
                         src={post.image}
                         alt={post.title}
                         className="modern-blog-featured-image"
+                        loading="lazy"
                       />
                       <div className="modern-blog-featured-overlay"></div>
-                      <div className="modern-blog-featured-badge">Featured</div>
+                      <div className="modern-blog-featured-badge">
+                        <Sparkles size={12} />
+                        Featured
+                      </div>
+                      <button
+                        className="featured-save-btn"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleSavePost(post.id);
+                        }}
+                        title="Save post"
+                      >
+                        <Bookmark
+                          size={16}
+                          fill={savedPosts.includes(post.id) ? "currentColor" : "none"}
+                        />
+                      </button>
                     </div>
                     <div className="modern-blog-featured-content">
                       <div className="modern-blog-post-meta">
@@ -478,14 +485,8 @@ const ModernBlogPage = () => {
                           {(post.category || "").replace("-", " ")}
                         </span>
                         <div className="modern-blog-meta-item">
-                          <Clock className="modern-blog-meta-icon" />
-                          <span>{post.readTime} min read</span>
-                        </div>
-                        <div className="modern-blog-meta-item" hidden>
-                          <Eye className="modern-blog-meta-icon" />
-                          <span>
-                            {Number(post.views || 0).toLocaleString()}
-                          </span>
+                          <Clock size={14} />
+                          <span>{post.readTime} min</span>
                         </div>
                       </div>
                       <h3 className="modern-blog-post-title">{post.title}</h3>
@@ -493,18 +494,21 @@ const ModernBlogPage = () => {
                       <div className="modern-blog-post-footer">
                         <div className="modern-blog-author-info">
                           <div className="modern-blog-meta-item">
-                            <User className="modern-blog-meta-icon" />
+                            <User size={14} />
                             <span>{post.author}</span>
                           </div>
                           <div className="modern-blog-meta-item">
-                            <Calendar className="modern-blog-meta-icon" />
+                            <Calendar size={14} />
                             <span>{formatDate(post.date)}</span>
                           </div>
                         </div>
-                        <ArrowRight className="modern-blog-arrow-icon" />
+                        <div className="engagement-stats">
+                          <span>{post.likes} likes</span>
+                          <span>{post.comments} comments</span>
+                        </div>
                       </div>
                     </div>
-                  </a>
+                  </div>
                 ))}
               </div>
             </div>
@@ -515,84 +519,97 @@ const ModernBlogPage = () => {
             <div className="modern-blog-posts-header">
               <h2 className="modern-blog-section-title">Latest Posts</h2>
               <span className="modern-blog-posts-count">
-                {filteredData.length} post{filteredData.length !== 1 ? "s" : ""}{" "}
-                found
+                {filteredData.length} post{filteredData.length !== 1 ? "s" : ""} found
               </span>
             </div>
 
-            <div className="modern-blog-posts-grid">
-              {currentPosts.map((post) => (
-                <a
-                  key={post.id}
-                  href={`/blog-posts-details/${post.id}/${slugify(post.title)}`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleNavigation(
-                      `/blog-posts-details/${post.id}/${slugify(post.title)}`
-                    );
-                  }}
-                  className="modern-blog-post-card"
-                >
-                  <div className="modern-blog-post-image-container">
-                    <img
-                      src={post.image}
-                      alt={post.title}
-                      className="modern-blog-post-image"
-                    />
-                    <div className="modern-blog-post-category">
-                      {(post.category || "").replace("-", " ")}
-                    </div>
-                  </div>
-                  <div className="modern-blog-post-body">
-                    <div className="modern-blog-post-meta-small">
-                      <div className="modern-blog-meta-item">
-                        <Clock className="modern-blog-meta-icon" />
-                        <span>{post.readTime} min</span>
+            {currentPosts.length > 0 ? (
+              <div className="modern-blog-posts-grid">
+                {currentPosts.map((post) => (
+                  <div
+                    key={post.id}
+                    className="modern-blog-post-card"
+                    onClick={() =>
+                      handleNavigation(
+                        `/blog-posts-details/${post.id}/${slugify(post.title)}`
+                      )
+                    }
+                    role="button"
+                    tabIndex={0}
+                  >
+                    <div className="modern-blog-post-image-container">
+                      <img
+                        src={post.image}
+                        alt={post.title}
+                        className="modern-blog-post-image"
+                        loading="lazy"
+                      />
+                      <div className="modern-blog-post-category">
+                        {(post.category || "").replace("-", " ")}
                       </div>
-                      <div className="modern-blog-meta-item">
-                        <Eye className="modern-blog-meta-icon" />
-                        <span>{Number(post.views || 0).toLocaleString()}</span>
-                      </div>
+                      <button
+                        className="post-save-btn"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleSavePost(post.id);
+                        }}
+                        title="Save post"
+                      >
+                        <Bookmark
+                          size={14}
+                          fill={savedPosts.includes(post.id) ? "currentColor" : "none"}
+                        />
+                      </button>
                     </div>
-                    <h3 className="modern-blog-post-title-small">
-                      {post.title}
-                    </h3>
-                    <p className="modern-blog-post-excerpt-small">
-                      {post.excerpt}
-                    </p>
-                    <div className="modern-blog-post-tags">
-                      {post.tags.map((tag, index) => (
-                        <span key={index} className="modern-blog-tag">
-                          #{tag}
-                        </span>
-                      ))}
-                    </div>
-                    <div className="modern-blog-post-stats">
-                      <div className="modern-blog-post-author">
+                    <div className="modern-blog-post-body">
+                      <div className="modern-blog-post-meta-small">
                         <div className="modern-blog-meta-item">
-                          <User className="modern-blog-meta-icon" />
+                          <Clock size={13} />
+                          <span>{post.readTime} min read</span>
+                        </div>
+                        <div className="modern-blog-meta-item">
+                          <Eye size={13} />
+                          <span>{Number(post.views).toLocaleString()} views</span>
+                        </div>
+                      </div>
+                      <h3 className="modern-blog-post-title-small">
+                        {post.title}
+                      </h3>
+                      <p className="modern-blog-post-excerpt-small">
+                        {post.excerpt}
+                      </p>
+                      <div className="modern-blog-post-tags">
+                        {post.tags.slice(0, 3).map((tag, index) => (
+                          <span key={index} className="modern-blog-tag">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                      <div className="modern-blog-post-stats">
+                        <div className="modern-blog-post-author">
+                          <User size={13} />
                           <span>{post.author}</span>
                         </div>
-                      </div>
-                      <div className="modern-blog-post-engagement">
-                        <div className="modern-blog-engagement-item">
-                          <Heart className="modern-blog-meta-icon" />
+                        <div className="modern-blog-post-engagement">
                           <span>
-                            {Number(post.likes || 0).toLocaleString()}
+                            <Heart size={13} /> {Number(post.likes).toLocaleString()}
                           </span>
-                        </div>
-                        <div className="modern-blog-engagement-item">
-                          <MessageCircle className="modern-blog-meta-icon" />
                           <span>
-                            {Number(post.comments || 0).toLocaleString()}
+                            <MessageCircle size={13} /> {Number(post.comments).toLocaleString()}
                           </span>
                         </div>
                       </div>
                     </div>
                   </div>
-                </a>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <div className="modern-blog-no-posts">
+                <Search size={48} />
+                <h3>No posts found</h3>
+                <p>Try adjusting your filters or search terms</p>
+              </div>
+            )}
           </div>
 
           {/* Pagination */}
@@ -603,25 +620,27 @@ const ModernBlogPage = () => {
                   className="modern-blog-pagination-btn"
                   onClick={() => currentPage > 1 && paginate(currentPage - 1)}
                   disabled={currentPage === 1}
+                  title="Previous page"
                 >
-                  Previous
+                  <ChevronLeft size={16} />
+                  <span>Previous</span>
                 </button>
 
                 <div className="modern-blog-pagination-numbers">
-                  {Array.from(
-                    { length: totalPages },
-                    (_, index) => index + 1
-                  ).map((page) => (
-                    <button
-                      key={page}
-                      className={`modern-blog-pagination-btn ${
-                        page === currentPage ? "active" : ""
-                      }`}
-                      onClick={() => paginate(page)}
-                    >
-                      {page}
-                    </button>
-                  ))}
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                    (page) => (
+                      <button
+                        key={page}
+                        className={`modern-blog-pagination-btn ${
+                          page === currentPage ? "active" : ""
+                        }`}
+                        onClick={() => paginate(page)}
+                        title={`Go to page ${page}`}
+                      >
+                        {page}
+                      </button>
+                    )
+                  )}
                 </div>
 
                 <button
@@ -630,8 +649,10 @@ const ModernBlogPage = () => {
                     currentPage < totalPages && paginate(currentPage + 1)
                   }
                   disabled={currentPage === totalPages}
+                  title="Next page"
                 >
-                  Next
+                  <span>Next</span>
+                  <ChevronRight size={16} />
                 </button>
               </div>
             </div>
@@ -641,6 +662,7 @@ const ModernBlogPage = () => {
         {/* Newsletter Signup */}
         <form onSubmit={handleSubmit}>
           <div className="modern-blog-newsletter">
+            <div className="newsletter-gradient"></div>
             <div className="modern-blog-newsletter-content">
               <h3>Stay Updated</h3>
               <p>
@@ -654,9 +676,10 @@ const ModernBlogPage = () => {
                   className="modern-blog-newsletter-input"
                   value={formData.email || ""}
                   onChange={handleInputChange}
-                  autoComplete="on"
+                  autoComplete="email"
+                  required
                 />
-                <button className="modern-blog-newsletter-btn">
+                <button className="modern-blog-newsletter-btn" type="submit">
                   Subscribe
                 </button>
               </div>
@@ -665,19 +688,21 @@ const ModernBlogPage = () => {
         </form>
       </div>
 
-      {/* ✅ Conditional Popup */}
+      {/* Success Popup */}
       {showPopup && (
-        <div className="popup-overlay">
+        <div className="popup-overlay active">
           <div className="popup-card">
-            <div className="popup-icon">✅</div>
+            <div className="popup-icon">✓</div>
             <h2 className="popup-title">Subscribed!</h2>
             <p className="popup-message">
-              Thank you for subscribing to our newsletter! <br />
-              You will now receive the latest updates and insights directly to
-              your inbox.
+              Thank you for subscribing! You'll receive the latest updates
+              directly in your inbox.
             </p>
-            <button className="popup-btn" onClick={() => setShowPopup(false)}>
-              Okay, Got It
+            <button
+              className="popup-btn"
+              onClick={() => setShowPopup(false)}
+            >
+              Great!
             </button>
           </div>
         </div>

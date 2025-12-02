@@ -42,8 +42,8 @@ const Contact = () => {
         </p>
         <p className="modern-contact-email">
           Or email us directly at:{" "}
-          <a href="mailto:support@rgjobs.in" className="modern-contact-link">
-            support@rgjobs.in
+          <a href="mailto:rgjobsupdate@gmail.com" className="modern-contact-link">
+            rgjobsupdate@gmail.com
           </a>
         </p>
         {message && <div className="modern-contact-message">{message}</div>}
