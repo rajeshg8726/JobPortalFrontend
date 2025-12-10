@@ -80,10 +80,10 @@ function Footer() {
   ];
 
   const quickLinks = [
-    { label: 'Browse Jobs', icon: ArrowRight },
-    { label: 'For Employers', icon: ArrowRight },
-    { label: 'Salary Guide', icon: ArrowRight },
-    { label: 'Career Tips', icon: ArrowRight },
+    { label: 'Browse Jobs', icon: ArrowRight, path: '/' },
+    { label: 'For Employers', icon: ArrowRight, path: '/for-employers' },
+    { label: 'Salary Guide', icon: ArrowRight, path: '/real-life-interviews-blog-posts' },
+    { label: 'Career Tips', icon: ArrowRight, path: '/real-life-interviews-blog-posts' },
   ];
 
   return (
@@ -221,7 +221,7 @@ function Footer() {
               <ul className="footer-links">
                 {quickLinks.map((link, idx) => (
                   <li key={idx}>
-                    <Link to="#" className="footer-link">
+                    <Link to={link.path} className="footer-link">
                       <span>{link.label}</span>
                       <link.icon size={14} />
                     </Link>

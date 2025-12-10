@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./JobsByRCBF.css"; // Assuming you have a CSS file for styling
+import "./JobsByRCBF.css";
 import { Link, useParams } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,6 +8,7 @@ import {
   faWallet,
   faBriefcase,
   faShareAlt,
+  faArrowRight,
 } from "@fortawesome/free-solid-svg-icons";
 import slugify from "react-slugify";
 import axios from "axios";
@@ -19,10 +20,12 @@ function JobsByRoles(props) {
   const { jobRoles } = useParams();
   const [currentPage, setCurrentPage] = useState(0);
   const [jobs, setJobs] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const backendURL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     const getJobsByRoles = async () => {
+      setIsLoading(true);
       try {
         let endpoint = "";
         switch (jobRoles) {
@@ -36,13 +39,13 @@ function JobsByRoles(props) {
             endpoint = "getBackendDeveloperJobs";
             break;
           case "full-stack-developer-role":
-            endpoint = "getFullStackDeveloperJobs"; 
+            endpoint = "getFullStackDeveloperJobs";
             break;
           case "data-scientist-role":
             endpoint = "getDataScientistJobs";
             break;
           case "data-analyst-role":
-            endpoint = "getDataAnalystJobs"; 
+            endpoint = "getDataAnalystJobs";
             break;
           case "machine-learning-engineer-role":
             endpoint = "getMachineLearningEngineerJobs";
@@ -52,14 +55,14 @@ function JobsByRoles(props) {
             break;
           case "ui-ux-designer-role":
             endpoint = "getUIUXDesignerJobs";
-            break;  
+            break;
           case "qa-automation-tester-role":
             endpoint = "getQAAutomationTesterJobs";
             break;
-            case "technical-support-engineer-role":
+          case "technical-support-engineer-role":
             endpoint = "getTechnicalSupportJobs";
             break;
-            case "cybersecurity-analyst-role":
+          case "cybersecurity-analyst-role":
             endpoint = "getCyberSecurityJobs";
             break;
           case "cloud-engineer-role":
@@ -74,6 +77,8 @@ function JobsByRoles(props) {
         }
       } catch (error) {
         console.log("Error", error);
+      } finally {
+        setIsLoading(false);
       }
     };
     getJobsByRoles();
@@ -111,91 +116,141 @@ function JobsByRoles(props) {
   };
 
   useEffect(() => {
-    window.scrollTo(0, 0); // Scroll to top when the component mounts or when currentPageJob changes
-  }, [currentPageJob]);
+    window.scrollTo(0, 0);
+  }, [currentPage]);
 
-  // If jobs are not loaded yet, show a loading spinner
-  if (!jobs || jobs.length === 0) {
+  if (isLoading) {
     return (
-      <div className="loading-container">
+      <div className="jobs-loading-container">
         <Loading />
       </div>
     );
   }
 
+  const formatRoleTitle = (role) => {
+    return role
+      ?.replace(/-/g, " ")
+      .replace(/\b\w/g, (l) => l.toUpperCase()) || "Jobs";
+  };
+
   return (
-    <div className="modern-jobsbyroles-container">
-      <h1 className="modern-jobsbyroles-title">
-        {jobRoles
-          ?.replace(/-/g, " ")
-          .replace(/\b\w/g, (l) => l.toUpperCase()) || "Jobs"}
-      </h1>
-      <div className="modern-jobsbyroles-list">
-        {currentPageJob.length === 0 && (
-          <div className="modern-jobsbyroles-empty">
-            No jobs found for this role.
+    <div className="jobs-container">
+      {/* Hero Section */}
+      <div className="jobs-hero-section">
+        <div className="jobs-hero-content">
+          <h1 className="jobs-hero-title">{formatRoleTitle(jobRoles)}</h1>
+          <p className="jobs-hero-subtitle">
+            Find your perfect job match from {jobs.length} available positions
+          </p>
+          <div className="jobs-hero-divider"></div>
+        </div>
+      </div>
+
+      {/* Jobs Grid */}
+      <div className="jobs-wrapper">
+        {currentPageJob.length === 0 ? (
+          <div className="jobs-empty-state">
+            <div className="jobs-empty-icon">📋</div>
+            <h3>No jobs found for this role</h3>
+            <p>Check back soon for new opportunities!</p>
+          </div>
+        ) : (
+          <div className="jobs-grid">
+            {currentPageJob.map((post) => (
+              <Link
+                key={post.id}
+                to={`/job/${post.id}/${slugify(post.title)}`}
+                className="jobs-card-wrapper"
+              >
+                <div className="jobs-card">
+                  {/* Card Header with Image */}
+                  <div className="jobs-card-header">
+                    <div className="jobs-card-image-wrapper">
+                      <img
+                        src={`${backendURL}/${post.image}`}
+                        alt={post.title}
+                        className="jobs-card-image"
+                      />
+                      <div className="jobs-card-overlay"></div>
+                    </div>
+                  </div>
+
+                  {/* Card Content */}
+                  <div className="jobs-card-content">
+                    <h3 className="jobs-card-role">{post.role}</h3>
+                    <p className="jobs-card-title">{post.title}</p>
+
+                    {/* Meta Information */}
+                    <div className="jobs-card-meta">
+                      <div className="jobs-meta-item">
+                        <FontAwesomeIcon
+                          icon={faBriefcase}
+                          className="jobs-meta-icon"
+                        />
+                        <span className="jobs-meta-text">{post.batches}</span>
+                      </div>
+                      <div className="jobs-meta-item">
+                        <FontAwesomeIcon
+                          icon={faMapMarkerAlt}
+                          className="jobs-meta-icon"
+                        />
+                        <span className="jobs-meta-text">{post.location}</span>
+                      </div>
+                      <div className="jobs-meta-item">
+                        <FontAwesomeIcon
+                          icon={faWallet}
+                          className="jobs-meta-icon"
+                        />
+                        <span className="jobs-meta-text jobs-meta-pay">
+                          {post.pay}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Card Footer */}
+                    <div className="jobs-card-footer">
+                      <button
+                        className="jobs-share-btn"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleShare(post);
+                        }}
+                        aria-label="Share job"
+                        title="Share this job"
+                      >
+                        <FontAwesomeIcon icon={faShareAlt} />
+                      </button>
+                      <div className="jobs-card-cta">
+                        <span className="jobs-view-more-text">View Details</span>
+                        <FontAwesomeIcon icon={faArrowRight} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            ))}
           </div>
         )}
-        {currentPageJob.map((post) => (
-          <Link
-            key={post.id}
-            className="modern-jobsbyroles-card-link"
-            to={`/job/${post.id}/${slugify(post.title)}`}
-          >
-            <div className="modern-jobsbyroles-card">
-              <div className="modern-jobsbyroles-card-left">
-                <img
-                  src={`${backendURL}/${post.image}`}
-                  className="modern-jobsbyroles-img"
-                  alt={post.title}
-                />
-              </div>
-              <div className="modern-jobsbyroles-card-body">
-                {" "}
-                <h6 className="modern-jobsbyroles-role">{post.role}</h6>
-                <div className="modern-jobsbyroles-meta">
-                  <span>
-                    <FontAwesomeIcon icon={faBriefcase} /> {post.batches}
-                  </span>
-                  <span>
-                    <FontAwesomeIcon icon={faMapMarkerAlt} /> {post.location}
-                  </span>
-                  <span>
-                    <FontAwesomeIcon icon={faWallet} /> {post.pay}
-                  </span>
-                </div>
-                <div className="modern-jobsbyroles-actions">
-                  <span className="modern-jobsbyroles-apply">View More</span>
-                  <button
-                    type="button"
-                    className="modern-jobsbyroles-share"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleShare(post);
-                    }}
-                    aria-label="Share job"
-                  >
-                    <FontAwesomeIcon icon={faShareAlt} />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </Link>
-        ))}
+
+        {/* Pagination */}
+        {pageCount > 1 && (
+          <div className="jobs-pagination-wrapper">
+            <ReactPaginate
+              previousLabel={"←"}
+              nextLabel={"→"}
+              pageCount={pageCount}
+              onPageChange={handlePageClick}
+              containerClassName="jobs-pagination"
+              previousLinkClassName="jobs-pagination-link jobs-pagination-prev"
+              nextLinkClassName="jobs-pagination-link jobs-pagination-next"
+              pageLinkClassName="jobs-pagination-link"
+              disabledClassName="jobs-pagination-disabled"
+              activeClassName="jobs-pagination-active"
+              forcePage={currentPage}
+            />
+          </div>
+        )}
       </div>
-      {pageCount > 1 && (
-        <ReactPaginate
-          previousLabel={"←"}
-          nextLabel={"→"}
-          pageCount={pageCount}
-          onPageChange={handlePageClick}
-          containerClassName={"modern-pagination"}
-          previousLinkClassName={"modern-pagination-link"}
-          nextLinkClassName={"modern-pagination-link"}
-          disabledClassName={"modern-pagination-link--disabled"}
-          activeClassName={"modern-pagination-link--active"}
-        />
-      )}
     </div>
   );
 }
