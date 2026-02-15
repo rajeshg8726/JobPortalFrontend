@@ -1,21 +1,36 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Sora:wght@300;400;500;600;700;800&display=swap");
+
+:root {
+  --job-ink: #0b1220;
+  --job-ink-soft: #475569;
+  --job-brand: #2563eb;
+  --job-brand-deep: #1e3a8a;
+  --job-gold: #f5c96b;
+  --job-surface: #ffffff;
+  --job-border: rgba(148, 163, 184, 0.35);
+  --job-shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+}
+
 /* ===== JOB CARD CONTAINER ===== */
 .premium-jobcard-container {
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
   padding: 40px 20px;
-  background: linear-gradient(135deg, #f8fafc 0%, #f0f4f8 100%);
+  background: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
   border-radius: 20px;
+  font-family: "Sora", "Segoe UI", sans-serif;
+  color: var(--job-ink);
 }
 
 /* ===== STATS BANNER ===== */
 .job-stats-banner {
-  background: white;
-  border-radius: 16px;
+  background: var(--job-surface);
+  border-radius: 18px;
   padding: 32px;
   margin-bottom: 40px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
-  border: 1px solid #e2e8f0;
+  box-shadow: var(--job-shadow);
+  border: 1px solid rgba(148, 163, 184, 0.2);
 }
 
 .stats-banner-inner {
@@ -30,16 +45,16 @@
   align-items: center;
   gap: 16px;
   padding: 16px;
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  background: linear-gradient(135deg, rgba(248, 250, 252, 0.8) 0%, rgba(241, 245, 249, 0.9) 100%);
   border-radius: 12px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid rgba(148, 163, 184, 0.2);
   transition: all 0.3s ease;
 }
 
 .stat-item:hover {
   transform: translateY(-4px);
-  border-color: #3b82f6;
-  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.1);
+  border-color: rgba(37, 99, 235, 0.4);
+  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.1);
 }
 
 .stat-icon {
@@ -76,12 +91,13 @@
 .stat-number {
   font-size: 24px;
   font-weight: 800;
-  color: #0f172a;
+  color: var(--job-ink);
+  letter-spacing: -0.5px;
 }
 
 .stat-label {
   font-size: 12px;
-  color: #64748b;
+  color: var(--job-ink-soft);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -93,7 +109,7 @@
   gap: 12px;
   flex-wrap: wrap;
   padding-top: 24px;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid rgba(148, 163, 184, 0.2);
 }
 
 .filter-btn {
@@ -101,10 +117,10 @@
   align-items: center;
   gap: 8px;
   padding: 10px 18px;
-  background: white;
-  border: 2px solid #e2e8f0;
-  border-radius: 8px;
-  color: #64748b;
+  background: var(--job-surface);
+  border: 1px solid var(--job-border);
+  border-radius: 999px;
+  color: var(--job-ink-soft);
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
@@ -113,33 +129,38 @@
 }
 
 .filter-btn:hover {
-  border-color: #3b82f6;
-  color: #3b82f6;
-  background: #eff6ff;
+  border-color: rgba(37, 99, 235, 0.5);
+  color: var(--job-brand);
+  background: rgba(37, 99, 235, 0.08);
 }
 
 .filter-btn.active {
-  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  background: linear-gradient(135deg, #2563eb 0%, #1e3a8a 100%);
   color: white;
   border-color: transparent;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 8px 20px rgba(30, 58, 138, 0.3);
+}
+
+.filter-btn:focus-visible {
+  outline: 3px solid rgba(245, 201, 107, 0.6);
+  outline-offset: 2px;
 }
 
 /* ===== JOB CARD GRID ===== */
 .premium-jobcard-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 24px;
   margin-bottom: 40px;
 }
 
 /* ===== JOB CARD ===== */
 .premium-jobcard {
-  background: white;
-  border-radius: 16px;
+  background: var(--job-surface);
+  border-radius: 18px;
   padding: 24px;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   display: flex;
@@ -154,8 +175,8 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+  height: 5px;
+  background: linear-gradient(90deg, #2563eb, #1e3a8a, #f5c96b);
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -166,13 +187,14 @@
 
 .premium-jobcard:hover {
   transform: translateY(-8px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
-  border-color: #3b82f6;
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.16);
+  border-color: rgba(37, 99, 235, 0.4);
 }
 
 .premium-jobcard.featured {
-  border: 2px solid #fbbf24;
-  background: linear-gradient(135deg, rgba(251, 191, 36, 0.02) 0%, transparent 100%);
+  border: 1.5px solid rgba(245, 201, 107, 0.8);
+  background: linear-gradient(135deg, rgba(245, 201, 107, 0.08) 0%, rgba(255, 255, 255, 0) 100%);
+  box-shadow: 0 14px 38px rgba(245, 201, 107, 0.18);
 }
 
 /* Badge Container */
@@ -189,7 +211,7 @@
   align-items: center;
   gap: 6px;
   padding: 6px 12px;
-  border-radius: 8px;
+  border-radius: 999px;
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
@@ -198,8 +220,8 @@
 }
 
 .featured-badge {
-  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-  color: #78350f;
+  background: linear-gradient(135deg, #f5c96b 0%, #f0b44a 100%);
+  color: #5b3b00;
 }
 
 .urgent-badge {
@@ -215,7 +237,7 @@
   width: 40px;
   height: 40px;
   border: none;
-  background: white;
+  background: var(--job-surface);
   border-radius: 8px;
   color: #cbd5e1;
   font-size: 18px;
@@ -224,18 +246,23 @@
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.12);
 }
 
 .save-job-btn:hover {
   transform: scale(1.1);
-  color: #fbbf24;
-  box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
+  color: var(--job-gold);
+  box-shadow: 0 10px 24px rgba(245, 201, 107, 0.35);
 }
 
 .save-job-btn.saved {
-  color: #fbbf24;
-  background: #fef3c7;
+  color: var(--job-gold);
+  background: rgba(245, 201, 107, 0.2);
+}
+
+.save-job-btn:focus-visible {
+  outline: 3px solid rgba(245, 201, 107, 0.6);
+  outline-offset: 2px;
 }
 
 /* Card Header */
@@ -244,7 +271,7 @@
   gap: 16px;
   margin-bottom: 20px;
   padding-bottom: 16px;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.2);
 }
 
 .premium-jobcard-company-logo {
@@ -252,18 +279,18 @@
   height: 64px;
   min-width: 64px;
   background: #f8fafc;
-  border-radius: 12px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  border: 1px solid #e2e8f0;
+  border: 1px solid rgba(148, 163, 184, 0.3);
 }
 
 .premium-jobcard-company-logo img {
   width: 100%;
-  height: 30%;
-  object-fit: cover;
+  height: 100%;
+  object-fit: contain;
 }
 
 .premium-jobcard-title-section {
@@ -277,7 +304,7 @@
 .premium-jobcard-role {
   font-size: 16px;
   font-weight: 700;
-  color: #0f172a;
+  color: var(--job-ink);
   margin: 0;
   white-space: nowrap;
   overflow: hidden;
@@ -287,7 +314,7 @@
 
 .premium-jobcard-company {
   font-size: 13px;
-  color: #64748b;
+  color: var(--job-ink-soft);
   font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
@@ -308,15 +335,15 @@
   align-items: center;
   gap: 10px;
   padding: 10px;
-  background: #f8fafc;
-  border-radius: 8px;
-  border: 1px solid #e2e8f0;
+  background: rgba(248, 250, 252, 0.9);
+  border-radius: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.25);
   transition: all 0.2s ease;
 }
 
 .premium-jobcard-tag:hover {
-  border-color: #3b82f6;
-  background: #eff6ff;
+  border-color: rgba(37, 99, 235, 0.4);
+  background: rgba(37, 99, 235, 0.08);
 }
 
 .tag-icon {
@@ -345,7 +372,7 @@
 
 .tag-text {
   font-size: 13px;
-  color: #475569;
+  color: var(--job-ink-soft);
   font-weight: 600;
   flex: 1;
   overflow: hidden;
@@ -354,7 +381,7 @@
 }
 
 .tag-text.salary {
-  color: #10b981;
+  color: #0f766e;
   font-weight: 700;
 }
 
@@ -363,9 +390,9 @@
   align-items: center;
   gap: 4px;
   padding: 4px 8px;
-  background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+  background: linear-gradient(135deg, #2563eb 0%, #1e3a8a 100%);
   color: white;
-  border-radius: 4px;
+  border-radius: 999px;
   font-weight: 700;
   font-size: 11px;
 }
@@ -377,7 +404,7 @@
   justify-content: space-between;
   gap: 12px;
   padding-top: 16px;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid rgba(148, 163, 184, 0.2);
   margin-top: auto;
 }
 
@@ -386,7 +413,7 @@
   align-items: center;
   gap: 6px;
   font-size: 12px;
-  color: #94a3b8;
+  color: #64748b;
   font-weight: 600;
 }
 
@@ -411,25 +438,31 @@
 }
 
 .premium-jobcard-view-btn {
-  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  background: linear-gradient(135deg, #2563eb 0%, #1e3a8a 100%);
   color: white;
   flex: 1;
 }
 
 .premium-jobcard-view-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 8px 18px rgba(30, 58, 138, 0.35);
 }
 
 .premium-jobcard-share-btn {
   background: #f1f5f9;
-  color: #475569;
-  border: 1px solid #e2e8f0;
+  color: var(--job-ink-soft);
+  border: 1px solid rgba(148, 163, 184, 0.35);
 }
 
 .premium-jobcard-share-btn:hover {
   background: #e2e8f0;
-  color: #0f172a;
+  color: var(--job-ink);
+}
+
+.premium-jobcard-view-btn:focus-visible,
+.premium-jobcard-share-btn:focus-visible {
+  outline: 3px solid rgba(245, 201, 107, 0.6);
+  outline-offset: 2px;
 }
 
 /* ===== LOADING STATE ===== */
@@ -458,7 +491,7 @@
 }
 
 .loading-container p {
-  color: #64748b;
+  color: var(--job-ink-soft);
   font-weight: 600;
 }
 
@@ -483,13 +516,13 @@
 .not-found-title {
   font-size: 24px;
   font-weight: 700;
-  color: #0f172a;
+  color: var(--job-ink);
   margin: 0;
 }
 
 .not-found-subtitle {
   font-size: 14px;
-  color: #64748b;
+  color: var(--job-ink-soft);
   margin: 0;
 }
 
@@ -507,10 +540,10 @@
 
 .premium-pagination-link {
   padding: 10px 14px;
-  background: white;
-  border: 2px solid #e2e8f0;
+  background: var(--job-surface);
+  border: 1px solid rgba(148, 163, 184, 0.35);
   border-radius: 8px;
-  color: #475569;
+  color: var(--job-ink-soft);
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
@@ -522,22 +555,30 @@
 }
 
 .premium-pagination-link:hover:not(.premium-pagination-link--disabled) {
-  border-color: #3b82f6;
-  background: #eff6ff;
-  color: #3b82f6;
+  border-color: rgba(37, 99, 235, 0.5);
+  background: rgba(37, 99, 235, 0.08);
+  color: var(--job-brand);
 }
 
 .premium-pagination-link--active {
-  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  background: linear-gradient(135deg, #2563eb 0%, #1e3a8a 100%);
   color: white;
   border-color: transparent;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 8px 18px rgba(30, 58, 138, 0.3);
 }
 
 .premium-pagination-link--disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  color: #cbd5e1;
+  color: #94a3b8;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 .pagination-text {

@@ -175,11 +175,65 @@ function JobsForBatchOrCity() {
     );
   }
 
-  const formatTitle = (title) => {
-    return title
-      ?.replace(/-/g, " ")
-      .replace(/\b\w/g, (l) => l.toUpperCase()) || "Jobs";
+  const formatTitle = (slug = "") => {
+    const cleaned = decodeURIComponent(String(slug)).replace(/^\/+|\/+$/g, "");
+    const lower = cleaned.toLowerCase();
+
+    const hasJobsSuffix = /-jobs?$/.test(lower);
+    const hasDomainSuffix = /-domain$/.test(lower);
+    const hasBatchSuffix = /-batch$/.test(lower);
+
+    let base = lower
+      .replace(/-jobs?$/, "")
+      .replace(/-domain$/, "")
+      .replace(/-batch$/, "");
+
+    if (base === "ai-ml-nlp") {
+      base = "ai/ml/nlp";
+    } else if (base === "ar-vr") {
+      base = "ar/vr";
+    }
+
+    const acronymMap = {
+      ai: "AI",
+      ml: "ML",
+      nlp: "NLP",
+      ar: "AR",
+      vr: "VR",
+      qa: "QA",
+      ui: "UI",
+      ux: "UX",
+      mnc: "MNC",
+      devops: "DevOps",
+    };
+
+    const formatToken = (token) => {
+      if (!token) return "";
+      if (acronymMap[token]) return acronymMap[token];
+      if (/^\d+$/.test(token)) return token;
+      return token.charAt(0).toUpperCase() + token.slice(1);
+    };
+
+    const formattedBase = base
+      .split("-")
+      .map((part) =>
+        part
+          .split("/")
+          .map((token) => formatToken(token))
+          .join("/")
+      )
+      .join(" ")
+      .trim();
+
+    const suffixParts = [];
+    if (hasDomainSuffix) suffixParts.push("Domain");
+    if (hasBatchSuffix) suffixParts.push("Batch");
+    if (hasJobsSuffix || hasDomainSuffix || hasBatchSuffix) suffixParts.push("Jobs");
+
+    return [formattedBase, ...suffixParts].filter(Boolean).join(" ");
   };
+
+  
 
   return (
     <div className="jobs-container">

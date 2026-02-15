@@ -221,15 +221,15 @@ const AdminDashboard = () => {
           <div className="chart-placeholder">
             <div className="chart-bars">
               <div className="chart-bar-item">
-                <div className="bar" style={{ height: `${(dashboardData.jobsThisMonth / 50) * 100}%` }}></div>
+                <div className="baradmin" style={{ height: `${(dashboardData.jobsThisMonth / 50) * 100}%` }}></div>
                 <span>Jobs</span>
               </div>
               <div className="chart-bar-item">
-                <div className="bar" style={{ height: `${(dashboardData.applicationsThisMonth / 100) * 100}%` }}></div>
+                <div className="baradmin" style={{ height: `${(dashboardData.applicationsThisMonth / 100) * 100}%` }}></div>
                 <span>Applications</span>
               </div>
               <div className="chart-bar-item">
-                <div className="bar" style={{ height: '45%' }}></div>
+                <div className="baradmin" style={{ height: '45%' }}></div>
                 <span>Users</span>
               </div>
             </div>

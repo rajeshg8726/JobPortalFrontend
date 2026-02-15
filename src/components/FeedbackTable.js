@@ -43,8 +43,6 @@ const FeedbackTable = () => {
           if (Array.isArray(res.data)) items = res.data;
           else if (Array.isArray(res.data.feedbackData)) items = res.data.feedbackData;
           else if (Array.isArray(res.data.subscribers)) items = res.data.subscribers;
-          else if (res.data?.data && Array.isArray(res.data.data)) items = res.data.data;
-          else if (res.data?.rows && Array.isArray(res.data.rows)) items = res.data.rows;
           else items = [];
 
           const normalized = items.map((it) => ({
@@ -52,6 +50,7 @@ const FeedbackTable = () => {
             name: it.name || it.fullName || it.username || it.contactName || "",
             email: it.email || it.email || it.email || "",
             message: it.message || it.msg || it.content || it.note || "",
+            created_at : it.created_at || "",
             raw: it,
           }));
 
@@ -65,7 +64,6 @@ const FeedbackTable = () => {
   }, [backendURL, userFeedbackAndEmails]);
 
 
-  const handlePageClick = ({ selected }) => setCurrentPage(selected);
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this feedback?"))
@@ -92,6 +90,16 @@ const FeedbackTable = () => {
   const currentPageData = feedbacks.slice(offset, offset + PER_PAGE);
   const pageCount = Math.max(0, Math.ceil(feedbacks.length / PER_PAGE));
 
+  
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
+  };
+
+
   return (
     <div className="modern-table-container">
       <div className="modern-table-card">
@@ -104,6 +112,7 @@ const FeedbackTable = () => {
                 <th>User Name</th>
                 <th>User Email</th>
                 <th>User Message</th>
+                <th>Date</th>
                 <th>Edit / Delete</th>
               </tr>
             </thead>
@@ -127,6 +136,7 @@ const FeedbackTable = () => {
                     <td>{post.name}</td>
                     <td>{post.email}</td>
                     <td>{post.message}</td>
+                    <td>{formatDate(post.created_at)}</td>
                     <td>
                       <button
                         className="modern-table-action edit"

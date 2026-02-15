@@ -49,7 +49,11 @@ const JobList = () => {
     try {
       await axios.delete(`${backendURL}/api/deletejob/${id}`);
       setJobPost((prev) => prev.filter((job) => job.id !== id));
-      setCurrentPage(0);
+      setCurrentPage(currentPage => {
+        const newTotal = filteredJobs.length - 1;
+        const newPageCount = Math.ceil(newTotal / PER_PAGE);
+        return Math.min(currentPage, newPageCount - 1);
+      });
     } catch (error) {
       alert('An error occurred. Please try again.');
     }
@@ -60,6 +64,15 @@ const JobList = () => {
   const offset = currentPage * PER_PAGE;
   const currentPageData = filteredJobs.slice(offset, offset + PER_PAGE);
   const pageCount = Math.ceil(filteredJobs.length / PER_PAGE);
+
+  
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
+  };
 
   return (
     <div className="modern-table-container">
@@ -95,6 +108,7 @@ const JobList = () => {
                 <th>Company Name</th>
                 <th>Job Role</th>
                 <th>Batches</th>
+                <th>Date</th>
                 <th>Expected Pay</th>
                 <th>Actions</th>
               </tr>
@@ -121,6 +135,7 @@ const JobList = () => {
                     <td>{post.role}</td>
                     <td>{post.batches}</td>
                     <td className="modern-table-pay">{post.pay}</td>
+                    <td>{ formatDate(post.created_at) }</td>
                     <td>
                       <div className="modern-table-actions">
                         <button

@@ -127,10 +127,39 @@ function JobsByRoles(props) {
     );
   }
 
-  const formatRoleTitle = (role) => {
-    return role
-      ?.replace(/-/g, " ")
-      .replace(/\b\w/g, (l) => l.toUpperCase()) || "Jobs";
+  const formatRoleTitle = (slug = "") => {
+    const cleaned = decodeURIComponent(String(slug)).replace(/^\/+|\/+$/g, "");
+    const lower = cleaned.toLowerCase();
+    const base = lower.replace(/-role$/, "");
+
+    const tokenMap = {
+      ai: "AI",
+      ml: "ML",
+      nlp: "NLP",
+      ui: "UI",
+      ux: "UX",
+      qa: "QA",
+      devops: "DevOps",
+      cybersecurity: "Cybersecurity",
+      frontend: "Frontend",
+      backend: "Backend",
+      full: "Full",
+      stack: "Stack",
+    };
+
+    const title = base
+      .split("-")
+      .map((token) => {
+        if (!token) return "";
+        if (tokenMap[token]) return tokenMap[token];
+        return token.charAt(0).toUpperCase() + token.slice(1);
+      })
+      .join(" ")
+      .replace(/\bUi Ux\b/g, "UI/UX")
+      .replace(/\bQa\b/g, "QA")
+      .trim();
+
+    return title ? `${title} Jobs` : "Jobs";
   };
 
   return (
@@ -150,7 +179,9 @@ function JobsByRoles(props) {
       <div className="jobs-wrapper">
         {currentPageJob.length === 0 ? (
           <div className="jobs-empty-state">
-            <div className="jobs-empty-icon">📋</div>
+            <div className="jobs-empty-icon">
+              <FontAwesomeIcon icon={faBriefcase} />
+            </div>
             <h3>No jobs found for this role</h3>
             <p>Check back soon for new opportunities!</p>
           </div>
@@ -236,8 +267,8 @@ function JobsByRoles(props) {
         {pageCount > 1 && (
           <div className="jobs-pagination-wrapper">
             <ReactPaginate
-              previousLabel={"←"}
-              nextLabel={"→"}
+              previousLabel={"<"}
+              nextLabel={">"}
               pageCount={pageCount}
               onPageChange={handlePageClick}
               containerClassName="jobs-pagination"

@@ -4,7 +4,7 @@ import axios from "axios";
 import { Search, MapPin, Briefcase, TrendingUp, Filter, X } from "lucide-react";
 
 // Modern reusable Search Form
-const SearchForm = memo(({ onSubmit, searchTerm, setSearchTerm, location, setLocation, role, setRole, placeholders, onAdvancedClick }) => {
+const SearchForm = memo(({ onSubmit, searchTerm, setSearchTerm, location, setLocation, role, setRole, placeholders, isSearching }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
@@ -21,6 +21,7 @@ const SearchForm = memo(({ onSubmit, searchTerm, setSearchTerm, location, setLoc
               onChange={(e) => setRole(e.target.value)}
               className="modern-input"
               onFocus={() => setIsExpanded(true)}
+              disabled={isSearching}
             />
           </div>
           
@@ -33,6 +34,7 @@ const SearchForm = memo(({ onSubmit, searchTerm, setSearchTerm, location, setLoc
               onChange={(e) => setLocation(e.target.value)}
               className="modern-input"
               onFocus={() => setIsExpanded(true)}
+              disabled={isSearching}
             />
           </div>
 
@@ -45,12 +47,22 @@ const SearchForm = memo(({ onSubmit, searchTerm, setSearchTerm, location, setLoc
               onChange={(e) => setSearchTerm(e.target.value)}
               className="modern-input"
               onFocus={() => setIsExpanded(true)}
+              disabled={isSearching}
             />
           </div>
 
-          <button type="submit" className="modern-search-btn">
-            <Search size={18} />
-            <span>Search</span>
+          <button type="submit" className="modern-search-btn" disabled={isSearching} aria-busy={isSearching}>
+            {isSearching ? (
+              <>
+                <span className="btn-spinner" aria-hidden="true"></span>
+                <span>Searching...</span>
+              </>
+            ) : (
+              <>
+                <Search size={18} />
+                <span>Search</span>
+              </>
+            )}
           </button>
         </div>
 
@@ -78,7 +90,7 @@ const SearchForm = memo(({ onSubmit, searchTerm, setSearchTerm, location, setLoc
 
       {/* Quick Tips */}
       <div className="search-quick-tips">
-        <span className="tip-item">💡 Tip: Use specific keywords for better results</span>
+        <span className="tip-item">Tip: Use specific keywords for better results</span>
       </div>
     </form>
   );
@@ -90,7 +102,7 @@ const CarouselItem = memo(({ isActive, backgroundImage, title, subtitle, descrip
     <div
       className="carousel-bg-modern"
       style={{
-        backgroundImage: `linear-gradient(135deg, rgba(15, 23, 42, 0.75) 0%, rgba(30, 41, 59, 0.6) 100%), url(${backgroundImage})`,
+        backgroundImage: `url(${backgroundImage})`,
       }}
     >
       <div className="slider-overlay-content">
@@ -190,12 +202,13 @@ const Slider = memo((props) => {
       setLocation={setLocation}
       role={role}
       setRole={setRole}
+      isSearching={isSearching}
       placeholders={{
-        role: "Job Role (e.g. Developer)",
-        location: "Location (e.g. Bengaluru)"
+        role: "e.g. Developer",
+        location: "e.g. Bengaluru"
       }}
     />
-  ), [handleSearch, searchTerm, location, role]);
+  ), [handleSearch, searchTerm, location, role, isSearching]);
 
   const searchForm2 = useMemo(() => (
     <SearchForm
@@ -206,12 +219,13 @@ const Slider = memo((props) => {
       setLocation={setLocation}
       role={role}
       setRole={setRole}
+      isSearching={isSearching}
       placeholders={{
         role: "Job Role (e.g. Analyst)",
         location: "Location (e.g. Remote)"
       }}
     />
-  ), [handleSearch, searchTerm, location, role]);
+  ), [handleSearch, searchTerm, location, role, isSearching]);
 
   const carouselItems = useMemo(() => [
     {
@@ -257,14 +271,14 @@ const Slider = memo((props) => {
           onClick={() => setActiveSlide((prev) => (prev - 1 + 2) % 2)}
           aria-label="Previous slide"
         >
-          ‹
+          &lt;
         </button>
         <button 
           className="carousel-nav-btn next" 
           onClick={() => setActiveSlide((prev) => (prev + 1) % 2)}
           aria-label="Next slide"
         >
-          ›
+          &gt;
         </button>
 
         {/* Indicators */}
@@ -295,3 +309,5 @@ CarouselItem.displayName = "CarouselItem";
 CarouselIndicators.displayName = "CarouselIndicators";
 
 export default Slider;
+
+

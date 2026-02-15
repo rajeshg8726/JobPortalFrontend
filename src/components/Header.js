@@ -192,15 +192,24 @@ function Header({ setSearchedJobs }) {
             <DarkModeToggle />
             
             {/* Mobile Hamburger */}
-            <button 
-              className={`hamburger ${isMobileMenuOpen ? "active" : ""}`}
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            <input
+              type="checkbox"
+              id="nav-hamburger"
+              className="visuallyHidden"
+              checked={isMobileMenuOpen}
+              onChange={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle menu"
-            >
-              <span className="bar"></span>
-              <span className="bar"></span>
-              <span className="bar"></span>
-            </button>
+              aria-expanded={isMobileMenuOpen}
+              aria-controls="mobile-drawer"
+            />
+            <label htmlFor="nav-hamburger" className="hamburger-label" aria-hidden="true">
+              <div className="hamburger hamburger1">
+                <span className="bar bar1"></span>
+                <span className="bar bar2"></span>
+                <span className="bar bar3"></span>
+                <span className="bar bar4"></span>
+              </div>
+            </label>
           </div>
         </div>
       </header>
@@ -209,7 +218,7 @@ function Header({ setSearchedJobs }) {
       <div className={`mobile-drawer-overlay ${isMobileMenuOpen ? "open" : ""}`} onClick={() => setIsMobileMenuOpen(false)}></div>
       
       {/* Mobile Drawer Menu */}
-      <div className={`mobile-drawer ${isMobileMenuOpen ? "open" : ""}`}>
+      <div id="mobile-drawer" className={`mobile-drawer ${isMobileMenuOpen ? "open" : ""}`}>
         <div className="drawer-header">
           <span className="drawer-title">Menu</span>
           <button className="close-btn" onClick={() => setIsMobileMenuOpen(false)}>

@@ -20,6 +20,7 @@ import {
   Zap,
 } from 'lucide-react';
 import './JobDetailModern.css';
+import PageNotFound from './PageNotFound'
 
 const JobDetailPage = () => {
   const { id, slug } = useParams();
@@ -118,11 +119,10 @@ const JobDetailPage = () => {
     return (
       <div className="job-detail-container">
         <div className="error-state">
-          <AlertCircle size={48} />
-          <p>{error || 'Job not found'}</p>
-          <button onClick={() => navigate(-1)} className="back-btn">
-            Go Back
-          </button>
+          {/* <AlertCircle size={48} /> */}
+      
+          <PageNotFound />
+
         </div>
       </div>
     );
@@ -132,7 +132,9 @@ const JobDetailPage = () => {
     <div className="job-detail-container">
       {/* Header */}
       <div className="job-detail-header">
-        <button onClick={() => navigate(-1)} className="back-button">
+        <button onClick={() => navigate(
+          '/'
+        )} className="back-button">
           <ArrowLeft size={20} />
           Back
         </button>
@@ -173,7 +175,7 @@ const JobDetailPage = () => {
                 </span>
                 <span className="meta-item">
                   <Briefcase size={16} />
-                  {job.jobtype === '1' ? 'Full-Time' : 'Part-Time'}
+                  {job.jobtype === '1' ? 'Internship' : 'Full-Time'}
                 </span>
                 <span className="meta-item">
                   <Calendar size={16} />
@@ -315,7 +317,7 @@ const JobDetailPage = () => {
             <div className="info-item">
               <span className="info-label">Job Type</span>
               <span className="info-value">
-                {job.jobtype === '1' ? 'Full-Time' : 'Part-Time'}
+                {job.jobtype === '1' ? 'Internship' : 'Full-Time'}
               </span>
             </div>
             <div className="info-item">

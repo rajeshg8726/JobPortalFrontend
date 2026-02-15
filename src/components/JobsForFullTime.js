@@ -110,13 +110,22 @@ function JobsForFullTime() {
     );
   }
 
-  const formatTitle = (title) => {
-    return title
-      .replace(/-/g, " ")
-      .replace(/\bjobs\b/gi, "")
-      .replace(/\b\w/g, (l) => l.toUpperCase())
-      .trim() + " Jobs";
-  };
+
+  // here is the example url : /jobs/0-1-year-experience-jobs and I want to make it look like "0-1 Year Experience Jobs" in the title, so I will remove the "jobs" word and replace the hyphens with spaces and capitalize the first letter of each word and add "Jobs" at the end of the title.  
+  // how can I do that in a function? 
+
+ const formatTitle = (slug = "") => {
+  return slug
+    .toLowerCase()
+    .replace(/-jobs$/i, "") // remove trailing "-jobs" only
+    .replace(/(\d+)-(\d+)/g, "$1__$2") // protect numeric ranges like 0-1
+    .replace(/-/g, " ")
+    .replace(/__/g, "-") // restore numeric range hyphen
+    .replace(/\b[a-z]/g, (ch) => ch.toUpperCase()) // title case words
+    .trim() + " Jobs";
+};
+
+
 
   return (
     <div className="jobs-container">

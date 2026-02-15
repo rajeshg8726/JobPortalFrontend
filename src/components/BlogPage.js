@@ -88,6 +88,7 @@ const ModernBlogPage = () => {
     submitResponse();
   };
 
+  // sample data which works on when api not able to fetch data
   useEffect(() => {
     const mockData = [
       {
@@ -220,7 +221,7 @@ const ModernBlogPage = () => {
               comments: b.comments || 0,
               image,
               tags: Array.isArray(tags) ? tags : [],
-              featured: !!b.featured,
+              featured: false,
             };
           });
           setBlogData(normalized);

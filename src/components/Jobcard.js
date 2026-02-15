@@ -266,7 +266,7 @@ function Jobcard(props) {
 
   const formatSalary = (salary) => {
     if (!salary) return "Not disclosed";
-    return salary.replace(/(-|to|TO)/g, "–").trim();
+    return salary.replace(/(-|to|TO)/g, " - ").replace(/\s+/g, " ").trim();
   };
 
   useEffect(() => {
@@ -470,7 +470,7 @@ function Jobcard(props) {
                   </div>
                   <span className="tag-text" title={post.location}>
                     {isRemote(post) ? (
-                      <span className="remote-badge">🌍 Remote</span>
+                      <span className="remote-badge">Remote</span>
                     ) : (
                       post.location || "Location TBD"
                     )}
@@ -527,12 +527,14 @@ function Jobcard(props) {
         <ReactPaginate
           previousLabel={
             <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              ←<span className="pagination-text">Previous</span>
+              <span aria-hidden="true">&lt;</span>
+              <span className="pagination-text">Previous</span>
             </span>
           }
           nextLabel={
             <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <span className="pagination-text">Next</span>→
+              <span className="pagination-text">Next</span>
+              <span aria-hidden="true">&gt;</span>
             </span>
           }
           pageCount={pageCount}

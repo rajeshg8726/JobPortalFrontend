@@ -5,13 +5,12 @@ import {
   Home, 
   Layers, 
   User, 
-  Clipboard, 
   LogOut, 
   Menu,
   ChevronDown,
   Briefcase,
   MessageSquare,
-  Bell,
+  ShieldCheck,
   Settings
 } from "lucide-react";
 
@@ -20,7 +19,6 @@ const Sidebar = () => {
   const location = useLocation();
   const [openDropdown, setOpenDropdown] = useState(null);
   const [collapsed, setCollapsed] = useState(false);
-  const [activeSubmenu, setActiveSubmenu] = useState(null);
 
   useEffect(() => {
     // auto-collapse on small screens
@@ -32,21 +30,6 @@ const Sidebar = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Auto-open relevant dropdown based on current path
-  useEffect(() => {
-    if (location.pathname.includes("/admin/job")) {
-      setOpenDropdown("jobs");
-    } else if (location.pathname.includes("/admin/aboutusers")) {
-      setOpenDropdown("users");
-    } else if (location.pathname.includes("/admin/interviews")) {
-      setOpenDropdown("interviews");
-    }
-  }, [location.pathname]);
-
-  const toggleDropdown = (menu) => {
-    setOpenDropdown(openDropdown === menu ? null : menu);
-  };
-
   const logout = () => {
     if (window.confirm("Are you sure you want to sign out?")) {
       localStorage.removeItem("token");
@@ -55,7 +38,7 @@ const Sidebar = () => {
   };
 
   const isActive = (path) => location.pathname.startsWith(path);
-  const isSubmenuActive = (path) => location.pathname.includes(path);
+  const isSubmenuActive = (path) => location.pathname.startsWith(path);
 
   const menuItems = [
     {
@@ -102,6 +85,27 @@ const Sidebar = () => {
     }
   ];
 
+  // Auto-open relevant dropdown based on current path
+  useEffect(() => {
+    const activeDropdown = menuItems.find(
+      (item) => item.dropdown && item.submenu?.some((sub) => isSubmenuActive(sub.path))
+    );
+    setOpenDropdown(activeDropdown?.id || null);
+  }, [location.pathname]);
+
+  const toggleDropdown = (menu) => {
+    setOpenDropdown(openDropdown === menu ? null : menu);
+  };
+
+  const handleDropdownClick = (menuId) => {
+    if (collapsed) {
+      setCollapsed(false);
+      setOpenDropdown(menuId);
+      return;
+    }
+    toggleDropdown(menuId);
+  };
+
   return (
     <aside 
       className={`modern-admin-sidebar ${collapsed ? "collapsed" : ""}`} 
@@ -128,6 +132,12 @@ const Sidebar = () => {
           </div>
           {!collapsed && <div className="brand-text">RG Jobs</div>}
         </Link>
+        {!collapsed && (
+          <div className="admin-badge">
+            <ShieldCheck size={12} />
+            <span>Admin</span>
+          </div>
+        )}
       </div>
 
       {/* Main Navigation */}
@@ -147,8 +157,9 @@ const Sidebar = () => {
                   className={`sidebar-link sidebar-toggle ${
                     openDropdown === item.id ? "open" : ""
                   }`}
-                  onClick={() => toggleDropdown(item.id)}
+                  onClick={() => handleDropdownClick(item.id)}
                   aria-expanded={openDropdown === item.id}
+                  title={collapsed ? item.label : ""}
                 >
                   <item.icon size={16} className="nav-icon" />
                   {!collapsed && (
@@ -162,7 +173,7 @@ const Sidebar = () => {
                   )}
                 </button>
               ) : (
-                <Link to={item.path} className="sidebar-link">
+                <Link to={item.path} className="sidebar-link" title={collapsed ? item.label : ""}>
                   <item.icon size={16} className="nav-icon" />
                   {!collapsed && <span className="nav-label">{item.label}</span>}
                   {item.badge && !collapsed && (
@@ -174,8 +185,8 @@ const Sidebar = () => {
               {/* Submenu */}
               {item.dropdown && openDropdown === item.id && !collapsed && (
                 <ul className="sidebar-sub">
-                  {item.submenu?.map((subitem, idx) => (
-                    <li key={idx}>
+                  {item.submenu?.map((subitem) => (
+                    <li key={subitem.path}>
                       <Link 
                         to={subitem.path}
                         className={`submenu-link ${
@@ -215,6 +226,7 @@ const Sidebar = () => {
             className="action-btn settings-btn" 
             title="Settings"
             aria-label="Settings"
+            type="button"
           >
             <Settings size={16} />
             {!collapsed && <span>Settings</span>}
@@ -225,6 +237,7 @@ const Sidebar = () => {
             onClick={logout}
             title="Sign out"
             aria-label="Sign out"
+            type="button"
           >
             <LogOut size={16} />
             {!collapsed && <span>Sign out</span>}
