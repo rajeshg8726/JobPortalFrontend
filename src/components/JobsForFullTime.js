@@ -13,6 +13,7 @@ import {
 import slugify from "react-slugify";
 import axios from "axios";
 import Loading from "./Loading";
+import { Helmet } from 'react-helmet-async';
 
 const PER_PAGE = 9;
 
@@ -127,12 +128,42 @@ function JobsForFullTime() {
 
 
 
+  const pageTitle = formatTitle(jobType);
+
   return (
     <div className="jobs-container">
+      <Helmet>
+        <title>{`${pageTitle} in India - Apply Now | RGJobs`}</title>
+        <meta name="description" content={`Browse ${jobs.length}+ ${pageTitle} in India. Find the best opportunities for freshers and experienced professionals. Apply now on RGJobs!`} />
+        <link rel="canonical" href={`https://www.rgjobs.in/jobsbytype/${jobType}`} />
+        <meta property="og:title" content={`${pageTitle} | RGJobs`} />
+        <meta property="og:description" content={`${jobs.length}+ ${pageTitle} available. Apply now!`} />
+        <meta property="og:url" content={`https://www.rgjobs.in/jobsbytype/${jobType}`} />
+      </Helmet>
+
       {/* Hero Section */}
       <div className="jobs-hero-section">
         <div className="jobs-hero-content">
-          <h1 className="jobs-hero-title">{formatTitle(jobType)}</h1>
+          {/* Breadcrumbs */}
+          <nav className="jobs-breadcrumb" aria-label="Breadcrumb">
+            <ol className="jobs-breadcrumb-list" itemScope itemType="https://schema.org/BreadcrumbList">
+              <li className="jobs-breadcrumb-item" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
+                <Link to="/" itemProp="item"><span itemProp="name">Home</span></Link>
+                <meta itemProp="position" content="1" />
+              </li>
+              <li className="jobs-breadcrumb-sep" aria-hidden="true">/</li>
+              <li className="jobs-breadcrumb-item" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
+                <span itemProp="name">Experience Level</span>
+                <meta itemProp="position" content="2" />
+              </li>
+              <li className="jobs-breadcrumb-sep" aria-hidden="true">/</li>
+              <li className="jobs-breadcrumb-item active" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
+                <span itemProp="name">{pageTitle}</span>
+                <meta itemProp="position" content="3" />
+              </li>
+            </ol>
+          </nav>
+          <h1 className="jobs-hero-title">{pageTitle}</h1>
           <p className="jobs-hero-subtitle">
             Find your perfect job match from {jobs.length} available positions
           </p>

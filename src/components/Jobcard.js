@@ -322,6 +322,20 @@ function Jobcard(props) {
 
   return (
     <div className="premium-jobcard-container">
+      {/* SEO Section Heading */}
+      <div className="jobcard-section-heading">
+        <h2 className="jobcard-section-title">
+          {props.searchedJobs && props.searchedJobs.length > 0
+            ? `Search Results (${props.searchedJobs.length} jobs found)`
+            : "Latest Job Openings for Freshers"}
+        </h2>
+        <p className="jobcard-section-subtitle">
+          {props.searchedJobs && props.searchedJobs.length > 0
+            ? "Showing jobs matching your search criteria"
+            : "Discover top career opportunities from leading companies across India"}
+        </p>
+      </div>
+
       {/* Enhanced Stats Banner */}
       <div className="job-stats-banner">
         <div className="stats-banner-inner">

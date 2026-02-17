@@ -1,7 +1,8 @@
 import React, { useState, useCallback, useMemo, memo, useEffect } from "react";
 import "./Slider.css";
 import axios from "axios";
-import { Search, MapPin, Briefcase, TrendingUp, Filter, X } from "lucide-react";
+import { Search, MapPin, Briefcase, TrendingUp, Filter, X, GraduationCap, Globe, Code, Zap, Award, Users } from "lucide-react";
+import { Link } from "react-router-dom";
 
 // Modern reusable Search Form
 const SearchForm = memo(({ onSubmit, searchTerm, setSearchTerm, location, setLocation, role, setRole, placeholders, isSearching }) => {
@@ -289,8 +290,73 @@ const Slider = memo((props) => {
         />
       </div>
 
-      {/* Stats Section */}
-      
+      {/* Popular Categories */}
+      <section className="quick-categories-section" aria-label="Popular Job Categories">
+        <div className="quick-categories-inner">
+          <h2 className="quick-categories-title">Explore Opportunities</h2>
+          <p className="quick-categories-subtitle">Find jobs that match your skills and career goals</p>
+          <div className="quick-categories-grid">
+            <Link to="/jobsbytype/Freshers-jobs" className="quick-category-card">
+              <div className="quick-category-icon cat-blue"><GraduationCap size={24} /></div>
+              <div className="quick-category-info"><h3>Freshers Jobs</h3><p>Start your career journey</p></div>
+            </Link>
+            <Link to="/jobsbytype/Internship-jobs" className="quick-category-card">
+              <div className="quick-category-icon cat-purple"><Award size={24} /></div>
+              <div className="quick-category-info"><h3>Internships</h3><p>Gain valuable experience</p></div>
+            </Link>
+            <Link to="/jobs/Remote-Jobs" className="quick-category-card">
+              <div className="quick-category-icon cat-green"><Globe size={24} /></div>
+              <div className="quick-category-info"><h3>Remote Jobs</h3><p>Work from anywhere</p></div>
+            </Link>
+            <Link to="/jobs/2025-batch" className="quick-category-card">
+              <div className="quick-category-icon cat-orange"><Users size={24} /></div>
+              <div className="quick-category-info"><h3>2025 Batch</h3><p>Latest batch openings</p></div>
+            </Link>
+            <Link to="/jobsbyrole/software-developer-engineer-role" className="quick-category-card">
+              <div className="quick-category-icon cat-cyan"><Code size={24} /></div>
+              <div className="quick-category-info"><h3>Software Developer</h3><p>Top tech roles</p></div>
+            </Link>
+            <Link to="/jobsbyrole/data-scientist-role" className="quick-category-card">
+              <div className="quick-category-icon cat-pink"><Zap size={24} /></div>
+              <div className="quick-category-info"><h3>Data Science</h3><p>AI & ML opportunities</p></div>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Trust Indicators */}
+      <section className="trust-indicators-section" aria-label="Platform Statistics">
+        <div className="trust-indicators-inner">
+          <div className="trust-indicator-item">
+            <div className="trust-indicator-icon"><Users size={22} /></div>
+            <div className="trust-indicator-content">
+              <span className="trust-indicator-number">100+</span>
+              <span className="trust-indicator-label">Freshers Helped</span>
+            </div>
+          </div>
+          <div className="trust-indicator-item">
+            <div className="trust-indicator-icon"><Briefcase size={22} /></div>
+            <div className="trust-indicator-content">
+              <span className="trust-indicator-number">250+</span>
+              <span className="trust-indicator-label">Job Listings</span>
+            </div>
+          </div>
+          <div className="trust-indicator-item">
+            <div className="trust-indicator-icon"><TrendingUp size={22} /></div>
+            <div className="trust-indicator-content">
+              <span className="trust-indicator-number">100+</span>
+              <span className="trust-indicator-label">Top Companies</span>
+            </div>
+          </div>
+          <div className="trust-indicator-item">
+            <div className="trust-indicator-icon"><Globe size={22} /></div>
+            <div className="trust-indicator-content">
+              <span className="trust-indicator-number">100%</span>
+              <span className="trust-indicator-label">Free Access</span>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Loading Indicator */}
       {isSearching && (

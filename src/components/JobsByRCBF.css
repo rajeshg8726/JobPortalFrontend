@@ -801,3 +801,115 @@ body {
 .jobs-card:nth-child(n + 4) {
   animation-delay: 0.2s;
 }
+
+/* ============================================
+   HERO BREADCRUMBS
+   ============================================ */
+.jobs-breadcrumb {
+  margin-bottom: 20px;
+}
+
+.jobs-breadcrumb-list {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.jobs-breadcrumb-item a {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.jobs-breadcrumb-item a:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+.jobs-breadcrumb-item span {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.jobs-breadcrumb-item.active span {
+  color: var(--accent-gold);
+  font-weight: 600;
+}
+
+.jobs-breadcrumb-sep {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 13px;
+  margin: 0 10px;
+  user-select: none;
+  list-style: none;
+}
+
+/* ============================================
+   HERO SECTION ENHANCED
+   ============================================ */
+.jobs-hero-section {
+  background: linear-gradient(135deg, #0b1220 0%, #1e3a8a 50%, #2563eb 100%);
+  animation: heroGradient 12s ease infinite alternate;
+  background-size: 200% 200%;
+}
+
+@keyframes heroGradient {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+/* ============================================
+   CARD ENHANCEMENTS
+   ============================================ */
+.jobs-card {
+  will-change: transform, box-shadow;
+}
+
+.jobs-card-wrapper:hover .jobs-card-cta {
+  gap: 12px;
+}
+
+/* ============================================
+   HERO BREADCRUMB RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+  .jobs-breadcrumb {
+    margin-bottom: 14px;
+  }
+
+  .jobs-breadcrumb-item a,
+  .jobs-breadcrumb-item span {
+    font-size: 12px;
+  }
+
+  .jobs-breadcrumb-sep {
+    margin: 0 6px;
+    font-size: 11px;
+  }
+
+  .jobs-hero-section {
+    text-align: center;
+  }
+
+  .jobs-breadcrumb-list {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .jobs-breadcrumb-item a,
+  .jobs-breadcrumb-item span {
+    font-size: 11px;
+  }
+
+  .jobs-breadcrumb-sep {
+    margin: 0 4px;
+  }
+}

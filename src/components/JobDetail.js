@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import {
   ArrowLeft,
@@ -19,8 +19,9 @@ import {
   FileText,
   Zap,
 } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import './JobDetailModern.css';
-import PageNotFound from './PageNotFound'
+import PageNotFound from './PageNotFound';
 
 const JobDetailPage = () => {
   const { id, slug } = useParams();
@@ -130,6 +131,56 @@ const JobDetailPage = () => {
 
   return (
     <div className="job-detail-container">
+      <Helmet>
+        <title>{`${job.role} at ${job.title} - Apply Now | RGJobs`}</title>
+        <meta name="description" content={`Apply for ${job.role} at ${job.title}. Location: ${job.location || 'India'}. Salary: ${job.pay || 'Competitive'}. Batches: ${job.batches || 'All'}. Find the best career opportunities on RGJobs.`} />
+        <link rel="canonical" href={`https://www.rgjobs.in/job/${id}/${slug}`} />
+        <meta property="og:title" content={`${job.role} at ${job.title} | RGJobs`} />
+        <meta property="og:description" content={`${job.role} at ${job.title}. ${job.location || 'India'}. ${job.pay || 'Competitive salary'}.`} />
+        <meta property="og:url" content={`https://www.rgjobs.in/job/${id}/${slug}`} />
+        <meta property="og:type" content="article" />
+        <meta property="og:image" content={`${backendURL}/${job.image}`} />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "JobPosting",
+            "title": job.role,
+            "description": job.description || `${job.role} position at ${job.title}`,
+            "datePosted": job.created_at,
+            "hiringOrganization": {
+              "@type": "Organization",
+              "name": job.title,
+              "logo": `${backendURL}/${job.image}`
+            },
+            "jobLocation": {
+              "@type": "Place",
+              "address": {
+                "@type": "PostalAddress",
+                "addressLocality": job.location || "India",
+                "addressCountry": "IN"
+              }
+            },
+            "employmentType": job.jobtype === '1' ? "INTERN" : "FULL_TIME",
+            "url": `https://www.rgjobs.in/job/${id}/${slug}`
+          })}
+        </script>
+      </Helmet>
+
+      {/* Breadcrumbs */}
+      <nav className="breadcrumb-nav" aria-label="Breadcrumb">
+        <ol className="breadcrumb-list" itemScope itemType="https://schema.org/BreadcrumbList">
+          <li className="breadcrumb-item" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
+            <Link to="/" itemProp="item"><span itemProp="name">Home</span></Link>
+            <meta itemProp="position" content="1" />
+          </li>
+          <li className="breadcrumb-separator" aria-hidden="true">/</li>
+          <li className="breadcrumb-item active" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
+            <span itemProp="name">{job.role} at {job.title}</span>
+            <meta itemProp="position" content="2" />
+          </li>
+        </ol>
+      </nav>
+
       {/* Header */}
       <div className="job-detail-header">
         <button onClick={() => navigate(

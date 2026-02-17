@@ -32,6 +32,7 @@ import Sitemap from "./components/Sitemap";
 import PageNotFound from "./components/PageNotFound";
 import Disclaimer from "./components/Disclaimer";
 import AdminDashboard from "./components/AdminDashboard";
+import { Helmet } from 'react-helmet-async';
 
 function App() {
   const [jobs, setJobs] = useState([]);
@@ -61,18 +62,24 @@ function App() {
             index
             element={
               <>
+                <Helmet>
+                  <title>RGJobs | Latest Freshers Jobs, Internships & Career Opportunities in India</title>
+                  <meta name="description" content="Find latest freshers jobs, internships & career opportunities across India. Browse 1000+ job listings in software development, data science, cloud computing, DevOps, UI/UX and more. Apply now on RGJobs!" />
+                  <link rel="canonical" href="https://www.rgjobs.in" />
+                  <meta property="og:title" content="RGJobs | Latest Freshers Jobs & Internships in India" />
+                  <meta property="og:description" content="India's trusted job portal for freshers. Find jobs by role, location, batch & experience level." />
+                  <meta property="og:url" content="https://www.rgjobs.in" />
+                  <meta property="og:type" content="website" />
+                </Helmet>
                 <Slider
                   setSearchedJobs={setSearchedJobs}
                   setLoading={setLoading}
                 />
-
                 <Jobcard
                   allJobs={jobs}
                   searchedJobs={searchedJobs}
                   loading={loading}
                 />
-                
-
               </>
             }
           />

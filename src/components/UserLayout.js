@@ -13,9 +13,9 @@ function UserLayout(props) {
   return (
     <div>
       <Header setSearchedJobs={props.setSearchedJobs} />
-      <div className="content">
+      <main className="content">
         <Outlet />
-      </div>
+      </main>
       <Footer />
     </div>
   );
